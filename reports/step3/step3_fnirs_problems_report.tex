@@ -1,0 +1,111 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\begin{document}
+\section*{Step 3 Problem and Exclusion Report}
+\subsection*{Overview}
+\begin{tabular}{p{0.34\linewidth}p{0.58\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+Sessions with any issue or warning & 24\\
+Ready for Step 4 with warnings & 21\\
+Review before Step 4 & 2\\
+Excluded from Step 4 & 1\\
+Behavioral-only logs without fNIRS session folder & 1\\
+Globally excluded participants & 2\\
+\bottomrule
+\end{tabular}
+\subsection*{Global Downstream Participant Exclusions}
+The following participant IDs are excluded from downstream participant-level summaries and future steps. Step~3 raw QC outputs are retained for traceability, but future analysis datasets should continue to honor this exclusion list.
+\begin{tabular}{p{0.34\linewidth}p{0.58\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+PID006 & Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses after Step 3 documented session 2025-11-12\_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log.\\
+PID037 & Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses because a behavioral log exists but no fNIRS session folder was found in Step 3.\\
+\bottomrule
+\end{tabular}
+\subsection*{Behavioral-Only Participants}
+The following participant IDs had PsychoPy logs but no fNIRS session folder and therefore do not appear in the Step 3 session-status table: PID037.
+\subsection*{Excluded Sessions}
+\paragraph{PID006 / 2025-11-12\_002}
+\begin{itemize}
+\item Trigger sequence requires manual review before Step 4.
+\item Duration 10.420224000000001s is below 60.0s threshold
+\item Session could not be paired to a PsychoPy log
+\end{itemize}
+\subsection*{Sessions Requiring Review Before Step 4}
+\paragraph{PID025 / 2025-11-25\_002}
+\begin{itemize}
+\item Raw minimum trigger sequence contains 1 extra task trigger(s) relative to PsychoPy.
+\end{itemize}
+\paragraph{PID034 / 2025-11-27\_003}
+\begin{itemize}
+\item Raw minimum trigger sequence contains 1 extra task trigger(s) relative to PsychoPy.
+\item 1 long-channel pair(s) were marked bad from low scalp-coupling index.
+\end{itemize}
+\subsection*{Sessions Ready With Warnings}
+\begin{longtable}{p{0.10\linewidth}p{0.20\linewidth}p{0.20\linewidth}p{0.40\linewidth}}
+\toprule
+Participant & Session & Status driver & Reason summary\\
+\midrule
+\endfirsthead
+\toprule
+Participant & Session & Status driver & Reason summary\\
+\midrule
+\endhead
+PID001 & 2025-11-06\_008 & MATCH\_RAW & Current .snirf file differs from the backup pre-marker-fix file.\\
+PID002 & 2025-11-06\_PID002 & MATCH\_RAW & Current .snirf file differs from the backup pre-marker-fix file.\\
+PID003 & 2025-11-11\_003 & MISSING\_TRIGGERS\_REPAIRABLE & Raw trigger annotations were ambiguous or incomplete and were repaired from PsychoPy alignment.; 2 long-channel pair(s) were marked bad from low scalp-coupling index.\\
+PID004 & 2025-11-11\_004 & MISSING\_TRIGGERS\_REPAIRABLE & Raw trigger annotations were ambiguous or incomplete and were repaired from PsychoPy alignment.; 7 long-channel pair(s) were marked bad from low scalp-coupling index.\\
+PID005 & 2025-11-12\_001 & MISSING\_TRIGGERS\_REPAIRABLE & Raw trigger annotations were ambiguous or incomplete and were repaired from PsychoPy alignment.\\
+PID006 & 2025-11-12\_003 & MISSING\_TRIGGERS\_REPAIRABLE & Raw trigger annotations were ambiguous or incomplete and were repaired from PsychoPy alignment.\\
+PID007 & 2025-11-13\_001 & MISSING\_TRIGGERS\_REPAIRABLE & Raw trigger annotations were ambiguous or incomplete and were repaired from PsychoPy alignment.; 6 long-channel pair(s) were marked bad from low scalp-coupling index.\\
+PID008 & 2025-11-14\_002 & MISSING\_TRIGGERS\_REPAIRABLE & Raw trigger annotations were ambiguous or incomplete and were repaired from PsychoPy alignment.\\
+PID009 & 2025-11-14\_002 (PID09) & MISSING\_TRIGGERS\_REPAIRABLE & Raw trigger annotations were ambiguous or incomplete and were repaired from PsychoPy alignment.\\
+PID010 & 2025-11-14\_003 & MISSING\_TRIGGERS\_REPAIRABLE & Raw trigger annotations were ambiguous or incomplete and were repaired from PsychoPy alignment.\\
+PID012 & 2025-11-18\_003 & MATCH\_RAW & 7 long-channel pair(s) were marked bad from low scalp-coupling index.\\
+PID017 & 2025-11-20\_001 & MATCH\_RAW & 1 long-channel pair(s) were marked bad from low scalp-coupling index.\\
+PID018 & 2025-11-20\_002 & MATCH\_INCOMPLETE\_SESSION & Session was incomplete but trigger sequence matched the completed portion of the task.\\
+PID020 & 2025-11-20\_004 & MATCH\_RAW & 1 long-channel pair(s) were marked bad from low scalp-coupling index.\\
+PID021 & 2025-11-21\_001 & MATCH\_RAW & 1 long-channel pair(s) were marked bad from low scalp-coupling index.\\
+PID022 & 2025-11-21\_002 & MATCH\_RAW & 1 long-channel pair(s) were marked bad from low scalp-coupling index.\\
+PID023 & 2025-11-21\_003 & MATCH\_RAW & 2 long-channel pair(s) were marked bad from low scalp-coupling index.\\
+PID024 & 2025-11-25\_001 & MATCH\_RAW & 1 long-channel pair(s) were marked bad from low scalp-coupling index.\\
+PID026 & 2025-11-25\_003 & MATCH\_RAW & 1 long-channel pair(s) were marked bad from low scalp-coupling index.\\
+PID032 & 2025-11-27\_001 & MATCH\_RAW & 2 long-channel pair(s) were marked bad from low scalp-coupling index.\\
+PID033 & 2025-11-27\_002 & MATCH\_RAW & 6 long-channel pair(s) were marked bad from low scalp-coupling index.\\
+\bottomrule
+\end{longtable}
+\subsection*{Raw Problem Log}
+\begin{longtable}{p{0.10\linewidth}p{0.18\linewidth}p{0.10\linewidth}p{0.22\linewidth}p{0.28\linewidth}}
+\toprule
+Participant & Session & Severity & Problem type & Notes\\
+\midrule
+\endfirsthead
+\toprule
+Participant & Session & Severity & Problem type & Notes\\
+\midrule
+\endhead
+PID006 & 2025-11-12\_002 & ERROR & IMPLAUSIBLY\_SHORT\_RECORDING & Duration 10.420224000000001s is below 60.0s threshold\\
+PID006 & 2025-11-12\_002 & ERROR & MISSING\_PSYCHOPY\_FILE & Session could not be paired to a PsychoPy log\\
+PID003 & 2025-11-11\_003 & WARNING & LOW\_SCI\_BAD\_PAIRS & Marked 2 long-channel pairs as bad using SCI < 0.75\\
+PID004 & 2025-11-11\_004 & WARNING & LOW\_SCI\_BAD\_PAIRS & Marked 7 long-channel pairs as bad using SCI < 0.75\\
+PID007 & 2025-11-13\_001 & WARNING & LOW\_SCI\_BAD\_PAIRS & Marked 6 long-channel pairs as bad using SCI < 0.75\\
+PID012 & 2025-11-18\_003 & WARNING & LOW\_SCI\_BAD\_PAIRS & Marked 7 long-channel pairs as bad using SCI < 0.75\\
+PID017 & 2025-11-20\_001 & WARNING & LOW\_SCI\_BAD\_PAIRS & Marked 1 long-channel pairs as bad using SCI < 0.75\\
+PID020 & 2025-11-20\_004 & WARNING & LOW\_SCI\_BAD\_PAIRS & Marked 1 long-channel pairs as bad using SCI < 0.75\\
+PID021 & 2025-11-21\_001 & WARNING & LOW\_SCI\_BAD\_PAIRS & Marked 1 long-channel pairs as bad using SCI < 0.75\\
+PID022 & 2025-11-21\_002 & WARNING & LOW\_SCI\_BAD\_PAIRS & Marked 1 long-channel pairs as bad using SCI < 0.75\\
+PID023 & 2025-11-21\_003 & WARNING & LOW\_SCI\_BAD\_PAIRS & Marked 2 long-channel pairs as bad using SCI < 0.75\\
+PID024 & 2025-11-25\_001 & WARNING & LOW\_SCI\_BAD\_PAIRS & Marked 1 long-channel pairs as bad using SCI < 0.75\\
+PID026 & 2025-11-25\_003 & WARNING & LOW\_SCI\_BAD\_PAIRS & Marked 1 long-channel pairs as bad using SCI < 0.75\\
+PID032 & 2025-11-27\_001 & WARNING & LOW\_SCI\_BAD\_PAIRS & Marked 2 long-channel pairs as bad using SCI < 0.75\\
+PID033 & 2025-11-27\_002 & WARNING & LOW\_SCI\_BAD\_PAIRS & Marked 6 long-channel pairs as bad using SCI < 0.75\\
+PID034 & 2025-11-27\_003 & WARNING & LOW\_SCI\_BAD\_PAIRS & Marked 1 long-channel pairs as bad using SCI < 0.75\\
+\bottomrule
+\end{longtable}
+\end{document}

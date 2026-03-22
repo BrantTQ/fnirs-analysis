@@ -1,0 +1,58 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\begin{document}
+\section*{Step 7 Duration-Aware Variable-Window Report}
+\subsection*{Overview}
+\begin{tabular}{p{0.42\linewidth}p{0.50\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+Included participants & 36\\
+Included questions & 30\\
+Included trials & 1075\\
+Mean variable-window duration (s) & 90.01\\
+Primary condition p-value & 0.102262\\
+Step 6 benchmark p-value & 0.052102\\
+\bottomrule
+\end{tabular}
+\paragraph{Duration diagnostics.} Concrete mean=89.23s (median=80.66s); Abstract mean=91.12s (median=84.80s). Response time vs total word count: r=0.285, p=0.000000; Response time vs sentence count: r=0.151, p=0.000001; Response time vs sentence length: r=0.005, p=0.872070; Response time vs ENEM item correctness: r=-0.161, p=0.000000.
+\paragraph{Warnings and QC.} MODEL\_PRIMARY\_FRONT\_VARIABLE\_WINDOW: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.; MODEL\_FRONT\_SENTENCECOUNT: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.; MODEL\_FRONT\_SENTENCELENGTH: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.; MODEL\_BACK\_VARIABLE\_WINDOW: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.; MODEL\_DISSOCIATION\_VARIABLE\_WINDOW: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.; MODEL\_FRONT\_LAG3: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.; MODEL\_FRONT\_LAG4: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.; MODEL\_FRONT\_LAG5: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.; MODEL\_FRONT\_CAP16: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.; MODEL\_FRONT\_RT\_SENSITIVITY: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+\subsection*{Primary Front ROI Model}
+\input{tables/primary_model_table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step7/response_time_by_condition.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step7/variable_window_duration_histogram.png}
+\caption{Response-time distribution by condition and the distribution of final duration-aware window lengths.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step7/response_time_vs_wordcount.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step7/response_time_vs_correctness.png}
+\caption{Response time plotted against total word count and ENEM item correctness.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step7/front_roi_partial_effect_variable_window.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step7/model_residuals_primary.png}
+\caption{Primary duration-aware front ROI condition effect and residual diagnostic.}
+\end{figure}
+\subsection*{Secondary and Sensitivity Models}
+\input{tables/secondary_model_table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step7/back_roi_partial_effect_variable_window.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step7/dissociation_partial_effect_variable_window.png}
+\caption{Secondary back ROI and dissociation condition-effect plots.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\linewidth]{../../figures/step7/fixed_vs_variable_comparison.png}
+\caption{Direct benchmark comparison of the Step~6 fixed-window coefficient and the Step~7 duration-aware coefficient.}
+\end{figure}
+\subsection*{Final Conclusion}
+\input{text/final_conclusion.tex}
+\end{document}

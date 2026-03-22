@@ -1,0 +1,11 @@
+participant_id,session_id,repair_kind,event_type,block,trial_idx_in_block,question_id,action,repair_confidence,notes,global_analysis_excluded,global_exclusion_reason
+PID003,2025-11-11_003,RELABEL_AMBIGUOUS_RAW_SEQUENCE,multiple,,,,Assigned event labels from PsychoPy to raw code-12 timings,high,Interval shift=1; median interval score=0.000018,False,
+PID004,2025-11-11_004,RELABEL_AMBIGUOUS_RAW_SEQUENCE,multiple,,,,Assigned event labels from PsychoPy to raw code-12 timings,high,Interval shift=1; median interval score=0.000018,False,
+PID005,2025-11-12_001,RELABEL_AMBIGUOUS_RAW_SEQUENCE,multiple,,,,Assigned event labels from PsychoPy to raw code-12 timings,high,Interval shift=1; median interval score=0.000016,False,
+PID006,2025-11-12_003,RELABEL_AMBIGUOUS_RAW_SEQUENCE,multiple,,,,Assigned event labels from PsychoPy to raw code-12 timings,high,Interval shift=1; median interval score=0.000017,True,Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses after Step 3 documented session 2025-11-12_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log.
+PID007,2025-11-13_001,RELABEL_AMBIGUOUS_RAW_SEQUENCE,multiple,,,,Assigned event labels from PsychoPy to raw code-12 timings,high,Interval shift=1; median interval score=0.000011,False,
+PID008,2025-11-14_002,RELABEL_AMBIGUOUS_RAW_SEQUENCE,multiple,,,,Assigned event labels from PsychoPy to raw code-12 timings,high,Interval shift=1; median interval score=0.000017,False,
+PID009,2025-11-14_002 (PID09),RELABEL_AMBIGUOUS_RAW_SEQUENCE,multiple,,,,Assigned event labels from PsychoPy to raw code-12 timings,high,Interval shift=1; median interval score=0.000014,False,
+PID010,2025-11-14_003,RELABEL_AMBIGUOUS_RAW_SEQUENCE,multiple,,,,Assigned event labels from PsychoPy to raw code-12 timings,high,Interval shift=1; median interval score=0.000017,False,
+PID025,2025-11-25_002,UNMATCHED_RAW_MIN_TRIGGER,question_start,,,,Retained in audit only,low,Extra raw minimum trigger code=11 at 4610.104266s,False,
+PID034,2025-11-27_003,UNMATCHED_RAW_MIN_TRIGGER,question_start,,,,Retained in audit only,low,Extra raw minimum trigger code=11 at 4759.098507s,False,

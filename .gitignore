@@ -1,0 +1,37 @@
+# Git cannot ignore files by size threshold directly.
+# This file ignores the current heavy data patterns in this project:
+# raw fNIRS session files, PsychoPy logs, and generated preprocessed fNIRS files.
+
+# Python cache
+__pycache__/
+*.pyc
+*.aux
+*.log
+*.out
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+Thumbs.db
+.~lock*
+
+# Raw fNIRS session binaries and associated metadata
+sessions/Sessions */
+sessions/**/*.snirf
+sessions/**/*.snirf.bak_pre_marker_fix
+sessions/**/*.nirs
+sessions/**/*.wl1
+sessions/**/*.wl2
+sessions/**/*.zip
+sessions/**/*_calibration.json
+sessions/**/*_config.hdr
+sessions/**/*_config.json
+sessions/**/*_description.json
+sessions/**/*_probeInfo.json
+sessions/**/digpts.txt
+
+# PsychoPy outputs and logs
+sessions/**/enem_blocks*.csv
+sessions/**/socio*.json
+
+# Generated large fNIRS derivatives
+data_clean/step3/preprocessed/*.fif

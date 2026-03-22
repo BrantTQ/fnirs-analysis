@@ -1,0 +1,646 @@
+\section{Step 4: Primary ROI-Based Statistical Analysis of Abstract versus Concrete Questions}
+\label{sec:step4_fnirs_analysis}
+% Analyst note added 2026-03-20: the descriptive waveform plots in the implemented Step 4 pipeline use a fixed onset-locked window from -2 s to +20 s and participant-weighted grand means on a 0.1 s common grid. This choice affects only the descriptive waveform figures and does not change the primary inferential ROI statistics, which still use the exact question_start-to-answer trial window specified below.
+% Analyst note added 2026-03-20: by explicit user request, PID025 / 2025-11-25_002 and PID034 / 2025-11-27_003 are manually included in Step 4 despite Step 3 REVIEW_BEFORE_STEP4 status. This is a deliberate deviation from the written participant inclusion rule below and is recorded in the Step 4 inclusion table and report.
+% Analyst note added 2026-03-21: the separate Step 4 visualization report uses a participant digitization point cloud plus source/detector/channel geometry in place of an fsaverage brain-surface rendering, because the local environment does not provide the required pyvista/fsaverage stack for direct reproduction of the example code. The onset-locked topographic figures in that supplementary report use a fixed epoch window from -3.5 s to +13.2 s with a -2 s to 0 s baseline for descriptive visualization only.
+
+\subsection{Objective}
+The objective of Step~4 is to perform a simple, pre-specified, and statistically interpretable
+analysis of the fNIRS signal to test whether abstract and concrete questions differ in the
+left-lateralized montage used in this study.
+
+This step should remain deliberately simple.
+It should provide:
+\begin{itemize}
+    \item one primary inferential analysis;
+    \item exact p-values;
+    \item confidence intervals;
+    \item effect sizes;
+    \item a short conclusion written in clear language.
+\end{itemize}
+
+More complex modelling, such as mixed-effects models, full event-duration GLMs, correctness interactions,
+or trial-level hierarchical analyses, can be deferred to Step~5.
+
+\subsection{Primary Scientific Question}
+The primary scientific question is:
+\begin{quote}
+Is the difference between abstract and concrete questions different in the \textbf{front} versus the
+\textbf{back} of the left lateral montage?
+\end{quote}
+
+This question is more appropriate than averaging all channels together, because the expected effect is
+not necessarily a uniform whole-montage effect.
+Instead, the study is interested in whether abstract and concrete questions show a different spatial
+pattern across the anterior versus posterior left lateral coverage.
+
+\subsection{Core Analytical Decision}
+The primary analysis in Step~4 should therefore be based on:
+\begin{enumerate}
+    \item \textbf{HbO only} as the primary chromophore;
+    \item \textbf{long-separation channels only} for the inferential statistics;
+    \item \textbf{two pre-specified ROIs} derived from the montage:
+    \begin{itemize}
+        \item left frontal-lateral ROI;
+        \item left posterior-lateral ROI.
+    \end{itemize}
+    \item \textbf{one participant-level mean per condition and ROI};
+    \item \textbf{one primary dissociation test} based on the difference of differences:
+    \[
+    \Delta_i =
+    \bigl(\text{Front Abstract} - \text{Front Concrete}\bigr)_i
+    -
+    \bigl(\text{Back Abstract} - \text{Back Concrete}\bigr)_i.
+    \]
+\end{enumerate}
+
+This primary dissociation score is mathematically equivalent to the
+Condition $\times$ ROI interaction in a \(2 \times 2\) repeated-measures design,
+but it is simpler to implement, explain, and report.
+
+\subsection{Important Interpretation Rule}
+This step can test for statistical significance, but it cannot guarantee significance.
+The correct purpose of Step~4 is:
+\begin{quote}
+to test the abstract-versus-concrete difference cleanly and report honestly whether the data show
+a statistically significant effect in the pre-specified front-versus-back left lateral comparison.
+\end{quote}
+
+\subsection{Inputs}
+Step~4 begins only from the outputs of Step~3:
+\begin{itemize}
+    \item preprocessed participant-session fNIRS files;
+    \item harmonized trigger table;
+    \item session-level quality-control table;
+    \item session problem log;
+    \item preprocessing parameter file.
+\end{itemize}
+
+It also uses the outputs of Step~2:
+\begin{itemize}
+    \item question metadata;
+    \item question type labels (\texttt{abstract} or \texttt{concrete});
+    \item trial reconstruction from PsychoPy;
+    \item question start and answer timing.
+\end{itemize}
+
+\subsection{Fixed Channel Layout}
+All preprocessed participant-session FIF files share the same MNE channel layout and order.
+The preprocessed data contain 60 channels in total:
+\begin{itemize}
+    \item 30 HbO channels;
+    \item 30 HbR channels.
+\end{itemize}
+
+The exact channel labels are fixed across all preprocessed files.
+This is important because it allows one consistent ROI definition for the whole dataset.
+
+\subsection{Short-Channel Rule}
+The study includes short-separation measurements, and these short channels must \textbf{not}
+be used in the inferential ROI analysis.
+
+The eight short source-detector pairs are:
+\begin{verbatim}
+S1_D8
+S2_D9
+S3_D10
+S4_D11
+S5_D12
+S6_D13
+S7_D14
+S8_D15
+\end{verbatim}
+
+Therefore:
+\begin{itemize}
+    \item short channels are used only for nuisance correction and preprocessing in Step~3;
+    \item short channels are excluded from all Step~4 ROI summaries;
+    \item only long-separation channels are used for the inferential tests.
+\end{itemize}
+
+\subsection{Long-Channel Structure Used in Step~4}
+After excluding the eight short pairs, the remaining long-separation pairs are:
+\begin{verbatim}
+S1_D3
+S1_D6
+S2_D4
+S2_D6
+S3_D1
+S3_D3
+S3_D7
+S4_D2
+S4_D4
+S4_D7
+S5_D3
+S5_D4
+S5_D6
+S5_D7
+S6_D1
+S6_D2
+S6_D5
+S6_D7
+S7_D2
+S7_D5
+S8_D1
+S8_D5
+\end{verbatim}
+
+These 22 long-separation source-detector pairs form the full cortical long-channel set available
+for analysis.
+
+\subsection{ROI Definition Strategy}
+The ROIs are defined from the montage at the channel level, using source-detector pairs.
+To keep the primary test clean, the ROIs are divided into:
+\begin{itemize}
+    \item \textbf{front ROI channels};
+    \item \textbf{back ROI channels};
+    \item \textbf{transition channels}, which are excluded from the primary confirmatory analysis.
+\end{itemize}
+
+\subsection{Primary ROI Specification}
+
+\subsubsection{Left Frontal-Lateral ROI}
+The left frontal-lateral ROI is defined by the following HbO channels:
+
+\begin{table}[ht]
+\centering
+\caption{Exact primary HbO channels for the left frontal-lateral ROI.}
+\label{tab:front_roi_hbo}
+\begin{tabular}{lll}
+\hline
+MNE channel name & Source-detector pair & Approximate topographic span \\
+\hline
+\texttt{S2\_D6 hbo} & S2--D6 & F7--F5 \\
+\texttt{S2\_D4 hbo} & S2--D4 & F7--FT7 \\
+\texttt{S1\_D6 hbo} & S1--D6 & F3--F5 \\
+\texttt{S1\_D3 hbo} & S1--D3 & F3--FC3 \\
+\texttt{S5\_D6 hbo} & S5--D6 & FC5--F5 \\
+\texttt{S5\_D4 hbo} & S5--D4 & FC5--FT7 \\
+\texttt{S5\_D3 hbo} & S5--D3 & FC5--FC3 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Left Posterior-Lateral ROI}
+The left posterior-lateral ROI is defined by the following HbO channels:
+
+\begin{table}[ht]
+\centering
+\caption{Exact primary HbO channels for the left posterior-lateral ROI.}
+\label{tab:back_roi_hbo}
+\begin{tabular}{lll}
+\hline
+MNE channel name & Source-detector pair & Approximate topographic span \\
+\hline
+\texttt{S4\_D2 hbo} & S4--D2 & T7--TP7 \\
+\texttt{S3\_D1 hbo} & S3--D1 & C3--CP3 \\
+\texttt{S6\_D2 hbo} & S6--D2 & CP5--TP7 \\
+\texttt{S6\_D1 hbo} & S6--D1 & CP5--CP3 \\
+\texttt{S6\_D5 hbo} & S6--D5 & CP5--P5 \\
+\texttt{S7\_D2 hbo} & S7--D2 & P7--TP7 \\
+\texttt{S7\_D5 hbo} & S7--D5 & P7--P5 \\
+\texttt{S8\_D1 hbo} & S8--D1 & P3--CP3 \\
+\texttt{S8\_D5 hbo} & S8--D5 & P3--P5 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Transition Channels Excluded from the Primary Confirmatory Test}
+The following long HbO channels are treated as transition channels and excluded from the primary
+confirmatory front-versus-back analysis:
+
+\begin{table}[ht]
+\centering
+\caption{Transition HbO channels excluded from the primary confirmatory test.}
+\label{tab:transition_hbo}
+\begin{tabular}{lll}
+\hline
+MNE channel name & Source-detector pair & Approximate topographic span \\
+\hline
+\texttt{S5\_D7 hbo} & S5--D7 & FC5--C5 \\
+\texttt{S4\_D4 hbo} & S4--D4 & T7--FT7 \\
+\texttt{S4\_D7 hbo} & S4--D7 & T7--C5 \\
+\texttt{S3\_D3 hbo} & S3--D3 & C3--FC3 \\
+\texttt{S3\_D7 hbo} & S3--D7 & C3--C5 \\
+\texttt{S6\_D7 hbo} & S6--D7 & CP5--C5 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{HbR Channel Mapping}
+For the secondary HbR analysis, the same source-detector memberships should be used, replacing
+the HbO suffix by the HbR suffix.
+For example:
+\begin{itemize}
+    \item \texttt{S2\_D6 hbo} in the front ROI corresponds to \texttt{S2\_D6 hbr} in the HbR analysis;
+    \item \texttt{S4\_D2 hbo} in the back ROI corresponds to \texttt{S4\_D2 hbr} in the HbR analysis.
+\end{itemize}
+
+Thus, the HbR ROI definitions are identical at the pair level.
+
+\subsection{Primary Outcome}
+The primary outcome should be the baseline-corrected mean HbO signal during the actual question window:
+\begin{verbatim}
+question_start --> answer
+\end{verbatim}
+
+This should be computed separately for:
+\begin{itemize}
+    \item each trial;
+    \item each long channel;
+    \item each ROI;
+    \item each condition.
+\end{itemize}
+
+\subsection{Why This Level of Simplicity Is Appropriate}
+The duration of a trial is not fixed.
+Different participants answered different questions and took different amounts of time.
+For a basic and transparent first inferential analysis, the cleanest strategy is:
+\begin{enumerate}
+    \item use the actual trial window from question start to answer;
+    \item compute a simple trial-level fNIRS summary over that interval;
+    \item average trial summaries within participant and condition;
+    \item compare conditions with a within-subject test.
+\end{enumerate}
+
+This avoids overcomplicating the workflow while respecting the natural timing of the task.
+
+\subsection{Participant Inclusion Rules}
+A participant-session should be included in the \textbf{primary analysis} only if:
+\begin{itemize}
+    \item the final Step~3 status is \texttt{READY\_FOR\_STEP4} or
+    \texttt{READY\_FOR\_STEP4\_WITH\_WARNINGS};
+    \item the harmonized trigger table contains valid \texttt{question\_start} and \texttt{answer}
+    events for the trials used;
+    \item at least two valid abstract trials are available;
+    \item at least two valid concrete trials are available;
+    \item at least one valid front-ROI long HbO channel remains for that participant-session;
+    \item at least one valid back-ROI long HbO channel remains for that participant-session.
+\end{itemize}
+
+Participants that fail these rules must remain listed in the exclusion table and must not be dropped silently.
+
+\subsection{Trial Inclusion Rules}
+A trial should be included if:
+\begin{itemize}
+    \item it has a valid \texttt{question\_start} trigger;
+    \item it has a valid \texttt{answer} trigger;
+    \item the question type is known (\texttt{abstract} or \texttt{concrete});
+    \item the question window duration is positive;
+    \item the preprocessed signal is available over that interval for at least one valid channel in each ROI.
+\end{itemize}
+
+A trial should be excluded if:
+\begin{itemize}
+    \item the start or answer trigger is unresolved;
+    \item the condition label is missing;
+    \item the signal is missing over the relevant interval;
+    \item the baseline segment is unavailable;
+    \item the trial belongs to a session marked \texttt{EXCLUDE\_FROM\_STEP4}.
+\end{itemize}
+
+\subsection{Definition of the Trial Window}
+For each included trial:
+\begin{itemize}
+    \item the analysis window starts at the harmonized \texttt{question\_start};
+    \item the analysis window ends at the harmonized \texttt{answer}.
+\end{itemize}
+
+This trial-specific interval is the primary task window for Step~4.
+
+\subsection{Baseline Definition}
+For each trial, define a simple baseline window immediately before question onset:
+\begin{verbatim}
+baseline window = [question_start - 2 s, question_start]
+\end{verbatim}
+
+The rule should be:
+\begin{itemize}
+    \item if the full baseline exists, use it;
+    \item if the baseline is incomplete or missing, exclude that trial from the primary analysis;
+    \item record the exclusion in the Step~4 trial log.
+\end{itemize}
+
+\subsection{Trial-Level Signal Summary}
+For participant \(i\), channel \(j\), and trial \(k\), define the baseline-corrected trial response as:
+\begin{equation}
+r_{ijk}
+=
+\overline{x_{ijk}(t \in [t_{\mathrm{start}}, t_{\mathrm{answer}}])}
+-
+\overline{x_{ijk}(t \in [t_{\mathrm{start}}-2, t_{\mathrm{start}}])},
+\end{equation}
+where:
+\begin{itemize}
+    \item \(x_{ijk}\) is the preprocessed HbO signal;
+    \item \(t_{\mathrm{start}}\) is the harmonized question start;
+    \item \(t_{\mathrm{answer}}\) is the harmonized answer time.
+\end{itemize}
+
+\subsection{ROI-Level Trial Summaries}
+For each trial, compute two ROI values.
+
+\paragraph{Front ROI trial value}
+\begin{equation}
+y^{(F)}_{ik}
+=
+\frac{1}{J^{(F)}_{ik}}
+\sum_{j \in F_{ik}} r_{ijk},
+\end{equation}
+where \(F_{ik}\) is the set of valid front-ROI HbO channels available for participant \(i\) on trial \(k\),
+and \(J^{(F)}_{ik}\) is the number of those channels.
+
+\paragraph{Back ROI trial value}
+\begin{equation}
+y^{(B)}_{ik}
+=
+\frac{1}{J^{(B)}_{ik}}
+\sum_{j \in B_{ik}} r_{ijk},
+\end{equation}
+where \(B_{ik}\) is the set of valid back-ROI HbO channels available for participant \(i\) on trial \(k\),
+and \(J^{(B)}_{ik}\) is the number of those channels.
+
+If a channel is part of the ROI definition but marked bad or unavailable in a given participant-session,
+it should simply be omitted from that participant-session's ROI average.
+The number of valid channels contributing to each ROI must be recorded.
+
+\subsection{Participant-Level Condition Means}
+For each participant, compute the mean ROI response separately for abstract and concrete trials.
+
+\paragraph{Front ROI}
+\begin{equation}
+\bar{y}^{(F,A)}_i
+=
+\frac{1}{n_i^{(A)}}
+\sum_{k \in A} y^{(F)}_{ik},
+\qquad
+\bar{y}^{(F,C)}_i
+=
+\frac{1}{n_i^{(C)}}
+\sum_{k \in C} y^{(F)}_{ik},
+\end{equation}
+
+\paragraph{Back ROI}
+\begin{equation}
+\bar{y}^{(B,A)}_i
+=
+\frac{1}{n_i^{(A)}}
+\sum_{k \in A} y^{(B)}_{ik},
+\qquad
+\bar{y}^{(B,C)}_i
+=
+\frac{1}{n_i^{(C)}}
+\sum_{k \in C} y^{(B)}_{ik},
+\end{equation}
+where:
+\begin{itemize}
+    \item \(A\) denotes abstract trials;
+    \item \(C\) denotes concrete trials;
+    \item \(n_i^{(A)}\) and \(n_i^{(C)}\) are the numbers of valid abstract and concrete trials.
+\end{itemize}
+
+\subsection{Primary Dissociation Score}
+For each participant, define the primary dissociation score as:
+\begin{equation}
+\Delta_i
+=
+\bigl(\bar{y}^{(F,A)}_i - \bar{y}^{(F,C)}_i\bigr)
+-
+\bigl(\bar{y}^{(B,A)}_i - \bar{y}^{(B,C)}_i\bigr).
+\end{equation}
+
+This score answers the main Step~4 question directly:
+does the abstract-versus-concrete contrast differ between the front and the back ROI?
+
+\subsection{Primary Statistical Test}
+The primary inferential analysis should be a \textbf{two-sided one-sample t-test} across participants on
+the dissociation score \(\Delta_i\).
+
+\paragraph{Null hypothesis}
+\begin{equation}
+H_0: \mu_{\Delta} = 0
+\end{equation}
+
+\paragraph{Alternative hypothesis}
+\begin{equation}
+H_1: \mu_{\Delta} \neq 0
+\end{equation}
+
+The significance threshold for the primary test should be:
+\begin{verbatim}
+alpha = 0.05
+\end{verbatim}
+
+\subsection{Why This Is the Right Primary Test}
+This test is the cleanest primary choice because:
+\begin{itemize}
+    \item it directly targets the front-versus-back dissociation of interest;
+    \item it stays fully within-subject;
+    \item it is easy to interpret;
+    \item it avoids unnecessary model complexity;
+    \item it yields one main p-value for the primary hypothesis.
+\end{itemize}
+
+\subsection{Primary Reporting Quantities}
+The main Step~4 results table must report:
+\begin{itemize}
+    \item number of included participants;
+    \item mean front-abstract HbO response;
+    \item mean front-concrete HbO response;
+    \item mean back-abstract HbO response;
+    \item mean back-concrete HbO response;
+    \item mean dissociation score \(\Delta\);
+    \item one-sample t statistic for \(\Delta\);
+    \item degrees of freedom;
+    \item exact p-value;
+    \item 95\% confidence interval for the mean dissociation score;
+    \item Cohen's \(d\) for the one-sample dissociation test.
+\end{itemize}
+
+\subsection{Planned Follow-Up Tests}
+To describe the direction of the effect, Step~4 should also include two planned follow-up paired t-tests:
+
+\paragraph{Front ROI follow-up}
+\begin{equation}
+H_0: \mu\bigl(\bar{y}^{(F,A)} - \bar{y}^{(F,C)}\bigr) = 0
+\end{equation}
+
+\paragraph{Back ROI follow-up}
+\begin{equation}
+H_0: \mu\bigl(\bar{y}^{(B,A)} - \bar{y}^{(B,C)}\bigr) = 0
+\end{equation}
+
+These follow-ups should:
+\begin{itemize}
+    \item be clearly labeled as planned follow-up tests;
+    \item report exact p-values;
+    \item report 95\% confidence intervals;
+    \item report paired-effect sizes;
+    \item be corrected across the two tests using a simple method such as Holm correction.
+\end{itemize}
+
+\subsection{Primary Conclusion Rule}
+The final conclusion of Step~4 must be based first on the primary dissociation test.
+
+The interpretation rule should be:
+\begin{itemize}
+    \item if the primary dissociation test is significant, conclude that the abstract-versus-concrete
+    contrast differs significantly between the front and back left-lateral ROIs;
+    \item if the primary dissociation test is not significant, conclude that this primary analysis does
+    not show statistically significant evidence for a front-versus-back dissociation between abstract
+    and concrete questions.
+\end{itemize}
+
+\subsection{Interpretation of the Sign of the Dissociation Score}
+The sign of \(\Delta\) should be interpreted as follows:
+\begin{itemize}
+    \item if \(\Delta > 0\), the abstract-versus-concrete difference is more positive in the front ROI
+    than in the back ROI;
+    \item if \(\Delta < 0\), the abstract-versus-concrete difference is more positive in the back ROI
+    than in the front ROI.
+\end{itemize}
+
+The planned follow-up tests are then used to describe whether this pattern reflects:
+\begin{itemize}
+    \item stronger abstract responses in the front ROI;
+    \item stronger concrete responses in the back ROI;
+    \item or both.
+\end{itemize}
+
+\subsection{Conclusion Templates}
+The report should automatically generate one short conclusion paragraph.
+
+\paragraph{Template if the primary dissociation test is significant.}
+The pre-specified primary analysis showed a statistically significant front-versus-back dissociation
+between abstract and concrete questions
+(\(t(df)=\ldots\), \(p=\ldots\), mean dissociation \(=\ldots\), 95\% CI \([\ldots,\ldots]\), \(d=\ldots\)).
+This indicates that the abstract-versus-concrete contrast was significantly different in the front and
+back left-lateral ROIs.
+Follow-up comparisons showed that \ldots
+
+\paragraph{Template if the primary dissociation test is not significant.}
+The pre-specified primary analysis did not show a statistically significant front-versus-back dissociation
+between abstract and concrete questions
+(\(t(df)=\ldots\), \(p=\ldots\), mean dissociation \(=\ldots\), 95\% CI \([\ldots,\ldots]\), \(d=\ldots\)).
+In this dataset, the abstract-versus-concrete contrast was not significantly different between the
+front and back left-lateral ROIs.
+
+\subsection{Secondary Analyses}
+To keep Step~4 simple, only a small number of secondary analyses should be included.
+
+\subsubsection{Secondary Analysis 1: HbR ROI analysis}
+Repeat the same ROI-based participant-level analysis using HbR instead of HbO.
+This result must be clearly labeled as \textbf{secondary}.
+
+\subsubsection{Secondary Analysis 2: Exploratory channel-level tests}
+For each valid long channel in the left montage, compute the participant-level abstract-versus-concrete
+contrast and run a paired comparison.
+Because this introduces multiple comparisons, the resulting p-values must be corrected.
+These analyses should be labeled \textbf{exploratory}.
+
+\subsubsection{Secondary Analysis 3: Descriptive time-course plots}
+Generate descriptive mean waveforms aligned to question onset for:
+\begin{itemize}
+    \item abstract trials;
+    \item concrete trials;
+    \item front ROI;
+    \item back ROI.
+\end{itemize}
+
+These plots are useful for interpretation and quality control, but they do not replace the primary test.
+
+\subsection{Analyses Intentionally Deferred to Step~5}
+The following should be postponed to Step~5:
+\begin{itemize}
+    \item custom-duration GLM analysis;
+    \item mixed-effects models with participant and item random effects;
+    \item interactions with correctness;
+    \item interactions with response time;
+    \item interactions with question length;
+    \item more detailed topographic or connectivity analyses.
+\end{itemize}
+
+\subsection{Expected Outputs}
+
+\subsubsection*{Tables}
+\begin{verbatim}
+01_step4_inclusion_table.csv
+02_trial_fnirs_summary_hbo.csv
+03_trial_fnirs_summary_hbr.csv
+04_participant_roi_condition_summary.csv
+05_primary_dissociation_test_results.csv
+06_followup_roi_tests.csv
+07_secondary_hbr_results.csv
+08_channel_exploratory_results.csv
+09_step4_exclusion_log.csv
+10_step4_final_conclusion.csv
+\end{verbatim}
+
+\subsubsection*{Figures}
+\begin{verbatim}
+figures/step4/front_back_fourcell_plot.png
+figures/step4/primary_dissociation_distribution.png
+figures/step4/front_roi_abstract_vs_concrete.png
+figures/step4/back_roi_abstract_vs_concrete.png
+figures/step4/front_hbo_waveform.png
+figures/step4/back_hbo_waveform.png
+figures/step4/channel_exploratory_map.png
+\end{verbatim}
+
+\subsubsection*{Reports}
+\begin{verbatim}
+reports/step4/step4_primary_analysis_report.tex
+reports/step4/tables/primary_dissociation_table.tex
+reports/step4/tables/followup_roi_tests_table.tex
+reports/step4/text/final_conclusion.tex
+\end{verbatim}
+
+\subsection{Minimal Figures for the Main Report}
+The main Step~4 report should include at least:
+\begin{enumerate}
+    \item a four-cell figure showing participant-level means for:
+    Front--Abstract, Front--Concrete, Back--Abstract, Back--Concrete;
+    \item a distribution plot of the participant-level dissociation scores \(\Delta_i\);
+    \item one paired comparison plot for the front ROI;
+    \item one paired comparison plot for the back ROI;
+    \item descriptive HbO waveforms by condition for the front and back ROIs.
+\end{enumerate}
+
+\subsection{Quality-Control Checks Before Finalizing Step~4}
+Before Step~4 is considered complete, verify that:
+\begin{enumerate}
+    \item all included sessions passed Step~3;
+    \item every included trial has a valid condition label;
+    \item every included trial has valid start and answer triggers;
+    \item every included trial has a valid baseline segment;
+    \item only long-separation channels are used in the inferential statistics;
+    \item the eight short channel pairs are excluded from both primary ROIs;
+    \item the front ROI is defined identically for all participants;
+    \item the back ROI is defined identically for all participants;
+    \item the six transition long channels are excluded from the primary confirmatory test;
+    \item the primary dissociation test is run once and clearly labeled as primary;
+    \item follow-up tests are clearly labeled as planned follow-ups;
+    \item exact p-values appear in the final report.
+\end{enumerate}
+
+\subsection{Minimal Completion Criteria for Step~4}
+Step~4 is complete when:
+\begin{itemize}
+    \item the ROI definitions have been frozen;
+    \item the trial-level HbO summary table exists;
+    \item the participant-level ROI-by-condition summary table exists;
+    \item the primary dissociation test has been run;
+    \item the primary p-value is reported;
+    \item the planned follow-up contrasts have been reported;
+    \item a short final conclusion has been generated;
+    \item all exclusions and warnings are documented.
+\end{itemize}
+
+\subsection{Short Practical Summary}
+In simple terms, Step~4 should:
+\begin{quote}
+use only long-channel HbO data, define a front left ROI and a back left ROI from the exact MNE channel
+layout, summarize each trial from question start to answer, average those trial summaries within participant
+for abstract and concrete questions, compute one front-versus-back dissociation score per participant,
+test that score against zero, report the p-value, and write the conclusion clearly.
+\end{quote}

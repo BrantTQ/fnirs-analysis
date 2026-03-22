@@ -1,0 +1,265 @@
+question_id,harmonized_category,count,percentage,percentage_of_all_participants
+affiliation,PhD candidate,14,38.89,38.89
+affiliation,University employee,9,25.0,25.0
+affiliation,Employee,2,5.56,5.56
+affiliation,Master Student,2,5.56,5.56
+affiliation,Research associate,2,5.56,5.56
+affiliation,Bachelor Student,1,2.78,2.78
+affiliation,Employee Research,1,2.78,2.78
+affiliation,"Employee, LIS",1,2.78,2.78
+affiliation,LIS employee,1,2.78,2.78
+affiliation,LISER employee,1,2.78,2.78
+affiliation,Postdoctoral student,1,2.78,2.78
+affiliation,Working at Emile Weber,1,2.78,2.78
+age,26,4,11.11,11.11
+age,27,4,11.11,11.11
+age,29,4,11.11,11.11
+age,38,3,8.33,8.33
+age,25,2,5.56,5.56
+age,28,2,5.56,5.56
+age,42,2,5.56,5.56
+age,52,2,5.56,5.56
+age,20,1,2.78,2.78
+age,24,1,2.78,2.78
+age,31,1,2.78,2.78
+age,32,1,2.78,2.78
+age,33,1,2.78,2.78
+age,34,1,2.78,2.78
+age,35,1,2.78,2.78
+age,36,1,2.78,2.78
+age,37,1,2.78,2.78
+age,45,1,2.78,2.78
+age,49,1,2.78,2.78
+age,58,1,2.78,2.78
+age,63,1,2.78,2.78
+country_of_birth,Germany,7,19.44,19.44
+country_of_birth,Italy,5,13.89,13.89
+country_of_birth,Luxembourg,4,11.11,11.11
+country_of_birth,Brazil,3,8.33,8.33
+country_of_birth,France,3,8.33,8.33
+country_of_birth,Iran,2,5.56,5.56
+country_of_birth,Lebanon,2,5.56,5.56
+country_of_birth,Albania,1,2.78,2.78
+country_of_birth,Chile,1,2.78,2.78
+country_of_birth,Colombia,1,2.78,2.78
+country_of_birth,Non-EU,1,2.78,2.78
+country_of_birth,Poland,1,2.78,2.78
+country_of_birth,Portugal,1,2.78,2.78
+country_of_birth,Romania,1,2.78,2.78
+country_of_birth,UK,1,2.78,2.78
+country_of_birth,USA,1,2.78,2.78
+country_of_birth,Uruguay,1,2.78,2.78
+country_secondary_ed,Germany,7,19.44,19.44
+country_secondary_ed,France,4,11.11,11.11
+country_secondary_ed,Italy,4,11.11,11.11
+country_secondary_ed,Luxembourg,3,8.33,8.33
+country_secondary_ed,Brazil,2,5.56,5.56
+country_secondary_ed,Lebanon,2,5.56,5.56
+country_secondary_ed,Netherlands,2,5.56,5.56
+country_secondary_ed,Albania,1,2.78,2.78
+country_secondary_ed,Belgium,1,2.78,2.78
+country_secondary_ed,Chile,1,2.78,2.78
+country_secondary_ed,Colombia,1,2.78,2.78
+country_secondary_ed,Iran,1,2.78,2.78
+country_secondary_ed,Luxembourg And Albania,1,2.78,2.78
+country_secondary_ed,Poland,1,2.78,2.78
+country_secondary_ed,Portugal,1,2.78,2.78
+country_secondary_ed,Romania,1,2.78,2.78
+country_secondary_ed,UK,1,2.78,2.78
+country_secondary_ed,Uruguay,1,2.78,2.78
+country_secondary_ed,Uzbekistan,1,2.78,2.78
+degree_field,Economics,12,33.33,33.33
+degree_field,Political Science,2,5.56,5.56
+degree_field,Psychology,2,5.56,5.56
+degree_field,"Chinese, French Language And Cultre",1,2.78,2.78
+degree_field,Communication And Cognition,1,2.78,2.78
+degree_field,Computer Engineering,1,2.78,2.78
+degree_field,Data Science,1,2.78,2.78
+degree_field,Economic-Law,1,2.78,2.78
+degree_field,Engineering,1,2.78,2.78
+degree_field,Geoarchaeology,1,2.78,2.78
+degree_field,Geography,1,2.78,2.78
+degree_field,High school,1,2.78,2.78
+degree_field,History,1,2.78,2.78
+degree_field,Humanities European History,1,2.78,2.78
+degree_field,Linguistics And Literature,1,2.78,2.78
+degree_field,Media Studies,1,2.78,2.78
+degree_field,None,1,2.78,2.78
+degree_field,Political Sciences,1,2.78,2.78
+degree_field,Secretaria,1,2.78,2.78
+degree_field,Social Sciences And Educational Sciences,1,2.78,2.78
+degree_field,Sociology,1,2.78,2.78
+degree_field,Sound Engineering,1,2.78,2.78
+degree_field,Technique Generale,1,2.78,2.78
+department_unit,UDM,6,16.67,16.67
+department_unit,Economics,2,5.56,5.56
+department_unit,FHSE,2,5.56,5.56
+department_unit,Labour Market,2,5.56,5.56
+department_unit,Living Conditions,2,5.56,5.56
+department_unit,Media Centre,2,5.56,5.56
+department_unit,Psychology,2,5.56,5.56
+department_unit,Social Sciences,2,5.56,5.56
+department_unit,Administration Media Centre,1,2.78,2.78
+department_unit,C2DH,1,2.78,2.78
+department_unit,Cognitive And Behavioral Sciences,1,2.78,2.78
+department_unit,Data,1,2.78,2.78
+department_unit,Decanat,1,2.78,2.78
+department_unit,Engineering,1,2.78,2.78
+department_unit,FHSE Administration,1,2.78,2.78
+department_unit,FHSE Media Centre,1,2.78,2.78
+department_unit,Institute Of History,1,2.78,2.78
+department_unit,LIS,1,2.78,2.78
+department_unit,LISER,1,2.78,2.78
+department_unit,"Living Conditions, LISER",1,2.78,2.78
+department_unit,NA,1,2.78,2.78
+department_unit,Service Loge,1,2.78,2.78
+department_unit,Social And Behavioral Sciences,1,2.78,2.78
+department_unit,UDM LISER,1,2.78,2.78
+employee_role,Admin staff,5,31.25,13.89
+employee_role,Postdoc,3,18.75,8.33
+employee_role,Technical staff,3,18.75,8.33
+employee_role,Research staff,2,12.5,5.56
+employee_role,Data analyst,1,6.25,2.78
+employee_role,Research associate and data expert,1,6.25,2.78
+employee_role,Team leader,1,6.25,2.78
+first_gen_he,No,22,61.11,61.11
+first_gen_he,Yes,13,36.11,36.11
+first_gen_he,Unknown,1,2.78,2.78
+first_language,German,7,19.44,19.44
+first_language,Italian,5,13.89,13.89
+first_language,Portuguese,4,11.11,11.11
+first_language,French,3,8.33,8.33
+first_language,Spanish,3,8.33,8.33
+first_language,Luxembourgish,2,5.56,5.56
+first_language,Polish,2,5.56,5.56
+first_language,Albanian,1,2.78,2.78
+first_language,Arabic,1,2.78,2.78
+first_language,Dutch,1,2.78,2.78
+first_language,English,1,2.78,2.78
+first_language,Farsi,1,2.78,2.78
+first_language,French English,1,2.78,2.78
+first_language,Lebanese,1,2.78,2.78
+first_language,Persian,1,2.78,2.78
+first_language,Romanian,1,2.78,2.78
+first_language,Russian,1,2.78,2.78
+gender,Male,21,58.33,58.33
+gender,Female,15,41.67,41.67
+highest_degree,Master,20,55.56,55.56
+highest_degree,Doctorate,9,25.0,25.0
+highest_degree,Bachelor,4,11.11,11.11
+highest_degree,Upper secondary,3,8.33,8.33
+living_arrangement,Alone,9,25.0,25.0
+living_arrangement,With Family,7,19.44,19.44
+living_arrangement,With Girlfriend,2,5.56,5.56
+living_arrangement,With Parents,2,5.56,5.56
+living_arrangement,With Partner,2,5.56,5.56
+living_arrangement,Apartment,1,2.78,2.78
+living_arrangement,Married With Children,1,2.78,2.78
+living_arrangement,Renter,1,2.78,2.78
+living_arrangement,Roommates,1,2.78,2.78
+living_arrangement,Single,1,2.78,2.78
+living_arrangement,Student accommodation,1,2.78,2.78
+living_arrangement,Studio,1,2.78,2.78
+living_arrangement,Together With My Partner,1,2.78,2.78
+living_arrangement,With Couple,1,2.78,2.78
+living_arrangement,With One Flatmate,1,2.78,2.78
+living_arrangement,With Parents/Family,1,2.78,2.78
+living_arrangement,With Wife And Flat Mates,1,2.78,2.78
+living_arrangement,With family,1,2.78,2.78
+living_arrangement,With one roommate,1,2.78,2.78
+nationality,German,7,19.44,19.44
+nationality,Italian,5,13.89,13.89
+nationality,French,3,8.33,8.33
+nationality,Brazilian,2,5.56,5.56
+nationality,Luxembourg,2,5.56,5.56
+nationality,Luxembourgish,2,5.56,5.56
+nationality,Polish,2,5.56,5.56
+nationality,Albanian,1,2.78,2.78
+nationality,Brazilian And Luxembourgish,1,2.78,2.78
+nationality,British,1,2.78,2.78
+nationality,Chilean,1,2.78,2.78
+nationality,Colombian,1,2.78,2.78
+nationality,French English,1,2.78,2.78
+nationality,French Romanian,1,2.78,2.78
+nationality,Iranian,1,2.78,2.78
+nationality,Lebanese,1,2.78,2.78
+nationality,"Lebanese, Russian",1,2.78,2.78
+nationality,Portuguese,1,2.78,2.78
+nationality,Third Country National,1,2.78,2.78
+nationality,Uruguayan,1,2.78,2.78
+other_languages,English,16,45.71,44.44
+other_languages,English French,2,5.71,5.56
+other_languages,"Arabic, Russian, English, French",1,2.86,2.78
+other_languages,English And French,1,2.86,2.78
+other_languages,English French Luxembourgish,1,2.86,2.78
+other_languages,English Italian,1,2.86,2.78
+other_languages,"English, French",1,2.86,2.78
+other_languages,"English, French, Luxembourgish, Italian, Dutch",1,2.86,2.78
+other_languages,"English, German",1,2.86,2.78
+other_languages,"English, German, French",1,2.86,2.78
+other_languages,"English, German, French, Luxembourgish",1,2.86,2.78
+other_languages,"English, German, Russian",1,2.86,2.78
+other_languages,"English, Korean, Uzbek",1,2.86,2.78
+other_languages,French English,1,2.86,2.78
+other_languages,"French, English, Chinese",1,2.86,2.78
+other_languages,"French, English, Spanish, Italian",1,2.86,2.78
+other_languages,"German, French And English",1,2.86,2.78
+other_languages,Italian Spanish German,1,2.86,2.78
+other_languages,"Luxembourgish, English, French, German",1,2.86,2.78
+parent_a_edu,Secondary,11,30.56,30.56
+parent_a_edu,Bachelor,7,19.44,19.44
+parent_a_edu,Master,5,13.89,13.89
+parent_a_edu,Doctorate,4,11.11,11.11
+parent_a_edu,Tertiary unspecified,4,11.11,11.11
+parent_a_edu,Primary or less,3,8.33,8.33
+parent_a_edu,Post-secondary non-tertiary,1,2.78,2.78
+parent_a_edu,Unknown,1,2.78,2.78
+parent_b_edu,Secondary,18,50.0,50.0
+parent_b_edu,Bachelor,8,22.22,22.22
+parent_b_edu,Master,5,13.89,13.89
+parent_b_edu,Post-secondary non-tertiary,2,5.56,5.56
+parent_b_edu,Primary or less,1,2.78,2.78
+parent_b_edu,Tertiary unspecified,1,2.78,2.78
+parent_b_edu,Unknown,1,2.78,2.78
+primary_school_langs,German,6,16.67,16.67
+primary_school_langs,French,5,13.89,13.89
+primary_school_langs,Italian,4,11.11,11.11
+primary_school_langs,Portuguese,4,11.11,11.11
+primary_school_langs,Spanish,3,8.33,8.33
+primary_school_langs,English,2,5.56,5.56
+primary_school_langs,Albanian,1,2.78,2.78
+primary_school_langs,Arabic English French,1,2.78,2.78
+primary_school_langs,Dutch,1,2.78,2.78
+primary_school_langs,Farsi,1,2.78,2.78
+primary_school_langs,French German,1,2.78,2.78
+primary_school_langs,"French, Arabic",1,2.78,2.78
+primary_school_langs,German English French,1,2.78,2.78
+primary_school_langs,Luxembourgish,1,2.78,2.78
+primary_school_langs,Luxembourgish French German,1,2.78,2.78
+primary_school_langs,Polish,1,2.78,2.78
+primary_school_langs,Romanian,1,2.78,2.78
+primary_school_langs,"Uzbek, Russian",1,2.78,2.78
+programme_name,BAP Bachelors In Psychology,1,33.33,2.78
+programme_name,MSc Economics And Finance,1,33.33,2.78
+programme_name,Master In Sustainable Development,1,33.33,2.78
+study_level,Master,2,50.0,5.56
+study_level,Bachelor,1,25.0,2.78
+study_level,Doctorate,1,25.0,2.78
+year_in_programme,2,2,50.0,5.56
+year_in_programme,1,1,25.0,2.78
+year_in_programme,3,1,25.0,2.78
+years_in_luxembourg,0,9,25.0,25.0
+years_in_luxembourg,1,4,11.11,11.11
+years_in_luxembourg,2,3,8.33,8.33
+years_in_luxembourg,3,3,8.33,8.33
+years_in_luxembourg,4,3,8.33,8.33
+years_in_luxembourg,5,3,8.33,8.33
+years_in_luxembourg,10,2,5.56,5.56
+years_in_luxembourg,16,2,5.56,5.56
+years_in_luxembourg,0.3,1,2.78,2.78
+years_in_luxembourg,17,1,2.78,2.78
+years_in_luxembourg,24,1,2.78,2.78
+years_in_luxembourg,27,1,2.78,2.78
+years_in_luxembourg,29,1,2.78,2.78
+years_in_luxembourg,34,1,2.78,2.78
+years_in_luxembourg,8,1,2.78,2.78

@@ -1,0 +1,37 @@
+participant_id,session_id,manual_step4_override,manual_step4_override_reason,step4_inclusion_note,step3_final_status,preprocessing_success,front_hbo_n_channels,back_hbo_n_channels,n_valid_abstract_trials,n_valid_concrete_trials,included_step5_analysis,step5_inclusion_note
+PID001,2025-11-06_008,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID002,2025-11-06_PID002,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID003,2025-11-11_003,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,7,7,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID004,2025-11-11_004,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,5,5,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID005,2025-11-12_001,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID007,2025-11-13_001,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,5,6,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID008,2025-11-14_002,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID009,2025-11-14_002 (PID09),False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,7,9,14,13,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID010,2025-11-14_003,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID011,2025-11-18_002,False,,Included in primary ROI analysis.,READY_FOR_STEP4,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID012,2025-11-18_003,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,4,7,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID013,2025-11-18_004,False,,Included in primary ROI analysis.,READY_FOR_STEP4,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID014,2025-11-19_002,False,,Included in primary ROI analysis.,READY_FOR_STEP4,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID015,2025-11-19_003,False,,Included in primary ROI analysis.,READY_FOR_STEP4,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID016,2025-11-19_004,False,,Included in primary ROI analysis.,READY_FOR_STEP4,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID017,2025-11-20_001,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,7,8,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID018,2025-11-20_002,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,7,9,15,13,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID019,2025-11-20_003,False,,Included in primary ROI analysis.,READY_FOR_STEP4,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID020,2025-11-20_004,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,7,8,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID021,2025-11-21_001,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,7,8,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID022,2025-11-21_002,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID023,2025-11-21_003,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,7,7,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID024,2025-11-25_001,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,6,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID025,2025-11-25_002,True,User-directed Step 4 override added on 2026-03-20: include this session despite Step 3 REVIEW_BEFORE_STEP4 status.,Included in primary ROI analysis. | User-directed Step 4 override added on 2026-03-20: include this session despite Step 3 REVIEW_BEFORE_STEP4 status.,REVIEW_BEFORE_STEP4,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID026,2025-11-25_003,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,6,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID027,2025-11-25_004,False,,Included in primary ROI analysis.,READY_FOR_STEP4,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID028,2025-11-26_001,False,,Included in primary ROI analysis.,READY_FOR_STEP4,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID029,2025-11-26_001(PID029),False,,Included in primary ROI analysis.,READY_FOR_STEP4,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID030,2025-11-26_001(PID030),False,,Included in primary ROI analysis.,READY_FOR_STEP4,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID031,2025-11-26_002(PID031),False,,Included in primary ROI analysis.,READY_FOR_STEP4,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID032,2025-11-27_001,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,6,8,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID033,2025-11-27_002,False,,Included in primary ROI analysis.,READY_FOR_STEP4_WITH_WARNINGS,True,5,6,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID034,2025-11-27_003,True,User-directed Step 4 override added on 2026-03-20: include this session despite Step 3 REVIEW_BEFORE_STEP4 status.,Included in primary ROI analysis. | User-directed Step 4 override added on 2026-03-20: include this session despite Step 3 REVIEW_BEFORE_STEP4 status.,REVIEW_BEFORE_STEP4,True,7,8,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID035,2025-11-28_001,False,,Included in primary ROI analysis.,READY_FOR_STEP4,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID036,2025-11-28_002,False,,Included in primary ROI analysis.,READY_FOR_STEP4,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.
+PID038,2025-11-28_003,False,,Included in primary ROI analysis.,READY_FOR_STEP4,True,7,9,15,15,True,Included in Step 5 fixed-window onset-locked ROI analysis.

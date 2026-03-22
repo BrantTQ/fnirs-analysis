@@ -1,0 +1,571 @@
+\section{Step 5: Fixed-Window Onset-Locked ROI Follow-Up Analysis}
+\label{sec:step5_fixed_window}
+% Analyst note added 2026-03-21: a separate Step 5 visualization report was generated in parallel to the main Step 5 report. Because no additional example code snippet for the requested extra plot was present in the workspace or chat at implementation time, the extra supplementary plot was implemented as an Abstract-minus-Concrete HbO joint topography over time, using the same onset-locked epoching and plotting framework as the Step 4-style visualization set.
+% Analyst note added 2026-03-21: the later expansion of the supplementary visualization report adapted example plots originally framed as Tapping/Control and Left/Right motor-task contrasts to the present experiment's Abstract versus Concrete conditions. To stay aligned with the Step 5 analysis rules, those descriptive plots were also restricted to the long-channel montage used in the fixed-window ROI analysis.
+
+\subsection{Objective}
+The objective of Step~5 is to perform a simple, targeted, onset-locked ROI analysis that is more
+aligned with the time-localized fNIRS pattern suggested by the Step~4 visualizations.
+
+This step is designed to answer the following question:
+\begin{quote}
+When the fNIRS response is summarized in a fixed post-onset window centered on the delayed HbO
+response, do abstract and concrete questions differ in the pre-defined left frontal and left posterior
+ROIs?
+\end{quote}
+
+Step~5 should produce:
+\begin{itemize}
+    \item a primary p-value for the front ROI;
+    \item secondary p-values for the back ROI and the front-versus-back dissociation;
+    \item confidence intervals and effect sizes;
+    \item a short conclusion written in clear language.
+\end{itemize}
+
+\subsection{Status of This Step}
+Step~5 is a \textbf{targeted follow-up analysis}.
+It does \textbf{not} replace the pre-specified Step~4 primary test.
+Instead, it follows from the observation that:
+\begin{itemize}
+    \item the Step~4 whole-question-window dissociation test was not statistically significant;
+    \item the front ROI showed only a weak descriptive abstract-greater-than-concrete tendency;
+    \item the onset-locked visualizations suggested that the condition difference is more localized
+    in time than the whole-question-window metric.
+\end{itemize}
+
+Therefore, Step~5 should be described as:
+\begin{quote}
+a focused onset-locked follow-up designed to test whether the abstract-versus-concrete effect is
+stronger in a fixed post-onset HbO window than in the whole-question-window average used in Step~4.
+\end{quote}
+
+\subsection{Why Step~5 Is Needed}
+In Step~4, the trial metric averaged the signal from:
+\begin{verbatim}
+question_start --> answer
+\end{verbatim}
+
+This whole-question-window approach is reasonable, but it has one important limitation:
+participants answered at different times, and the haemodynamic response is delayed.
+As a result, a condition difference that is concentrated around a specific post-onset interval can be
+diluted when averaging over a long and variable trial duration.
+
+The onset-locked supplementary visualizations suggest exactly this possibility:
+the condition difference appears more time-localized than sustained over the entire question window.
+Step~5 is therefore a natural next step because it changes only one thing:
+\begin{quote}
+the summary metric is moved from a variable question-duration mean to a fixed onset-locked time window.
+\end{quote}
+
+\subsection{Core Analytical Decision}
+To keep Step~5 simple, the following elements should remain unchanged from Step~4:
+\begin{enumerate}
+    \item the same included participant-sessions;
+    \item the same preprocessed files from Step~3;
+    \item the same long-channel-only rule;
+    \item the same front and back ROI definitions;
+    \item the same exclusion of short channels and transition channels from the primary ROI summaries;
+    \item HbO as the primary chromophore.
+\end{enumerate}
+
+The main change in Step~5 is:
+\begin{quote}
+use a fixed post-onset HbO analysis window instead of the full question-start-to-answer interval.
+\end{quote}
+
+\subsection{Primary Scientific Question}
+The primary Step~5 question is:
+\begin{quote}
+In the left frontal ROI, is the fixed-window onset-locked HbO response significantly different
+between abstract and concrete questions?
+\end{quote}
+
+This is the most targeted and most plausible follow-up, because the Step~4 onset-locked plots suggest
+that the strongest condition separation may be frontal and delayed after question onset, rather than
+distributed uniformly across both front and back ROIs.
+
+\subsection{Inputs}
+Step~5 begins from:
+\begin{itemize}
+    \item the preprocessed participant-session fNIRS files from Step~3;
+    \item the harmonized trigger table from Step~3;
+    \item the inclusion table and ROI definitions from Step~4;
+    \item the question metadata and abstract/concrete labels from Step~2.
+\end{itemize}
+
+\subsection{Frozen ROI Definitions}
+Step~5 should use exactly the same ROI definitions as Step~4.
+
+\subsubsection{Front ROI HbO channels}
+\begin{verbatim}
+S2_D6 hbo
+S2_D4 hbo
+S1_D6 hbo
+S1_D3 hbo
+S5_D6 hbo
+S5_D4 hbo
+S5_D3 hbo
+\end{verbatim}
+
+\subsubsection{Back ROI HbO channels}
+\begin{verbatim}
+S4_D2 hbo
+S3_D1 hbo
+S6_D2 hbo
+S6_D1 hbo
+S6_D5 hbo
+S7_D2 hbo
+S7_D5 hbo
+S8_D1 hbo
+S8_D5 hbo
+\end{verbatim}
+
+\subsubsection{Transition HbO channels excluded from the primary confirmatory summaries}
+\begin{verbatim}
+S5_D7 hbo
+S4_D4 hbo
+S4_D7 hbo
+S3_D3 hbo
+S3_D7 hbo
+S6_D7 hbo
+\end{verbatim}
+
+\subsubsection{Short-separation pairs excluded from inference}
+\begin{verbatim}
+S1_D8
+S2_D9
+S3_D10
+S4_D11
+S5_D12
+S6_D13
+S7_D14
+S8_D15
+\end{verbatim}
+
+These short pairs are used only for preprocessing and nuisance correction and must not be included
+in the inferential ROI analysis.
+
+\subsection{Epoching Strategy}
+Step~5 should use the onset-locked epoch structure already shown to be feasible in the supplementary
+Step~4 visualizations.
+The epoch definition should therefore remain:
+
+\begin{verbatim}
+epoch window   = [-3.5 s, 13.2 s] around question onset
+baseline       = [-2.0 s, 0.0 s]
+event lock     = question_start
+\end{verbatim}
+
+This choice is advantageous because:
+\begin{itemize}
+    \item it already worked with zero dropped trials in the supplementary onset-locked analysis;
+    \item it captures the delayed haemodynamic response;
+    \item it keeps all trials in a common temporal frame.
+\end{itemize}
+
+\subsection{Primary Fixed Analysis Window}
+The primary Step~5 HbO window should be:
+\begin{verbatim}
+[7.0 s, 11.0 s] after question onset
+\end{verbatim}
+
+This is the recommended primary window because:
+\begin{itemize}
+    \item it is centered on 9.0 s, which was already used in the supplementary single-time comparison;
+    \item it falls within the delayed post-onset period where the visualizations suggest condition
+    differences are more visible;
+    \item it is wide enough to be stable, but still focused enough to avoid unnecessary dilution.
+\end{itemize}
+
+\subsection{Important Interpretation Rule}
+Step~5 should be described honestly as a targeted follow-up.
+Therefore:
+\begin{itemize}
+    \item the Step~4 result remains the pre-specified primary analysis result;
+    \item the Step~5 fixed-window result is a post-Step~4 follow-up analysis;
+    \item any significant finding in Step~5 should be described as follow-up evidence rather than
+    a replacement of Step~4.
+\end{itemize}
+
+\subsection{Participant Inclusion Rules}
+A participant-session should be included in Step~5 if:
+\begin{itemize}
+    \item it was included in Step~4;
+    \item the onset trigger is available and valid;
+    \item the full epoch window \([-3.5, 13.2]\) s is available;
+    \item the baseline interval \([-2, 0]\) s is available;
+    \item at least one valid front ROI HbO channel remains;
+    \item at least one valid back ROI HbO channel remains.
+\end{itemize}
+
+Participants excluded from Step~4 should remain excluded unless a separate re-review explicitly
+changes their status.
+
+\subsection{Trial Inclusion Rules}
+A trial should be included if:
+\begin{itemize}
+    \item it has a valid question onset event;
+    \item it has a valid condition label (\texttt{abstract} or \texttt{concrete});
+    \item the epoch window is fully available;
+    \item the baseline interval is fully available;
+    \item at least one valid ROI channel is present for the ROI being summarized.
+\end{itemize}
+
+Unlike Step~4, the primary Step~5 metric does \textbf{not} require the answer timestamp to define
+the analysis window, because the step is specifically onset-locked rather than answer-locked.
+
+\subsection{Step-by-Step Workflow}
+
+\subsubsection{Step~5.1: Reuse the Step~4 inclusion set}
+Start from the Step~4 included participant-session set.
+Do not redefine the cohort unless a clear file or QC problem is discovered.
+
+\subsubsection{Step~5.2: Construct onset-locked epochs}
+For each valid trial:
+\begin{itemize}
+    \item lock the epoch to \texttt{question\_start};
+    \item extract the time interval from \(-3.5\) s to \(13.2\) s;
+    \item apply the baseline correction using \([-2.0, 0.0]\) s.
+\end{itemize}
+
+\subsubsection{Step~5.3: Compute trial-level fixed-window HbO values}
+For each trial and each ROI, compute the mean baseline-corrected HbO value in:
+\begin{verbatim}
+[7.0 s, 11.0 s]
+\end{verbatim}
+
+\subsubsection{Step~5.4: Average channels within ROI}
+For each trial:
+\begin{itemize}
+    \item average valid front ROI channels to obtain one front ROI trial value;
+    \item average valid back ROI channels to obtain one back ROI trial value.
+\end{itemize}
+
+If a channel is missing or marked bad, omit it from the ROI average and record how many valid channels
+contributed to the trial-level ROI summary.
+
+\subsubsection{Step~5.5: Build participant-level condition means}
+For each participant, compute:
+\begin{itemize}
+    \item mean front ROI value for abstract trials;
+    \item mean front ROI value for concrete trials;
+    \item mean back ROI value for abstract trials;
+    \item mean back ROI value for concrete trials.
+\end{itemize}
+
+\subsubsection{Step~5.6: Run the primary front-ROI test}
+Run one two-sided paired t-test across participants comparing:
+\begin{equation}
+\bar{y}^{(F,A)}_i \quad \text{versus} \quad \bar{y}^{(F,C)}_i
+\end{equation}
+
+This is the primary inferential test for Step~5.
+
+\subsubsection{Step~5.7: Run the secondary back-ROI test}
+Run one two-sided paired t-test across participants comparing:
+\begin{equation}
+\bar{y}^{(B,A)}_i \quad \text{versus} \quad \bar{y}^{(B,C)}_i
+\end{equation}
+
+This is a secondary test.
+
+\subsubsection{Step~5.8: Run the secondary dissociation test}
+For each participant, compute:
+\begin{equation}
+\Delta_i^{(7\text{--}11)}
+=
+\bigl(\bar{y}^{(F,A)}_i - \bar{y}^{(F,C)}_i\bigr)
+-
+\bigl(\bar{y}^{(B,A)}_i - \bar{y}^{(B,C)}_i\bigr)
+\end{equation}
+
+Then run a one-sample t-test on \(\Delta_i^{(7\text{--}11)}\) against zero.
+This should be reported as a secondary dissociation analysis, not as the primary test.
+
+\subsubsection{Step~5.9: Run simple sensitivity analyses}
+To keep the workflow simple but still robust, include the following sensitivity checks:
+
+\paragraph{Sensitivity window 1}
+Repeat the analysis using:
+\begin{verbatim}
+[6.0 s, 10.0 s]
+\end{verbatim}
+
+\paragraph{Sensitivity window 2}
+Repeat the analysis using:
+\begin{verbatim}
+[8.0 s, 12.0 s]
+\end{verbatim}
+
+\paragraph{Single-time-point sensitivity}
+Repeat the ROI comparison at:
+\begin{verbatim}
+9.0 s
+\end{verbatim}
+
+\paragraph{Fast-response sensitivity}
+Repeat the primary front ROI analysis after excluding trials whose behavioral answer occurred
+before the end of the primary fixed window, that is:
+\begin{verbatim}
+answer time < 11.0 s after question onset
+\end{verbatim}
+
+This sensitivity analysis is useful because it assesses whether the fixed-window result depends
+heavily on post-answer signal in very fast trials.
+
+\subsection{Primary Outcome}
+The primary Step~5 outcome is the participant-level front ROI fixed-window contrast:
+\begin{equation}
+d^{(F)}_i = \bar{y}^{(F,A)}_i - \bar{y}^{(F,C)}_i
+\end{equation}
+
+The primary Step~5 hypothesis is:
+\begin{quote}
+the front ROI fixed-window HbO response differs between abstract and concrete questions.
+\end{quote}
+
+\subsection{Trial-Level Signal Definition}
+For participant \(i\), channel \(j\), and trial \(k\), let \(x_{ijk}(t)\) denote the preprocessed
+HbO signal in the onset-locked epoch after baseline correction.
+Then the fixed-window trial summary is:
+\begin{equation}
+r^{(7\text{--}11)}_{ijk}
+=
+\overline{x_{ijk}(t \in [7,11])}
+\end{equation}
+
+Since the epoch is already baseline-corrected using \([-2,0]\) s, no additional subtraction is needed here.
+
+\subsection{ROI-Level Trial Summaries}
+For each trial, define:
+
+\paragraph{Front ROI trial value}
+\begin{equation}
+y^{(F)}_{ik}
+=
+\frac{1}{J^{(F)}_{ik}}
+\sum_{j \in F_{ik}} r^{(7\text{--}11)}_{ijk}
+\end{equation}
+
+\paragraph{Back ROI trial value}
+\begin{equation}
+y^{(B)}_{ik}
+=
+\frac{1}{J^{(B)}_{ik}}
+\sum_{j \in B_{ik}} r^{(7\text{--}11)}_{ijk}
+\end{equation}
+
+where \(F_{ik}\) and \(B_{ik}\) are the sets of valid front and back ROI channels contributing
+to trial \(k\) for participant \(i\).
+
+\subsection{Participant-Level Condition Means}
+For each participant:
+\begin{equation}
+\bar{y}^{(F,A)}_i
+=
+\frac{1}{n_i^{(A)}}
+\sum_{k \in A} y^{(F)}_{ik},
+\qquad
+\bar{y}^{(F,C)}_i
+=
+\frac{1}{n_i^{(C)}}
+\sum_{k \in C} y^{(F)}_{ik}
+\end{equation}
+
+\begin{equation}
+\bar{y}^{(B,A)}_i
+=
+\frac{1}{n_i^{(A)}}
+\sum_{k \in A} y^{(B)}_{ik},
+\qquad
+\bar{y}^{(B,C)}_i
+=
+\frac{1}{n_i^{(C)}}
+\sum_{k \in C} y^{(B)}_{ik}
+\end{equation}
+
+\subsection{Primary Statistical Test}
+The primary Step~5 test should be a \textbf{two-sided paired t-test} across participants on:
+\begin{equation}
+d^{(F)}_i = \bar{y}^{(F,A)}_i - \bar{y}^{(F,C)}_i
+\end{equation}
+
+\paragraph{Null hypothesis}
+\begin{equation}
+H_0: \mu_{d^{(F)}} = 0
+\end{equation}
+
+\paragraph{Alternative hypothesis}
+\begin{equation}
+H_1: \mu_{d^{(F)}} \neq 0
+\end{equation}
+
+The significance threshold should be:
+\begin{verbatim}
+alpha = 0.05
+\end{verbatim}
+
+\subsection{Why the Front ROI Is Primary in Step~5}
+The front ROI is the most appropriate primary target in this follow-up step because:
+\begin{itemize}
+    \item the original project hypothesis predicts stronger abstract-related activation in prefrontal regions;
+    \item the Step~4 whole-window analysis showed a weak descriptive front tendency but not a significant result;
+    \item the onset-locked waveforms suggest that any condition difference may be delayed and more visible
+    in a fixed post-onset window.
+\end{itemize}
+
+\subsection{Secondary Tests}
+Step~5 should report the following as secondary:
+\begin{enumerate}
+    \item paired t-test for the back ROI;
+    \item one-sample t-test for the front-versus-back dissociation score;
+    \item the same three tests for HbR;
+    \item the sensitivity windows and the single-time-point 9.0 s check.
+\end{enumerate}
+
+\subsection{Primary Reporting Quantities}
+The main Step~5 results table must report:
+\begin{itemize}
+    \item number of included participants;
+    \item number of valid abstract and concrete trials used;
+    \item mean front ROI HbO value for abstract trials;
+    \item mean front ROI HbO value for concrete trials;
+    \item mean front ROI difference;
+    \item paired t statistic;
+    \item degrees of freedom;
+    \item exact p-value;
+    \item 95\% confidence interval for the mean front ROI difference;
+    \item Cohen's \(d_z\) for the paired contrast.
+\end{itemize}
+
+\subsection{Secondary Reporting Quantities}
+The secondary results table should report:
+\begin{itemize}
+    \item back ROI abstract and concrete means;
+    \item back ROI paired t-test result;
+    \item dissociation score mean and one-sample t-test result;
+    \item HbR analogues;
+    \item sensitivity-window results;
+    \item the 9.0 s single-time-point results.
+\end{itemize}
+
+\subsection{Primary Conclusion Rule}
+The final Step~5 conclusion must be based first on the front ROI fixed-window HbO test.
+
+The rule should be:
+\begin{itemize}
+    \item if \(p < 0.05\) and the front ROI mean difference is positive, conclude that abstract
+    questions elicited a significantly larger onset-locked HbO response than concrete questions
+    in the left frontal ROI during the fixed post-onset window;
+    \item if \(p < 0.05\) and the front ROI mean difference is negative, conclude that concrete
+    questions elicited a significantly larger onset-locked HbO response than abstract questions
+    in the left frontal ROI during the fixed post-onset window;
+    \item if \(p \geq 0.05\), conclude that the fixed-window onset-locked front ROI analysis
+    did not show a statistically significant abstract-versus-concrete difference.
+\end{itemize}
+
+\subsection{Conclusion Templates}
+
+\paragraph{Template if significant and abstract \(>\) concrete in the front ROI.}
+In the targeted fixed-window onset-locked follow-up analysis, abstract questions elicited a
+significantly larger HbO response than concrete questions in the left frontal ROI during the
+7--11~s post-onset window
+(\(t(df)=\ldots\), \(p=\ldots\), mean difference \(=\ldots\), 95\% CI \([\ldots,\ldots]\), \(d_z=\ldots\)).
+This suggests that the abstract-versus-concrete effect is more visible in a delayed onset-locked
+analysis than in the whole-question-window metric used in Step~4.
+
+\paragraph{Template if significant and concrete \(>\) abstract in the front ROI.}
+In the targeted fixed-window onset-locked follow-up analysis, concrete questions elicited a
+significantly larger HbO response than abstract questions in the left frontal ROI during the
+7--11~s post-onset window
+(\(t(df)=\ldots\), \(p=\ldots\), mean difference \(=\ldots\), 95\% CI \([\ldots,\ldots]\), \(d_z=\ldots\)).
+
+\paragraph{Template if not significant.}
+In the targeted fixed-window onset-locked follow-up analysis, the difference between abstract and
+concrete questions in the left frontal ROI during the 7--11~s post-onset window was not
+statistically significant
+(\(t(df)=\ldots\), \(p=\ldots\), mean difference \(=\ldots\), 95\% CI \([\ldots,\ldots]\), \(d_z=\ldots\)).
+
+\subsection{Expected Outputs}
+
+\subsubsection*{Tables}
+\begin{verbatim}
+01_step5_inclusion_table.csv
+02_step5_epoch_manifest.csv
+03_step5_trial_roi_summary_hbo.csv
+04_step5_trial_roi_summary_hbr.csv
+05_step5_participant_roi_summary.csv
+06_step5_primary_front_test.csv
+07_step5_secondary_back_test.csv
+08_step5_secondary_dissociation_test.csv
+09_step5_sensitivity_windows.csv
+10_step5_fast_response_sensitivity.csv
+11_step5_final_conclusion.csv
+\end{verbatim}
+
+\subsubsection*{Figures}
+\begin{verbatim}
+figures/step5/front_roi_window_plot.png
+figures/step5/back_roi_window_plot.png
+figures/step5/front_waveform_with_window.png
+figures/step5/back_waveform_with_window.png
+figures/step5/dissociation_histogram_fixed_window.png
+figures/step5/topography_9s.png
+\end{verbatim}
+
+\subsubsection*{Reports}
+\begin{verbatim}
+reports/step5/step5_fixed_window_report.tex
+reports/step5/tables/primary_front_test_table.tex
+reports/step5/tables/secondary_tests_table.tex
+reports/step5/text/final_conclusion.tex
+\end{verbatim}
+
+\subsection{Minimal Figures for the Main Report}
+The main Step~5 report should include at least:
+\begin{enumerate}
+    \item a paired participant plot for the front ROI fixed-window contrast;
+    \item a paired participant plot for the back ROI fixed-window contrast;
+    \item a waveform plot for the front ROI with the 7--11~s analysis window shaded;
+    \item a waveform plot for the back ROI with the 7--11~s analysis window shaded;
+    \item a histogram of the dissociation scores;
+    \item a 9.0~s topographic comparison figure.
+\end{enumerate}
+
+\subsection{Quality-Control Checks}
+Before Step~5 is considered complete, verify that:
+\begin{enumerate}
+    \item the same Step~4 included participant-sessions are used unless explicitly re-reviewed;
+    \item the epoch window \([-3.5, 13.2]\) s is fully available for all included trials;
+    \item the baseline window \([-2, 0]\) s is fully available;
+    \item only long-separation channels are used in the inferential tests;
+    \item the short-separation pairs are excluded from the ROI summaries;
+    \item the transition channels are excluded from the primary ROI summaries;
+    \item the front ROI channel list is identical across participants;
+    \item the back ROI channel list is identical across participants;
+    \item the primary 7--11~s front ROI test is run once and clearly labeled as primary;
+    \item all other tests are labeled secondary or sensitivity analyses;
+    \item exact p-values appear in the final report.
+\end{enumerate}
+
+\subsection{Minimal Completion Criteria}
+Step~5 is complete when:
+\begin{itemize}
+    \item the onset-locked epochs have been created;
+    \item the 7--11~s ROI summaries have been computed;
+    \item the participant-level front and back ROI condition means exist;
+    \item the primary front ROI fixed-window test has been run;
+    \item the secondary back and dissociation tests have been run;
+    \item the sensitivity analyses have been completed;
+    \item a short final conclusion has been generated;
+    \item all exclusions and warnings are documented.
+\end{itemize}
+
+\subsection{Short Practical Summary}
+In simple terms, Step~5 should:
+\begin{quote}
+keep the same participants, the same preprocessed data, and the same ROI definitions as Step~4,
+but replace the whole-question-window metric with a fixed onset-locked 7--11~s HbO window,
+test abstract versus concrete first in the front ROI, then in the back ROI and in the dissociation score,
+report the p-values clearly, and state the conclusion honestly as a follow-up analysis.
+\end{quote}

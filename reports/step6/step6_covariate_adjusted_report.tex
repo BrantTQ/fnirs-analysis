@@ -1,0 +1,56 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\begin{document}
+\section*{Step 6 Covariate-Adjusted Trial-Level ROI Report}
+\subsection*{Overview}
+\begin{tabular}{p{0.42\linewidth}p{0.50\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+Included participant-sessions & 36\\
+Included participants & 36\\
+Included questions & 30\\
+Included trials & 1075\\
+Primary model type & MixedLM\\
+Primary model fallback used & no\\
+Primary condition p-value & 0.052102\\
+\bottomrule
+\end{tabular}
+\paragraph{Primary question.} Does the abstract-versus-concrete effect in the onset-locked left frontal ROI remain after adjusting for question length and participant/question variability?
+\paragraph{Warnings and QC.} MODEL\_PRIMARY\_FRONT\_WORDCOUNT: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.; MODEL\_FRONT\_SENTENCECOUNT: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.; MODEL\_FRONT\_SENTENCELENGTH: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.; MODEL\_FRONT\_WORDCOUNT\_DIFFICULTY: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.; MODEL\_BACK\_WORDCOUNT: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.; MODEL\_FRONT\_WORDCOUNT\_RT: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.; MODEL\_FRONT\_WORDCOUNT\_PARTICIPANT\_CORRECT: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+\subsection*{Item-Level Balance Check}
+\input{tables/item_balance_table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step6/wordcount_by_condition.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step6/sentencecount_by_condition.png}
+\caption{Item-level balance plots for total word count and sentence count by question condition.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step6/sentencelength_by_condition.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step6/enem_correctness_by_condition.png}
+\caption{Item-level balance plots for average sentence length and ENEM item correctness by question condition.}
+\end{figure}
+\subsection*{Primary Front ROI Model}
+\input{tables/primary_model_table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step6/front_roi_vs_wordcount_scatter.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step6/front_roi_partial_effect_condition.png}
+\caption{Front ROI HbO versus word count and the adjusted condition effect from the primary word-count model.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step6/model_residuals_primary.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step6/model_random_intercepts.png}
+\caption{Residual diagnostic and group-level intercept proxies for the primary model.}
+\end{figure}
+\subsection*{Secondary and Sensitivity Models}
+\input{tables/secondary_model_table.tex}
+\subsection*{Final Conclusion}
+\input{text/final_conclusion.tex}
+\end{document}

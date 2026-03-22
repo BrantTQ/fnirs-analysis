@@ -1,0 +1,86 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[hidelinks]{hyperref}
+\begin{document}
+\section*{Step 3: fNIRS Trigger Harmonization, QC, and Basic Preprocessing}
+\subsection*{Overview}
+\begin{tabular}{p{0.34\linewidth}p{0.58\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+Session folders in manifest & 38\\
+Sessions with readable .snirf & 38\\
+Sessions preprocessed successfully & 37\\
+Ready for Step 4 & 14\\
+Ready for Step 4 with warnings & 21\\
+Review before Step 4 & 2\\
+Exclude from Step 4 & 1\\
+Globally excluded participants & 2\\
+\bottomrule
+\end{tabular}
+\subsection*{Trigger Comparison Summary}
+\begin{tabular}{p{0.34\linewidth}p{0.58\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+MATCH\_RAW & 26\\
+MATCH\_INCOMPLETE\_SESSION & 1\\
+MISSING\_TRIGGERS\_REPAIRABLE & 8\\
+MISMATCH\_REVIEW\_REQUIRED & 3\\
+\bottomrule
+\end{tabular}
+\subsection*{Behavioral-Only Logs}
+The following participant IDs had PsychoPy logs but no fNIRS session folder in the Step 3 manifest: PID037.
+\subsection*{Global Downstream Participant Exclusions}
+The following participant IDs are excluded from downstream participant-level summaries and future steps. Step~3 QC and preprocessing outputs are retained as an audit record, but future analysis datasets should continue to honor this exclusion list.
+\begin{tabular}{p{0.34\linewidth}p{0.58\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+PID006 & Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses after Step 3 documented session 2025-11-12\_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log.\\
+PID037 & Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses because a behavioral log exists but no fNIRS session folder was found in Step 3.\\
+\bottomrule
+\end{tabular}
+\subsection*{Session Notes}
+\input{session_notes/PID001_2025-11-06_008.tex}
+\input{session_notes/PID002_2025-11-06_PID002.tex}
+\input{session_notes/PID003_2025-11-11_003.tex}
+\input{session_notes/PID004_2025-11-11_004.tex}
+\input{session_notes/PID005_2025-11-12_001.tex}
+\input{session_notes/PID006_2025-11-12_002.tex}
+\input{session_notes/PID006_2025-11-12_003.tex}
+\input{session_notes/PID007_2025-11-13_001.tex}
+\input{session_notes/PID008_2025-11-14_002.tex}
+\input{session_notes/PID009_2025-11-14_002_PID09.tex}
+\input{session_notes/PID010_2025-11-14_003.tex}
+\input{session_notes/PID011_2025-11-18_002.tex}
+\input{session_notes/PID012_2025-11-18_003.tex}
+\input{session_notes/PID013_2025-11-18_004.tex}
+\input{session_notes/PID014_2025-11-19_002.tex}
+\input{session_notes/PID015_2025-11-19_003.tex}
+\input{session_notes/PID016_2025-11-19_004.tex}
+\input{session_notes/PID017_2025-11-20_001.tex}
+\input{session_notes/PID018_2025-11-20_002.tex}
+\input{session_notes/PID019_2025-11-20_003.tex}
+\input{session_notes/PID020_2025-11-20_004.tex}
+\input{session_notes/PID021_2025-11-21_001.tex}
+\input{session_notes/PID022_2025-11-21_002.tex}
+\input{session_notes/PID023_2025-11-21_003.tex}
+\input{session_notes/PID024_2025-11-25_001.tex}
+\input{session_notes/PID025_2025-11-25_002.tex}
+\input{session_notes/PID026_2025-11-25_003.tex}
+\input{session_notes/PID027_2025-11-25_004.tex}
+\input{session_notes/PID028_2025-11-26_001.tex}
+\input{session_notes/PID029_2025-11-26_001_PID029.tex}
+\input{session_notes/PID030_2025-11-26_001_PID030.tex}
+\input{session_notes/PID031_2025-11-26_002_PID031.tex}
+\input{session_notes/PID032_2025-11-27_001.tex}
+\input{session_notes/PID033_2025-11-27_002.tex}
+\input{session_notes/PID034_2025-11-27_003.tex}
+\input{session_notes/PID035_2025-11-28_001.tex}
+\input{session_notes/PID036_2025-11-28_002.tex}
+\input{session_notes/PID038_2025-11-28_003.tex}
+\end{document}

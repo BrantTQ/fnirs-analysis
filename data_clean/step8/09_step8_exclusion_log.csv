@@ -1,0 +1,5 @@
+stage,level,reason_code,n_rows,detail
+cohort,info,STEP7_COHORT_REUSED,36,Step 8 reused the Step 7 included participant-session cohort without modification.
+participant_question_matrix,info,UNIQUE_PARTICIPANT_QUESTION_ROWS,1075,Each participant-question combination appeared exactly once in the Step 7 trial table.
+matched_pairs,info,MATCH_RULE_FIXED,12,|z(log word count difference)| <= 0.5 and |z(ENEM correctness difference)| <= 0.5
+channel_followup,info,SELECTED_PAIR_RULE,3,Selected all FDR-significant pairs when available; otherwise selected the top 3 lowest-q descriptive pairs for optional channel follow-up.

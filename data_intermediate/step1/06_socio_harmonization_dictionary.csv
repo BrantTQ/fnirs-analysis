@@ -1,0 +1,367 @@
+variable_name,raw_value,harmonized_value,transformation_rule,comments,rule_accuracy
+affiliation,Bachelor student,Bachelor Student,generic_case_cleanup,Conservative whitespace/case normalization,exact
+affiliation,Employee,Employee,generic_case_cleanup,Conservative whitespace/case normalization,exact
+affiliation,Employee research,Employee Research,generic_case_cleanup,Conservative whitespace/case normalization,exact
+affiliation,LIS employee,LIS employee,override,Variable-specific conservative normalization,exact
+affiliation,Master student,Master Student,generic_case_cleanup,Conservative whitespace/case normalization,exact
+affiliation,PhD,PhD candidate,affiliation_phd_candidate,Canonicalized obvious PhD-candidate variants,exact
+affiliation,PhD Candidate,PhD candidate,affiliation_phd_candidate,Canonicalized obvious PhD-candidate variants,exact
+affiliation,PhD candidate,PhD candidate,affiliation_phd_candidate,Canonicalized obvious PhD-candidate variants,exact
+affiliation,PhDcandidate,PhD candidate,affiliation_phd_candidate,Canonicalized obvious PhD-candidate variants,exact
+affiliation,Postdoctoral student,Postdoctoral student,override,Variable-specific conservative normalization,exact
+affiliation,University Employee,University employee,affiliation_university_employee,Canonicalized capitalization for university employee,exact
+affiliation,University employee,University employee,affiliation_university_employee,Canonicalized capitalization for university employee,exact
+affiliation,Working at Emile Weber,Working at Emile Weber,override,Variable-specific conservative normalization,exact
+affiliation,"employee, Lis","Employee, LIS",override,Variable-specific conservative normalization,exact
+affiliation,liser employee,LISER employee,override,Variable-specific conservative normalization,exact
+affiliation,phd candidate,PhD candidate,affiliation_phd_candidate,Canonicalized obvious PhD-candidate variants,exact
+affiliation,research associate,Research associate,override,Variable-specific conservative normalization,exact
+affiliation,university employee,University employee,affiliation_university_employee,Canonicalized capitalization for university employee,exact
+age,20,20,numeric_parse_success,Parsed numeric value from raw string,exact
+age,24,24,numeric_parse_success,Parsed numeric value from raw string,exact
+age,25,25,numeric_parse_success,Parsed numeric value from raw string,exact
+age,26,26,numeric_parse_success,Parsed numeric value from raw string,exact
+age,27,27,numeric_parse_success,Parsed numeric value from raw string,exact
+age,28,28,numeric_parse_success,Parsed numeric value from raw string,exact
+age,29,29,numeric_parse_success,Parsed numeric value from raw string,exact
+age,31,31,numeric_parse_success,Parsed numeric value from raw string,exact
+age,32,32,numeric_parse_success,Parsed numeric value from raw string,exact
+age,33,33,numeric_parse_success,Parsed numeric value from raw string,exact
+age,34,34,numeric_parse_success,Parsed numeric value from raw string,exact
+age,35,35,numeric_parse_success,Parsed numeric value from raw string,exact
+age,36,36,numeric_parse_success,Parsed numeric value from raw string,exact
+age,37,37,numeric_parse_success,Parsed numeric value from raw string,exact
+age,38,38,numeric_parse_success,Parsed numeric value from raw string,exact
+age,42,42,numeric_parse_success,Parsed numeric value from raw string,exact
+age,45,45,numeric_parse_success,Parsed numeric value from raw string,exact
+age,49,49,numeric_parse_success,Parsed numeric value from raw string,exact
+age,52,52,numeric_parse_success,Parsed numeric value from raw string,exact
+age,58,58,numeric_parse_success,Parsed numeric value from raw string,exact
+age,63,63,numeric_parse_success,Parsed numeric value from raw string,exact
+country_of_birth,Albania,Albania,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,Brazil,Brazil,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,Colombia,Colombia,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,France,France,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,Germany,Germany,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,ITALY,Italy,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,Iran,Iran,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,Italy,Italy,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,Lebanon,Lebanon,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,Luxembourg,Luxembourg,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,Non-Eu,Non-EU,override,Variable-specific conservative normalization,exact
+country_of_birth,Poland,Poland,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,Portugal,Portugal,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,Romania,Romania,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,USA,USA,override,Variable-specific conservative normalization,exact
+country_of_birth,Uk,UK,override,Variable-specific conservative normalization,exact
+country_of_birth,Uuguay,Uruguay,override,Variable-specific conservative normalization,approximate
+country_of_birth,chile,Chile,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,france,France,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,germany,Germany,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,iran,Iran,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,italy,Italy,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_of_birth,luxembourg,Luxembourg,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,Albania,Albania,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,Brazil,Brazil,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,Chile,Chile,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,Colombia,Colombia,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,France,France,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,Gemany,Germany,override,Variable-specific conservative normalization,approximate
+country_secondary_ed,Germany,Germany,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,Italy,Italy,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,Lebanon,Lebanon,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,Luxembourg,Luxembourg,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,Luxembourg and Albania,Luxembourg And Albania,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,Netherlands,Netherlands,override,Variable-specific conservative normalization,exact
+country_secondary_ed,Poland,Poland,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,Portugal,Portugal,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,Romania,Romania,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,Uk,UK,override,Variable-specific conservative normalization,exact
+country_secondary_ed,Uruguay,Uruguay,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,Uzbekistan,Uzbekistan,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,belgium,Belgium,override,Variable-specific conservative normalization,exact
+country_secondary_ed,france,France,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,germany,Germany,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,iran,Iran,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,italy,Italy,generic_case_cleanup,Conservative whitespace/case normalization,exact
+country_secondary_ed,netherlands,Netherlands,override,Variable-specific conservative normalization,exact
+degree_field,"Chinese , french language and cultre","Chinese, French Language And Cultre",generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Communication and Cognition,Communication And Cognition,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Computer Engineering,Computer Engineering,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Conomics,Economics,override,Variable-specific conservative normalization,approximate
+degree_field,Data Science,Data Science,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Economics,Economics,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Engineering,Engineering,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Geoarchaeology,Geoarchaeology,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Humanities European History,Humanities European History,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Linguistics and Literature,Linguistics And Literature,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Media Studies,Media Studies,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,None,None,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Political Science,Political Science,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Political Sciences,Political Sciences,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Psychology,Psychology,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Social Sciences and Educational Sciences,Social Sciences And Educational Sciences,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Sociology,Sociology,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Sound Engineering,Sound Engineering,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,Technique generale,Technique Generale,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,economic-law,Economic-Law,override,Variable-specific conservative normalization,exact
+degree_field,geography,Geography,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,highschool,High school,override,Variable-specific conservative normalization,exact
+degree_field,history,History,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,political science,Political Science,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,psychology,Psychology,generic_case_cleanup,Conservative whitespace/case normalization,exact
+degree_field,secretaria,Secretaria,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,Administration Media centre,Administration Media Centre,override,Variable-specific conservative normalization,exact
+department_unit,C2DH,C2DH,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,Cognitive and Behavioral Sciences,Cognitive And Behavioral Sciences,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,Data,Data,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,Economics,Economics,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,Engineering,Engineering,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,FHSE,FHSE,override,Variable-specific conservative normalization,exact
+department_unit,FHSE Administration,FHSE Administration,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,FHSE-MEDIACentre,FHSE Media Centre,override,Variable-specific conservative normalization,exact
+department_unit,Fhse,FHSE,override,Variable-specific conservative normalization,exact
+department_unit,Institute of History,Institute Of History,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,Labour Market,Labour Market,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,Liser,LISER,override,Variable-specific conservative normalization,exact
+department_unit,Living Conditions,Living Conditions,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,Media Centre,Media Centre,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,Na,NA,override,Variable-specific conservative normalization,exact
+department_unit,Psychology,Psychology,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,Service Loge,Service Loge,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,Social Sciences,Social Sciences,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,Social and Behavioral Sciences,Social And Behavioral Sciences,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,UDM,UDM,override,Variable-specific conservative normalization,exact
+department_unit,Udm,UDM,override,Variable-specific conservative normalization,exact
+department_unit,decanat,Decanat,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,lis,LIS,override,Variable-specific conservative normalization,exact
+department_unit,"living conditions, Liser","Living Conditions, LISER",override,Variable-specific conservative normalization,exact
+department_unit,psychology,Psychology,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,social sciences,Social Sciences,generic_case_cleanup,Conservative whitespace/case normalization,exact
+department_unit,udm,UDM,override,Variable-specific conservative normalization,exact
+department_unit,udm liser,UDM LISER,override,Variable-specific conservative normalization,exact
+employee_role,<KEY_ABSENT>,NOT_APPLICABLE,absent_conditional_field_to_not_applicable,Field absent and not applicable under current questionnaire logic,exact
+employee_role,Admin,Admin staff,override,Variable-specific conservative normalization,approximate
+employee_role,Admin Staff,Admin staff,override,Variable-specific conservative normalization,exact
+employee_role,Admin staff,Admin staff,override,Variable-specific conservative normalization,exact
+employee_role,Postdoc,Postdoc,override,Variable-specific conservative normalization,exact
+employee_role,Research staff,Research staff,override,Variable-specific conservative normalization,exact
+employee_role,Technical,Technical staff,override,Variable-specific conservative normalization,approximate
+employee_role,Technical Staff,Technical staff,override,Variable-specific conservative normalization,exact
+employee_role,Technical staff,Technical staff,override,Variable-specific conservative normalization,exact
+employee_role,admin staff,Admin staff,override,Variable-specific conservative normalization,exact
+employee_role,data analyst,Data analyst,override,Variable-specific conservative normalization,exact
+employee_role,research associate and data expert,Research associate and data expert,override,Variable-specific conservative normalization,exact
+employee_role,team leader,Team leader,override,Variable-specific conservative normalization,exact
+first_gen_he,Dont Know,Unknown,first_gen_uncertain_to_unknown,Participant uncertainty retained as Unknown,exact
+first_gen_he,NO,No,first_gen_no,Controlled vocabulary for first-generation status,exact
+first_gen_he,No,No,first_gen_no,Controlled vocabulary for first-generation status,exact
+first_gen_he,Yes,Yes,first_gen_yes,Controlled vocabulary for first-generation status,exact
+first_gen_he,no,No,first_gen_no,Controlled vocabulary for first-generation status,exact
+first_gen_he,yes,Yes,first_gen_yes,Controlled vocabulary for first-generation status,exact
+first_language,Albanian,Albanian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,Arabic,Arabic,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,English,English,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,French,French,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,German,German,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,Italian,Italian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,Lebanese,Lebanese,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,Luxembourgish,Luxembourgish,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,Persian,Persian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,Portuguese,Portuguese,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,Romanian,Romanian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,Russian,Russian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,Spanish,Spanish,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,dutch,Dutch,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,farsi,Farsi,override,Variable-specific conservative normalization,exact
+first_language,french,French,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,french english,French English,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,german,German,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,italian,Italian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,luxembourgish,Luxembourgish,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,polish,Polish,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,portuguese,Portuguese,generic_case_cleanup,Conservative whitespace/case normalization,exact
+first_language,spanish,Spanish,generic_case_cleanup,Conservative whitespace/case normalization,exact
+gender,Female,Female,gender_to_female,Controlled vocabulary for gender,exact
+gender,Male,Male,gender_to_male,Controlled vocabulary for gender,exact
+gender,female,Female,gender_to_female,Controlled vocabulary for gender,exact
+gender,male,Male,gender_to_male,Controlled vocabulary for gender,exact
+highest_degree,Bachelor,Bachelor,highest_degree_ordered_harmonization,Ordered harmonization for highest degree,exact
+highest_degree,Doctorate,Doctorate,highest_degree_ordered_harmonization,Ordered harmonization for highest degree,exact
+highest_degree,Master,Master,highest_degree_ordered_harmonization,Ordered harmonization for highest degree,exact
+highest_degree,Upper secondary,Upper secondary,highest_degree_ordered_harmonization,Ordered harmonization for highest degree,exact
+highest_degree,Upper-secondary,Upper secondary,highest_degree_ordered_harmonization,Ordered harmonization for highest degree,exact
+highest_degree,bachelor,Bachelor,highest_degree_ordered_harmonization,Ordered harmonization for highest degree,exact
+highest_degree,doctorate,Doctorate,highest_degree_ordered_harmonization,Ordered harmonization for highest degree,exact
+highest_degree,master,Master,highest_degree_ordered_harmonization,Ordered harmonization for highest degree,exact
+living_arrangement,Alone,Alone,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,Appartment,Apartment,override,Variable-specific conservative normalization,approximate
+living_arrangement,Renter,Renter,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,Single,Single,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,Student accomodation,Student accommodation,override,Variable-specific conservative normalization,approximate
+living_arrangement,Studio,Studio,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,With couple,With Couple,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,With faily,With family,override,Variable-specific conservative normalization,approximate
+living_arrangement,With family,With Family,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,With parents,With Parents,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,With parents/family,With Parents/Family,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,With partner,With Partner,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,With wife and flat mates,With Wife And Flat Mates,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,alone,Alone,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,married with children,Married With Children,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,roomates,Roommates,override,Variable-specific conservative normalization,approximate
+living_arrangement,together with my partner,Together With My Partner,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,with family,With Family,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,with girlfriend,With Girlfriend,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,with one flatmate,With One Flatmate,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,with one roomate,With one roommate,override,Variable-specific conservative normalization,approximate
+living_arrangement,with parents,With Parents,generic_case_cleanup,Conservative whitespace/case normalization,exact
+living_arrangement,with partner,With Partner,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,Albanian,Albanian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,Brazilian,Brazilian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,Brazilian and Luxembourgish,Brazilian And Luxembourgish,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,British,British,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,Colombian,Colombian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,French,French,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,French Romanian,French Romanian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,German,German,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,Italian,Italian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,Lebanese,Lebanese,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,"Lebanese, Russian","Lebanese, Russian",generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,Luxembourg,Luxembourg,override,Variable-specific conservative normalization,exact
+nationality,Luxembourgish,Luxembourgish,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,Polish,Polish,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,Portuguese,Portuguese,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,Third country national,Third Country National,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,Uruguayan,Uruguayan,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,chilean,Chilean,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,french,French,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,french english,French English,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,german,German,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,iranian,Iranian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,italian,Italian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,luxembourgish,Luxembourgish,generic_case_cleanup,Conservative whitespace/case normalization,exact
+nationality,polish,Polish,generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,,BLANK,empty_string_to_blank,Blank string recorded in the raw JSON,exact
+other_languages,"Arabic, Russian, English, French","Arabic, Russian, English, French",generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,English,English,generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,English French Luxembourgish,English French Luxembourgish,generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,English and French,English And French,generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,"English, German, French, Luxembourgish","English, German, French, Luxembourgish",generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,"English, Korean, Uzbek","English, Korean, Uzbek",generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,"French, English, Spanish, Italian","French, English, Spanish, Italian",generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,"German, french and english","German, French And English",generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,english,English,generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,english french,English French,generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,english italian,English Italian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,"english, french","English, French",generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,"english, french, luxembourgish, Italian, Dutch","English, French, Luxembourgish, Italian, Dutch",generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,"english, german","English, German",generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,"english, german, french","English, German, French",generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,"english,german,russian","English, German, Russian",generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,french english,French English,generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,"french, english, chinese","French, English, Chinese",generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,italian spanish german,Italian Spanish German,generic_case_cleanup,Conservative whitespace/case normalization,exact
+other_languages,"luxembourgish, english, french, german","Luxembourgish, English, French, German",generic_case_cleanup,Conservative whitespace/case normalization,exact
+parent_a_edu,Bachelor,Bachelor,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,exact
+parent_a_edu,Doctorate,Doctorate,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,exact
+parent_a_edu,Dropped out after 6th,Primary or less,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,Hauptschule,Secondary,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,High School,Secondary,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,Highschool,Secondary,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,Master,Master,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,exact
+parent_a_edu,Master Degree,Master,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,Master level,Master,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,Masters,Master,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,PhD,Doctorate,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,Post-secondary non-tertiary,Post-secondary non-tertiary,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,exact
+parent_a_edu,Secondary I,Secondary,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,Secondary education,Secondary,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,University,Tertiary unspecified,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,University degree,Tertiary unspecified,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,baccalaureat,Secondary,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,bachelor,Bachelor,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,exact
+parent_a_edu,high school,Secondary,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,high-school level,Secondary,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,higher school,Secondary,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,no,Primary or less,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,primary school,Primary or less,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,secondary school,Secondary,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,university,Tertiary unspecified,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_a_edu,unknown,Unknown,parent_a_edu_ordered_harmonization,Ordered harmonization for parental education,exact
+parent_b_edu,Abitur,Secondary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,Bachelor,Bachelor,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,exact
+parent_b_edu,Bachelor level,Bachelor,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,High School,Secondary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,High school,Secondary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,High-school level,Secondary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,Master,Master,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,exact
+parent_b_edu,Masters,Master,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,Post-secondary non-tertiary,Post-secondary non-tertiary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,exact
+parent_b_edu,School\,Secondary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,Secondary,Secondary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,exact
+parent_b_edu,Secondary School,Secondary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,Secondary education,Secondary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,Secondary school,Secondary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,Seconday school diploma,Secondary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,Unknown,Unknown,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,exact
+parent_b_edu,baccalaureat,Secondary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,bachelor,Bachelor,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,exact
+parent_b_edu,high school,Secondary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,higher school,Secondary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,no,Primary or less,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,secondary school,Secondary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,technical career,Post-secondary non-tertiary,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+parent_b_edu,university,Tertiary unspecified,parent_b_edu_ordered_harmonization,Ordered harmonization for parental education,approximate
+primary_school_langs,Albanian,Albanian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,Arabic English French,Arabic English French,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,French,French,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,French German,French German,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,"French, Arabic","French, Arabic",generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,German,German,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,German EnGlish French,German English French,override,Variable-specific conservative normalization,exact
+primary_school_langs,Italian,Italian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,Luxembourgish,Luxembourgish,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,Luxembourgish French German,Luxembourgish French German,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,Polish,Polish,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,Portuguese,Portuguese,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,Romanian,Romanian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,Spanish,Spanish,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,"Uzbek, Russian","Uzbek, Russian",generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,dutch,Dutch,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,english,English,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,farsi,Farsi,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,french,French,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,german,German,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,italian,Italian,generic_case_cleanup,Conservative whitespace/case normalization,exact
+primary_school_langs,portuguese,Portuguese,generic_case_cleanup,Conservative whitespace/case normalization,exact
+programme_name,,BLANK,empty_string_to_blank,Blank string recorded in the raw JSON,exact
+programme_name,<KEY_ABSENT>,NOT_APPLICABLE,absent_conditional_field_to_not_applicable,Field absent and not applicable under current questionnaire logic,exact
+programme_name,BAP Bachelors in Psychology,BAP Bachelors In Psychology,generic_case_cleanup,Conservative whitespace/case normalization,exact
+programme_name,MSc Economics and Finance,MSc Economics And Finance,generic_case_cleanup,Conservative whitespace/case normalization,exact
+programme_name,Master in Sustainable Development,Master In Sustainable Development,generic_case_cleanup,Conservative whitespace/case normalization,exact
+study_level,,BLANK,empty_string_to_blank,Blank string recorded in the raw JSON,exact
+study_level,<KEY_ABSENT>,NOT_APPLICABLE,absent_conditional_field_to_not_applicable,Field absent and not applicable under current questionnaire logic,exact
+study_level,Bachelor,Bachelor,study_level_ordered_harmonization,Ordered harmonization for study level,exact
+study_level,Master,Master,study_level_ordered_harmonization,Ordered harmonization for study level,exact
+study_level,PhD,Doctorate,study_level_ordered_harmonization,Ordered harmonization for study level,approximate
+year_in_programme,,BLANK,empty_string_to_blank,Blank string recorded in the raw JSON,exact
+year_in_programme,1,1,numeric_parse_success,Parsed numeric value from raw string,exact
+year_in_programme,2,2,numeric_parse_success,Parsed numeric value from raw string,exact
+year_in_programme,3,3,numeric_parse_success,Parsed numeric value from raw string,exact
+year_in_programme,<KEY_ABSENT>,NOT_APPLICABLE,absent_conditional_field_to_not_applicable,Field absent and not applicable under current questionnaire logic,exact
+years_in_luxembourg,0,0,numeric_parse_success,Parsed numeric value from raw string,exact
+years_in_luxembourg,0.3,0.3,numeric_parse_success,Parsed numeric value from raw string,exact
+years_in_luxembourg,1,1,numeric_parse_success,Parsed numeric value from raw string,exact
+years_in_luxembourg,10,10,numeric_parse_success,Parsed numeric value from raw string,exact
+years_in_luxembourg,16,16,numeric_parse_success,Parsed numeric value from raw string,exact
+years_in_luxembourg,17,17,numeric_parse_success,Parsed numeric value from raw string,exact
+years_in_luxembourg,2,2,numeric_parse_success,Parsed numeric value from raw string,exact
+years_in_luxembourg,24,24,numeric_parse_success,Parsed numeric value from raw string,exact
+years_in_luxembourg,27,27,numeric_parse_success,Parsed numeric value from raw string,exact
+years_in_luxembourg,29,29,numeric_parse_success,Parsed numeric value from raw string,exact
+years_in_luxembourg,3,3,numeric_parse_success,Parsed numeric value from raw string,exact
+years_in_luxembourg,34,34,numeric_parse_success,Parsed numeric value from raw string,exact
+years_in_luxembourg,4,4,numeric_parse_success,Parsed numeric value from raw string,exact
+years_in_luxembourg,5,5,numeric_parse_success,Parsed numeric value from raw string,exact
+years_in_luxembourg,8,8,numeric_parse_success,Parsed numeric value from raw string,exact

@@ -1,0 +1,17 @@
+participant_id,session_id,problem_type,severity,notes,global_analysis_excluded,global_exclusion_reason
+PID003,2025-11-11_003,LOW_SCI_BAD_PAIRS,WARNING,Marked 2 long-channel pairs as bad using SCI < 0.75,False,
+PID004,2025-11-11_004,LOW_SCI_BAD_PAIRS,WARNING,Marked 7 long-channel pairs as bad using SCI < 0.75,False,
+PID006,2025-11-12_002,IMPLAUSIBLY_SHORT_RECORDING,ERROR,Duration 10.420224000000001s is below 60.0s threshold,True,Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses after Step 3 documented session 2025-11-12_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log.
+PID006,2025-11-12_002,MISSING_PSYCHOPY_FILE,ERROR,Session could not be paired to a PsychoPy log,True,Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses after Step 3 documented session 2025-11-12_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log.
+PID007,2025-11-13_001,LOW_SCI_BAD_PAIRS,WARNING,Marked 6 long-channel pairs as bad using SCI < 0.75,False,
+PID012,2025-11-18_003,LOW_SCI_BAD_PAIRS,WARNING,Marked 7 long-channel pairs as bad using SCI < 0.75,False,
+PID017,2025-11-20_001,LOW_SCI_BAD_PAIRS,WARNING,Marked 1 long-channel pairs as bad using SCI < 0.75,False,
+PID020,2025-11-20_004,LOW_SCI_BAD_PAIRS,WARNING,Marked 1 long-channel pairs as bad using SCI < 0.75,False,
+PID021,2025-11-21_001,LOW_SCI_BAD_PAIRS,WARNING,Marked 1 long-channel pairs as bad using SCI < 0.75,False,
+PID022,2025-11-21_002,LOW_SCI_BAD_PAIRS,WARNING,Marked 1 long-channel pairs as bad using SCI < 0.75,False,
+PID023,2025-11-21_003,LOW_SCI_BAD_PAIRS,WARNING,Marked 2 long-channel pairs as bad using SCI < 0.75,False,
+PID024,2025-11-25_001,LOW_SCI_BAD_PAIRS,WARNING,Marked 1 long-channel pairs as bad using SCI < 0.75,False,
+PID026,2025-11-25_003,LOW_SCI_BAD_PAIRS,WARNING,Marked 1 long-channel pairs as bad using SCI < 0.75,False,
+PID032,2025-11-27_001,LOW_SCI_BAD_PAIRS,WARNING,Marked 2 long-channel pairs as bad using SCI < 0.75,False,
+PID033,2025-11-27_002,LOW_SCI_BAD_PAIRS,WARNING,Marked 6 long-channel pairs as bad using SCI < 0.75,False,
+PID034,2025-11-27_003,LOW_SCI_BAD_PAIRS,WARNING,Marked 1 long-channel pairs as bad using SCI < 0.75,False,

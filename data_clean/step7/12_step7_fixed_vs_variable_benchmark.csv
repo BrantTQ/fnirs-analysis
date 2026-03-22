@@ -1,0 +1,3 @@
+model_label,window_definition,n_trials,condition_beta,condition_se,condition_p_value,condition_ci_low,condition_ci_high
+Step 6 fixed-window benchmark,Fixed 7-11 s onset-locked window,1075,3.600237579659939e-08,1.853602834255333e-08,0.0521017855255187,-3.2757217121880047e-10,7.233232376441758e-08
+Step 7 duration-aware variable window,Lagged onset-to-answer window with 4 s lag and next-onset truncation,1075,3.628874595084386e-08,2.220872721230554e-08,0.10226182234214977,-7.239559527749634e-09,7.981705142943735e-08

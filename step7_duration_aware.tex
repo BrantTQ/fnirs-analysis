@@ -1,0 +1,726 @@
+a\section{Step 7: Duration-Aware, Lagged ROI Analysis with Variable Trial Windows}
+\label{sec:step7_variable_window}
+
+\subsection{Objective}
+The objective of Step~7 is to replace the fixed post-onset summary window used in Steps~5 and~6
+with a \textbf{question-specific variable analysis window} that depends on the actual duration of each trial.
+
+The goal of this step is to test whether the abstract-versus-concrete effect in the left frontal ROI
+remains when the fNIRS summary is computed over a trial window that:
+\begin{itemize}
+    \item starts from the actual question onset;
+    \item ends at the actual participant answer;
+    \item includes a haemodynamic lag;
+    \item varies from trial to trial instead of being fixed at the same length for every question.
+\end{itemize}
+
+This step should remain simple.
+It should produce:
+\begin{itemize}
+    \item one primary covariate-adjusted inferential model;
+    \item exact p-values;
+    \item confidence intervals;
+    \item effect estimates;
+    \item a short final conclusion.
+\end{itemize}
+
+\subsection{Why Step~7 Is Needed}
+Step~6 showed that the fixed-window front ROI analysis was close to, but still above, the conventional
+significance threshold.
+At the same time, the descriptive visualizations suggested that:
+\begin{itemize}
+    \item condition differences evolve over time rather than appearing in one perfectly fixed segment;
+    \item the waveform shape varies across channels;
+    \item the questions differ in length, structure, and difficulty.
+\end{itemize}
+
+Therefore, a variable-window analysis is a natural next step because it allows the fNIRS summary
+to follow the real duration of the question-processing period for each trial.
+
+\subsection{Core Analytical Decision}
+To keep Step~7 interpretable, the following elements should remain fixed from Step~6:
+\begin{enumerate}
+    \item the same preprocessed continuous fNIRS files from Step~3;
+    \item the same included participant-session cohort carried forward from Step~6;
+    \item the same long-channel-only rule;
+    \item the same frontal ROI as the primary ROI;
+    \item the same short-channel exclusion from inference;
+    \item the same question-level covariates;
+    \item the same mixed-effects modeling framework with participant and question random intercepts.
+\end{enumerate}
+
+The main change in Step~7 is:
+\begin{quote}
+the trial outcome is no longer based on a fixed 7--11~s window, but on a lagged
+question-specific interval that varies with the actual trial duration.
+\end{quote}
+
+\subsection{Primary Scientific Question}
+The primary Step~7 question is:
+\begin{quote}
+In the left frontal ROI, does the abstract-versus-concrete effect remain after adjusting for
+question length and item difficulty when the fNIRS response is summarized over a duration-aware,
+lagged, trial-specific interval rather than a fixed window?
+\end{quote}
+
+\subsection{Why Continuous Preprocessed Data Must Be Used}
+Step~5 and Step~6 were based on onset-locked epochs extending from:
+\begin{verbatim}
+-3.5 s to 13.2 s around question onset
+\end{verbatim}
+
+That epoch structure was appropriate for fixed-window analyses.
+However, Step~7 should not rely on those fixed-length epochs as the main analysis input,
+because a variable trial window may extend beyond the end of that epoch for slower responses.
+
+Therefore, Step~7 should use:
+\begin{quote}
+the continuous preprocessed raw data from Step~3 together with the harmonized trigger table.
+\end{quote}
+
+\subsection{Primary ROI Definition}
+The primary ROI remains the same left frontal ROI used in Steps~5 and~6.
+
+\subsubsection{Front ROI HbO channels}
+\begin{verbatim}
+S2_D6 hbo
+S2_D4 hbo
+S1_D6 hbo
+S1_D3 hbo
+S5_D6 hbo
+S5_D4 hbo
+S5_D3 hbo
+\end{verbatim}
+
+\subsubsection{Back ROI HbO channels}
+The back ROI is retained as a secondary ROI:
+\begin{verbatim}
+S4_D2 hbo
+S3_D1 hbo
+S6_D2 hbo
+S6_D1 hbo
+S6_D5 hbo
+S7_D2 hbo
+S7_D5 hbo
+S8_D1 hbo
+S8_D5 hbo
+\end{verbatim}
+
+\subsubsection{Transition channels excluded from the primary confirmatory summaries}
+\begin{verbatim}
+S5_D7 hbo
+S4_D4 hbo
+S4_D7 hbo
+S3_D3 hbo
+S3_D7 hbo
+S6_D7 hbo
+\end{verbatim}
+
+\subsubsection{Short-separation pairs excluded from inference}
+\begin{verbatim}
+S1_D8
+S2_D9
+S3_D10
+S4_D11
+S5_D12
+S6_D13
+S7_D14
+S8_D15
+\end{verbatim}
+
+\subsection{Primary Trial Window Definition}
+For participant \(i\) and trial \(k\), let:
+\begin{itemize}
+    \item \(t^{\mathrm{on}}_{ik}\) denote the harmonized question onset time;
+    \item \(t^{\mathrm{ans}}_{ik}\) denote the harmonized answer time;
+    \item \(t^{\mathrm{next}}_{ik}\) denote the next question onset time, if it exists.
+\end{itemize}
+
+The raw behavioral duration of the trial is:
+\begin{equation}
+L_{ik} = t^{\mathrm{ans}}_{ik} - t^{\mathrm{on}}_{ik}.
+\end{equation}
+
+The primary Step~7 analysis window should be a \textbf{lagged duration-aware interval}:
+\begin{equation}
+W^{(\delta)}_{ik}
+=
+\left[
+t^{\mathrm{on}}_{ik} + \delta,\;
+\min\!\bigl(t^{\mathrm{ans}}_{ik} + \delta,\; t^{\mathrm{next}}_{ik} - 0.5\bigr)
+\right],
+\end{equation}
+where the primary lag is:
+\begin{equation}
+\delta = 4 \text{ s}.
+\end{equation}
+
+If the trial is the last question before the end of a session, then \(t^{\mathrm{next}}_{ik}\) should be
+replaced by the end of the available continuous recording.
+
+\subsection{Why This Window Is Better Than a Fixed One}
+This window is preferable for Step~7 because:
+\begin{itemize}
+    \item it respects the actual duration of the question-processing period for each trial;
+    \item it incorporates a simple haemodynamic lag;
+    \item it avoids contamination from the next trial by truncating at the next onset when necessary;
+    \item it changes the interval length with the trial instead of forcing every trial into the same fixed window.
+\end{itemize}
+
+\subsection{Baseline Definition}
+For each trial, define the baseline interval as:
+\begin{equation}
+B_{ik} = [t^{\mathrm{on}}_{ik} - 2,\; t^{\mathrm{on}}_{ik}].
+\end{equation}
+
+If the full two-second baseline is unavailable, the trial should be excluded from the primary analysis
+and logged.
+
+\subsection{Primary Trial-Level Outcome}
+Let \(x_{ijk}(t)\) denote the preprocessed HbO signal for participant \(i\), channel \(j\), and trial \(k\).
+
+The baseline-corrected trial response for a channel is:
+\begin{equation}
+r_{ijk}
+=
+\overline{x_{ijk}(t \in W^{(\delta)}_{ik})}
+-
+\overline{x_{ijk}(t \in B_{ik})}.
+\end{equation}
+
+The critical point is that this is the \textbf{mean} signal over the variable window, not the raw area.
+This avoids making longer trials mechanically larger simply because they last longer.
+
+\subsection{Front ROI Trial Summary}
+For each trial, the front ROI response is:
+\begin{equation}
+y^{(F)}_{ik}
+=
+\frac{1}{J^{(F)}_{ik}}
+\sum_{j \in F_{ik}} r_{ijk},
+\end{equation}
+where \(F_{ik}\) is the set of valid front-ROI channels available for participant \(i\) on trial \(k\),
+and \(J^{(F)}_{ik}\) is the number of such channels.
+
+\subsection{Back ROI Trial Summary}
+For secondary analyses, define:
+\begin{equation}
+y^{(B)}_{ik}
+=
+\frac{1}{J^{(B)}_{ik}}
+\sum_{j \in B_{ik}} r_{ijk},
+\end{equation}
+where \(B_{ik}\) is the set of valid back-ROI channels available for participant \(i\) on trial \(k\).
+
+\subsection{Primary Covariates}
+Step~6 showed that the structural language variables were not strongly imbalanced by condition,
+but ENEM item correctness differed more substantially across abstract and concrete questions.
+Therefore, Step~7 should treat both question size and question difficulty explicitly.
+
+The primary covariates should be:
+\begin{itemize}
+    \item standardized log total word count;
+    \item standardized ENEM item correctness.
+\end{itemize}
+
+Define:
+\begin{equation}
+w_k = z\!\left(\log(\texttt{total\_word\_count}_k)\right)
+\end{equation}
+and
+\begin{equation}
+c_k = z(\texttt{correctness}_k).
+\end{equation}
+
+\subsection{Primary Model}
+Let:
+\begin{equation}
+A_{ik} =
+\begin{cases}
+1 & \text{if the trial is Abstract} \\
+0 & \text{if the trial is Concrete}
+\end{cases}
+\end{equation}
+
+The primary Step~7 model should be:
+\begin{equation}
+y^{(F)}_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 w_k
++
+\beta_3 c_k
++
+u_i
++
+v_k
++
+\varepsilon_{ik},
+\end{equation}
+where:
+\begin{itemize}
+    \item \(u_i \sim \mathcal{N}(0,\sigma_u^2)\) is the participant random intercept;
+    \item \(v_k \sim \mathcal{N}(0,\sigma_v^2)\) is the question random intercept;
+    \item \(\varepsilon_{ik} \sim \mathcal{N}(0,\sigma^2)\) is the residual term.
+\end{itemize}
+
+\subsection{Primary Inferential Target}
+The primary inferential target is:
+\begin{equation}
+\beta_1,
+\end{equation}
+which represents the adjusted abstract-versus-concrete effect in the left frontal ROI under the
+variable-window definition.
+
+\subsection{Primary Hypothesis}
+The primary hypotheses are:
+
+\paragraph{Null hypothesis}
+\begin{equation}
+H_0: \beta_1 = 0
+\end{equation}
+
+\paragraph{Alternative hypothesis}
+\begin{equation}
+H_1: \beta_1 \neq 0
+\end{equation}
+
+The significance threshold should remain:
+\begin{verbatim}
+alpha = 0.05
+\end{verbatim}
+
+\subsection{Trial Inclusion Rules}
+A trial should be included in the primary Step~7 analysis if:
+\begin{itemize}
+    \item it belongs to a participant-session already included in Step~6;
+    \item it has a valid harmonized question onset;
+    \item it has a valid harmonized answer time;
+    \item the behavioral duration \(L_{ik}\) is positive;
+    \item the two-second baseline interval is fully available;
+    \item the final lagged variable window is fully available;
+    \item the final lagged variable window length is at least 2.0~s after any truncation;
+    \item at least one valid front ROI channel is present.
+\end{itemize}
+
+\subsection{Participant Inclusion Rules}
+A participant-session should be retained in the primary Step~7 analysis if:
+\begin{itemize}
+    \item it was included in Step~6;
+    \item it contributes at least two valid abstract trials;
+    \item it contributes at least two valid concrete trials;
+    \item at least one valid front ROI channel remains for the included trials.
+\end{itemize}
+
+\subsection{Pre-Model Duration Diagnostics}
+Before fitting the mixed models, Step~7 should include a descriptive analysis of how trial duration
+relates to condition and question properties.
+
+At minimum, this pre-model diagnostic should report:
+\begin{itemize}
+    \item response-time distribution by condition;
+    \item correlation of response time with total word count;
+    \item correlation of response time with sentence count;
+    \item correlation of response time with sentence length;
+    \item correlation of response time with ENEM item correctness.
+\end{itemize}
+
+This is useful because it quantifies the very mechanism that motivates the variable-window analysis.
+
+\subsection{Alternative Structure Models}
+To assess whether the result depends on the choice of structural covariate, Step~7 should also fit:
+
+\subsubsection{Alternative Model A: Sentence-count model}
+\begin{equation}
+y^{(F)}_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 s_k
++
+\beta_3 c_k
++
+u_i
++
+v_k
++
+\varepsilon_{ik},
+\end{equation}
+where
+\begin{equation}
+s_k = z(\texttt{sentence\_count}_k).
+\end{equation}
+
+\subsubsection{Alternative Model B: Sentence-length model}
+\begin{equation}
+y^{(F)}_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 \ell_k
++
+\beta_3 c_k
++
+u_i
++
+v_k
++
+\varepsilon_{ik},
+\end{equation}
+where
+\begin{equation}
+\ell_k = z(\texttt{sentence\_length}_k).
+\end{equation}
+
+\subsection{Secondary Back ROI Model}
+The same primary variable-window model should be fit for the back ROI as a secondary analysis:
+\begin{equation}
+y^{(B)}_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 w_k
++
+\beta_3 c_k
++
+u_i
++
+v_k
++
+\varepsilon_{ik}.
+\end{equation}
+
+\subsection{Secondary Dissociation Model}
+To test whether the condition effect is more frontal than posterior under the variable-window definition,
+Step~7 should define a trial-level dissociation outcome:
+\begin{equation}
+d_{ik} = y^{(F)}_{ik} - y^{(B)}_{ik}.
+\end{equation}
+
+The dissociation model should then be:
+\begin{equation}
+d_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 w_k
++
+\beta_3 c_k
++
+u_i
++
+v_k
++
+\varepsilon_{ik}.
+\end{equation}
+
+This is a secondary analysis.
+
+\subsection{Sensitivity Analyses}
+To keep Step~7 robust but still simple, the following sensitivity analyses should be included.
+
+\subsubsection{Sensitivity 1: Lag choice}
+Repeat the primary front ROI model using:
+\begin{itemize}
+    \item \(\delta = 3\) s;
+    \item \(\delta = 4\) s;
+    \item \(\delta = 5\) s.
+\end{itemize}
+
+\subsubsection{Sensitivity 2: Cap long windows}
+Repeat the primary model using a capped lagged window:
+\begin{equation}
+W^{(\delta,\mathrm{cap})}_{ik}
+=
+\left[
+t^{\mathrm{on}}_{ik} + \delta,\;
+\min\!\bigl(t^{\mathrm{ans}}_{ik} + \delta,\; t^{\mathrm{next}}_{ik} - 0.5,\; t^{\mathrm{on}}_{ik} + 16\bigr)
+\right].
+\end{equation}
+
+This checks whether very long trials disproportionately influence the result.
+
+\subsubsection{Sensitivity 3: Response-time adjustment}
+Because response time is closely tied to the window length, it should not be included in the primary model.
+However, one sensitivity model may include standardized log response time:
+\begin{equation}
+r_{ik} = z\!\left(\log(L_{ik})\right)
+\end{equation}
+and
+\begin{equation}
+y^{(F)}_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 w_k
++
+\beta_3 c_k
++
+\beta_4 r_{ik}
++
+u_i
++
+v_k
++
+\varepsilon_{ik}.
+\end{equation}
+
+This model should be interpreted cautiously because response time may be partly downstream of condition.
+
+\subsubsection{Sensitivity 4: Fixed-window benchmark}
+Repeat the Step~6 primary front ROI model alongside the variable-window model so that the two
+approaches can be compared directly in the same report.
+
+\subsection{Step-by-Step Workflow}
+
+\subsubsection{Step~7.1: Freeze the Step~6 cohort}
+Reuse the same included participant-session set as Step~6 unless a documented file or QC problem
+requires explicit re-review.
+
+\subsubsection{Step~7.2: Return to the continuous preprocessed data}
+Do not use the fixed-length Step~5/6 epochs as the primary input.
+Load the continuous preprocessed data from Step~3 together with the harmonized trigger table.
+
+\subsubsection{Step~7.3: Build the trial-level timing table}
+For each valid trial, store:
+\begin{itemize}
+    \item participant ID;
+    \item question ID;
+    \item question condition;
+    \item question onset time;
+    \item answer time;
+    \item next question onset time;
+    \item raw answer latency;
+    \item final lagged variable-window start;
+    \item final lagged variable-window end;
+    \item final variable-window duration.
+    \item any truncation flag.
+\end{itemize}
+
+\subsubsection{Step~7.4: Compute baseline-corrected ROI trial summaries}
+For each included trial:
+\begin{itemize}
+    \item compute the front ROI mean over the variable window;
+    \item compute the back ROI mean over the variable window;
+    \item record the number of valid channels contributing to each ROI.
+\end{itemize}
+
+\subsubsection{Step~7.5: Merge question covariates}
+Merge:
+\begin{itemize}
+    \item total word count;
+    \item sentence count;
+    \item sentence length;
+    \item ENEM item correctness.
+\end{itemize}
+
+\subsubsection{Step~7.6: Run duration diagnostics}
+Produce descriptive plots and tables showing how response time varies by condition and by question properties.
+
+\subsubsection{Step~7.7: Fit the primary front ROI variable-window model}
+Fit the primary mixed-effects model:
+\begin{itemize}
+    \item condition;
+    \item log word count;
+    \item ENEM correctness;
+    \item random intercept for participant;
+    \item random intercept for question.
+\end{itemize}
+
+\subsubsection{Step~7.8: Fit the alternative structure models}
+Fit the sentence-count and sentence-length alternatives.
+
+\subsubsection{Step~7.9: Fit the secondary back and dissociation models}
+Fit the variable-window back ROI model and the variable-window dissociation model.
+
+\subsubsection{Step~7.10: Run the sensitivity analyses}
+Run:
+\begin{itemize}
+    \item lag sensitivity;
+    \item capped-window sensitivity;
+    \item response-time sensitivity;
+    \item fixed-window benchmark comparison.
+\end{itemize}
+
+\subsection{Primary Reporting Quantities}
+The primary Step~7 results table must report:
+\begin{itemize}
+    \item number of included participants;
+    \item number of included questions;
+    \item number of included trials;
+    \item mean and distribution of variable-window durations;
+    \item adjusted condition coefficient \(\beta_1\);
+    \item standard error;
+    \item test statistic;
+    \item p-value;
+    \item 95\% confidence interval;
+    \item word-count coefficient;
+    \item ENEM-correctness coefficient;
+    \item participant random-intercept variance;
+    \item question random-intercept variance.
+\end{itemize}
+
+\subsection{Secondary Reporting Quantities}
+The secondary Step~7 tables should report:
+\begin{itemize}
+    \item back ROI variable-window model results;
+    \item dissociation model results;
+    \item sentence-count alternative model results;
+    \item sentence-length alternative model results;
+    \item lag sensitivity results;
+    \item capped-window sensitivity results;
+    \item response-time sensitivity results;
+    \item fixed-window benchmark comparison.
+\end{itemize}
+
+\subsection{Primary Conclusion Rule}
+The final Step~7 conclusion should be based first on the condition coefficient \(\beta_1\)
+from the primary variable-window front ROI model.
+
+The interpretation rule should be:
+\begin{itemize}
+    \item if the adjusted condition coefficient is significant and positive, conclude that abstract
+    questions are associated with a larger frontal HbO response than concrete questions even when
+    the response is summarized over a lagged question-specific duration-aware interval;
+    \item if the adjusted condition coefficient is significant and negative, conclude that concrete
+    questions are associated with a larger frontal HbO response than abstract questions under the
+    variable-window definition;
+    \item if the adjusted condition coefficient is not significant, conclude that the variable-window
+    adjusted model does not show statistically significant evidence for a frontal abstract-versus-concrete effect.
+\end{itemize}
+
+\subsection{Conclusion Templates}
+
+\paragraph{Template if the primary effect is significant and abstract \(>\) concrete.}
+In the duration-aware mixed-effects analysis, abstract questions were associated with a significantly
+larger left frontal ROI HbO response than concrete questions after adjusting for log word count and
+ENEM item correctness
+(\(\beta=\ldots\), \(SE=\ldots\), \(p=\ldots\), 95\% CI \([\ldots,\ldots]\)).
+This indicates that the frontal condition effect remains when the analysis window is allowed to vary
+with the actual duration of each question.
+
+\paragraph{Template if the primary effect is significant and concrete \(>\) abstract.}
+In the duration-aware mixed-effects analysis, concrete questions were associated with a significantly
+larger left frontal ROI HbO response than abstract questions after adjusting for log word count and
+ENEM item correctness
+(\(\beta=\ldots\), \(SE=\ldots\), \(p=\ldots\), 95\% CI \([\ldots,\ldots]\)).
+
+\paragraph{Template if the primary effect is not significant.}
+In the duration-aware mixed-effects analysis, the abstract-versus-concrete effect in the left frontal ROI
+was not statistically significant after adjusting for log word count and ENEM item correctness
+(\(\beta=\ldots\), \(SE=\ldots\), \(p=\ldots\), 95\% CI \([\ldots,\ldots]\)).
+This suggests that allowing the trial window to vary with question duration does not by itself yield
+statistically significant evidence for a frontal condition effect in the current dataset.
+
+\subsection{Expected Outputs}
+
+\subsubsection*{Tables}
+\begin{verbatim}
+01_step7_trial_timing_table.csv
+02_step7_duration_diagnostics.csv
+03_step7_trial_variable_window_summary.csv
+04_step7_primary_front_variable_window_model.csv
+05_step7_front_sentencecount_model.csv
+06_step7_front_sentencelength_model.csv
+07_step7_back_variable_window_model.csv
+08_step7_dissociation_variable_window_model.csv
+09_step7_lag_sensitivity.csv
+10_step7_capped_window_sensitivity.csv
+11_step7_rt_sensitivity.csv
+12_step7_fixed_vs_variable_benchmark.csv
+13_step7_exclusion_log.csv
+14_step7_final_conclusion.csv
+\end{verbatim}
+
+\subsubsection*{Figures}
+\begin{verbatim}
+figures/step7/response_time_by_condition.png
+figures/step7/response_time_vs_wordcount.png
+figures/step7/response_time_vs_correctness.png
+figures/step7/variable_window_duration_histogram.png
+figures/step7/front_roi_partial_effect_variable_window.png
+figures/step7/back_roi_partial_effect_variable_window.png
+figures/step7/dissociation_partial_effect_variable_window.png
+figures/step7/fixed_vs_variable_comparison.png
+figures/step7/model_residuals_primary.png
+\end{verbatim}
+
+\subsubsection*{Reports}
+\begin{verbatim}
+reports/step7/step7_variable_window_report.tex
+reports/step7/tables/primary_model_table.tex
+reports/step7/tables/secondary_model_table.tex
+reports/step7/text/final_conclusion.tex
+\end{verbatim}
+
+\subsection{Minimal Figures for the Main Report}
+The main Step~7 report should include at least:
+\begin{enumerate}
+    \item response-time distribution by condition;
+    \item response time versus total word count;
+    \item response time versus ENEM item correctness;
+    \item histogram of final variable-window durations;
+    \item partial-effect plot for the primary front ROI variable-window model;
+    \item direct benchmark comparison of the Step~6 fixed-window coefficient and the Step~7 variable-window coefficient.
+\end{enumerate}
+
+\subsection{Quality-Control Checks}
+Before Step~7 is considered complete, verify that:
+\begin{enumerate}
+    \item the Step~6 cohort is unchanged unless explicitly re-reviewed;
+    \item the continuous preprocessed files are used rather than truncated onset epochs;
+    \item every included trial has valid onset and answer times;
+    \item every included trial has a fully available baseline interval;
+    \item the variable window does not overlap the next trial onset;
+    \item the final variable window length is positive and at least 2~s;
+    \item only long-separation channels are used in the inferential ROI summaries;
+    \item the short-separation pairs remain excluded from inference;
+    \item the front ROI channel list is identical to Step~6;
+    \item the primary model includes both question size and question difficulty;
+    \item the primary model converges;
+    \item all sensitivity analyses are clearly labeled as non-primary.
+\end{enumerate}
+
+\subsection{Fallback Rule}
+If the primary mixed-effects model fails to converge reliably, the fallback analysis should be:
+\begin{quote}
+a linear model with participant fixed effects and question fixed effects, keeping the same
+variable-window front ROI outcome and the same primary covariates.
+\end{quote}
+
+\subsection{Minimal Completion Criteria}
+Step~7 is complete when:
+\begin{itemize}
+    \item the variable trial windows have been constructed;
+    \item the duration diagnostics have been completed;
+    \item the primary front ROI variable-window model has been fit;
+    \item the alternative structure models have been fit;
+    \item the secondary back and dissociation models have been fit;
+    \item the lag and capped-window sensitivities have been completed;
+    \item the fixed-window versus variable-window benchmark comparison has been completed;
+    \item the primary adjusted p-value has been reported;
+    \item a short final conclusion has been generated;
+    \item all exclusions and warnings have been documented.
+\end{itemize}
+
+\subsection{Short Practical Summary}
+In simple terms, Step~7 should:
+\begin{quote}
+reuse the same cohort and the same frontal ROI from Step~6, move from a fixed 7--11~s summary
+to a lagged question-specific variable window that runs with the actual duration of each trial,
+adjust for both question length and ENEM difficulty, and test whether the abstract-versus-concrete
+effect survives under this more duration-aware definition.
+\end{quote}

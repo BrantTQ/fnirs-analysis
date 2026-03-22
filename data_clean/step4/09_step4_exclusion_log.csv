@@ -1,0 +1,4 @@
+level,participant_id,session_id,block,trial_idx_in_block,question_id,reason_code,reason_detail
+session,PID006,2025-11-12_002,,,,GLOBAL_ANALYSIS_EXCLUSION,Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses after Step 3 documented session 2025-11-12_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log.
+session,PID006,2025-11-12_003,,,,GLOBAL_ANALYSIS_EXCLUSION,Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses after Step 3 documented session 2025-11-12_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log.
+participant,PID037,,,,,GLOBAL_ANALYSIS_EXCLUSION,Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses because a behavioral log exists but no fNIRS session folder was found in Step 3.

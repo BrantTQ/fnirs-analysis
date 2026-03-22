@@ -1,0 +1,14 @@
+stage,level,reason_code,n_rows,detail
+cohort,info,STEP6_COHORT_REUSED,36,Step 7 started from the Step 6 eligible participant-session cohort.
+input_type,info,CONTINUOUS_PREPROCESSED_RAW,36,Step 7 trial summaries were computed directly from the continuous preprocessed fNIRS files from Step 3.
+participant_session_inclusion,info,SESSION_MIN_TRIAL_COUNT,0,Excluded participant-sessions that did not contribute at least two valid abstract and two valid concrete trials to the Step 7 primary analysis.
+model_fit,warning,MODEL_PRIMARY_FRONT_VARIABLE_WINDOW,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_FRONT_SENTENCECOUNT,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_FRONT_SENTENCELENGTH,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_BACK_VARIABLE_WINDOW,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_DISSOCIATION_VARIABLE_WINDOW,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_FRONT_LAG3,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_FRONT_LAG4,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_FRONT_LAG5,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_FRONT_CAP16,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_FRONT_RT_SENSITIVITY,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.

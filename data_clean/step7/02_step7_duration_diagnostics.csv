@@ -1,0 +1,7 @@
+diagnostic_type,label,n_trials,mean_value,sd_value,median_value,min_value,max_value,correlation_r,correlation_p_value
+response_time_by_condition,Concrete,536,89.22867834888059,43.77710132310294,80.65856299999996,13.942835999999945,317.9319989999999,,
+response_time_by_condition,Abstract,539,91.12140189610388,40.4560881811977,84.80463499999996,18.95753300000024,332.15578800000003,,
+response_time_correlation,Response time vs total word count,1075,,,,,,0.2845921102099751,1.772056006454563e-21
+response_time_correlation,Response time vs sentence count,1075,,,,,,0.15106859593028377,6.493309170638516e-07
+response_time_correlation,Response time vs sentence length,1075,,,,,,0.00491704739888464,0.8720700932948122
+response_time_correlation,Response time vs ENEM item correctness,1075,,,,,,-0.1612149783137972,1.0698813447984368e-07

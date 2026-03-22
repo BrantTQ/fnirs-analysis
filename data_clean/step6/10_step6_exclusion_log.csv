@@ -1,0 +1,14 @@
+stage,level,reason_code,n_rows,detail
+merge_step2,info,STEP2_TRIAL_MERGE,0,Merged Step 5 trial rows onto Step 2 behavioral trial fields.
+merge_item_covariates,info,ITEM_METADATA_MERGE,0,Merged Step 5 trials onto the filtered question-level covariates.
+qc_condition_merge,info,ITEM_CONDITION_MATCH,0,Checked that the filtered-question condition labels match the Step 5 trial condition labels.
+qc_item_correctness,info,ITEM_CORRECTNESS_MATCH,0,Checked that ENEM item correctness from Step 2 matches the filtered question metadata.
+qc_primary_model_table,info,PRIMARY_MODEL_ELIGIBILITY,0,Excluded rows from the primary Step 6 model table after checking missing and impossible covariate values.
+qc_step5_cohort,info,STEP5_COHORT_MATCH,0,Checked that the Step 6 trial table uses the same participant-session cohort as Step 5.
+model_fit,warning,MODEL_PRIMARY_FRONT_WORDCOUNT,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_FRONT_SENTENCECOUNT,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_FRONT_SENTENCELENGTH,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_FRONT_WORDCOUNT_DIFFICULTY,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_BACK_WORDCOUNT,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_FRONT_WORDCOUNT_RT,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_FRONT_WORDCOUNT_PARTICIPANT_CORRECT,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.

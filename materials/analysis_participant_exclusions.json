@@ -1,0 +1,18 @@
+{
+  "participants": [
+    {
+      "participant_id": "PID006",
+      "scope": "all downstream participant-level analyses",
+      "effective_date": "2026-03-20",
+      "reason_short": "Global downstream exclusion after Step 3 review",
+      "reason_detail": "Excluded from Step 1 and Step 2 summaries and from future downstream analyses after Step 3 documented session 2025-11-12_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log."
+    },
+    {
+      "participant_id": "PID037",
+      "scope": "all downstream participant-level analyses",
+      "effective_date": "2026-03-20",
+      "reason_short": "Global downstream exclusion after Step 3 review",
+      "reason_detail": "Excluded from Step 1 and Step 2 summaries and from future downstream analyses because a behavioral log exists but no fNIRS session folder was found in Step 3."
+    }
+  ]
+}

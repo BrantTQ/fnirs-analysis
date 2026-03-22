@@ -1,0 +1,39 @@
+participant_id,session_id,step3_final_status,manual_step4_override,manual_step4_override_reason,global_analysis_excluded,global_exclusion_reason,preprocessing_success,front_hbo_n_channels,back_hbo_n_channels,n_valid_abstract_trials,n_valid_concrete_trials,included_primary_analysis,step4_inclusion_note
+PID001,2025-11-06_008,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID002,2025-11-06_PID002,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID003,2025-11-11_003,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,7,7,15,15,True,Included in primary ROI analysis.
+PID004,2025-11-11_004,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,5,5,15,15,True,Included in primary ROI analysis.
+PID005,2025-11-12_001,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID006,2025-11-12_002,EXCLUDE_FROM_STEP4,False,,True,Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses after Step 3 documented session 2025-11-12_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log.,False,0,0,0,0,False,
+PID006,2025-11-12_003,READY_FOR_STEP4_WITH_WARNINGS,False,,True,Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses after Step 3 documented session 2025-11-12_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log.,True,0,0,0,0,False,
+PID007,2025-11-13_001,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,5,6,15,15,True,Included in primary ROI analysis.
+PID008,2025-11-14_002,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID009,2025-11-14_002 (PID09),READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,7,9,14,13,True,Included in primary ROI analysis.
+PID010,2025-11-14_003,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID011,2025-11-18_002,READY_FOR_STEP4,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID012,2025-11-18_003,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,4,7,15,15,True,Included in primary ROI analysis.
+PID013,2025-11-18_004,READY_FOR_STEP4,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID014,2025-11-19_002,READY_FOR_STEP4,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID015,2025-11-19_003,READY_FOR_STEP4,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID016,2025-11-19_004,READY_FOR_STEP4,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID017,2025-11-20_001,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,7,8,15,15,True,Included in primary ROI analysis.
+PID018,2025-11-20_002,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,7,9,15,13,True,Included in primary ROI analysis.
+PID019,2025-11-20_003,READY_FOR_STEP4,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID020,2025-11-20_004,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,7,8,15,15,True,Included in primary ROI analysis.
+PID021,2025-11-21_001,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,7,8,15,15,True,Included in primary ROI analysis.
+PID022,2025-11-21_002,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID023,2025-11-21_003,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,7,7,15,15,True,Included in primary ROI analysis.
+PID024,2025-11-25_001,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,6,9,15,15,True,Included in primary ROI analysis.
+PID025,2025-11-25_002,REVIEW_BEFORE_STEP4,True,User-directed Step 4 override added on 2026-03-20: include this session despite Step 3 REVIEW_BEFORE_STEP4 status.,False,,True,7,9,15,15,True,Included in primary ROI analysis. | User-directed Step 4 override added on 2026-03-20: include this session despite Step 3 REVIEW_BEFORE_STEP4 status.
+PID026,2025-11-25_003,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,6,9,15,15,True,Included in primary ROI analysis.
+PID027,2025-11-25_004,READY_FOR_STEP4,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID028,2025-11-26_001,READY_FOR_STEP4,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID029,2025-11-26_001(PID029),READY_FOR_STEP4,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID030,2025-11-26_001(PID030),READY_FOR_STEP4,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID031,2025-11-26_002(PID031),READY_FOR_STEP4,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID032,2025-11-27_001,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,6,8,15,15,True,Included in primary ROI analysis.
+PID033,2025-11-27_002,READY_FOR_STEP4_WITH_WARNINGS,False,,False,,True,5,6,15,15,True,Included in primary ROI analysis.
+PID034,2025-11-27_003,REVIEW_BEFORE_STEP4,True,User-directed Step 4 override added on 2026-03-20: include this session despite Step 3 REVIEW_BEFORE_STEP4 status.,False,,True,7,8,15,15,True,Included in primary ROI analysis. | User-directed Step 4 override added on 2026-03-20: include this session despite Step 3 REVIEW_BEFORE_STEP4 status.
+PID035,2025-11-28_001,READY_FOR_STEP4,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID036,2025-11-28_002,READY_FOR_STEP4,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.
+PID038,2025-11-28_003,READY_FOR_STEP4,False,,False,,True,7,9,15,15,True,Included in primary ROI analysis.

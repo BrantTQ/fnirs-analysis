@@ -1,0 +1,630 @@
+\section{Step 6: Trial-Level ROI Analysis Adjusted for Question Covariates}
+\label{sec:step6_covariates}
+
+\subsection{Objective}
+The objective of Step~6 is to test whether the abstract-versus-concrete effect in the onset-locked
+left frontal ROI remains after accounting for differences between:
+\begin{itemize}
+    \item participants;
+    \item questions;
+    \item question length and question structure.
+\end{itemize}
+
+This step is motivated by two observations from the previous analyses:
+\begin{enumerate}
+    \item the Step~5 fixed-window front ROI HbO result was the strongest inferential signal so far,
+    but it did not reach conventional statistical significance;
+    \item the onset-locked plots suggest meaningful heterogeneity across individual trials,
+    across channels, and across local channel waveforms.
+\end{enumerate}
+
+Therefore, Step~6 should ask:
+\begin{quote}
+after controlling for question size and structure, and after accounting for participant-level and
+question-level variability, is there evidence of an abstract-versus-concrete effect in the left
+frontal ROI?
+\end{quote}
+
+\subsection{Why This Step Is Needed}
+In the current dataset, trials differ not only by condition but also by the properties of the question itself.
+For example, questions vary in:
+\begin{itemize}
+    \item total number of words;
+    \item number of sentences;
+    \item average sentence length.
+\end{itemize}
+
+These properties may influence reading load, linguistic complexity, and cognitive effort.
+If abstract questions are systematically longer or more linguistically dense than concrete questions,
+part of the observed fNIRS difference may reflect question size or structure rather than condition alone.
+
+At the same time, some participants may generally show larger or smaller fNIRS responses than others,
+and some questions may generally evoke larger or smaller responses than others.
+A trial-level model that accounts for both participants and questions is therefore the most direct
+next step.
+
+\subsection{Core Analytical Decision}
+To keep Step~6 disciplined and interpretable, the following should remain fixed from Step~5:
+\begin{enumerate}
+    \item the same Step~5 included participant-session cohort;
+    \item the same preprocessed fNIRS files from Step~3;
+    \item the same long-channel-only rule;
+    \item the same front ROI definition;
+    \item the same primary onset-locked epoching scheme;
+    \item the same primary fixed HbO window:
+    \begin{verbatim}
+    7.0 s to 11.0 s after question onset
+    \end{verbatim}
+\end{enumerate}
+
+Thus, Step~6 changes only one main thing:
+\begin{quote}
+the analysis moves from unadjusted condition comparisons to adjusted trial-level modelling
+with question covariates and random effects.
+\end{quote}
+
+\subsection{Primary Scientific Question}
+The primary Step~6 question is:
+\begin{quote}
+In the left frontal ROI, does the abstract-versus-concrete effect remain after adjusting for
+question length and participant/question variability?
+\end{quote}
+
+\subsection{Primary Outcome}
+The primary outcome remains the same as in Step~5:
+\begin{quote}
+the trial-level left frontal ROI HbO mean in the fixed 7--11~s onset-locked window.
+\end{quote}
+
+This is kept fixed so that Step~6 isolates the impact of the covariate adjustment rather than
+changing both the dependent variable and the model at the same time.
+
+\subsection{Input Variables}
+Step~6 combines information from:
+\begin{itemize}
+    \item Step~3 preprocessed fNIRS files;
+    \item Step~3 harmonized trigger table;
+    \item Step~5 onset-locked trial table;
+    \item Step~2 question metadata.
+\end{itemize}
+
+At minimum, the question-level covariates available for this step are:
+\begin{itemize}
+    \item \texttt{total\_word\_count};
+    \item \texttt{sentence\_count};
+    \item \texttt{sentence\_length};
+    \item \texttt{correctness} from the original ENEM item-level metadata.
+\end{itemize}
+
+\subsection{Important Collinearity Rule}
+The variables \texttt{total\_word\_count}, \texttt{sentence\_count}, and \texttt{sentence\_length}
+are structurally related.
+In particular, average sentence length is approximately:
+\begin{equation}
+\texttt{sentence\_length}
+\approx
+\frac{\texttt{total\_word\_count}}{\texttt{sentence\_count}}.
+\end{equation}
+
+Therefore, Step~6 should \textbf{not} include all three structure variables in the same model.
+Instead, the analysis should use:
+\begin{itemize}
+    \item one \textbf{primary adjusted model} with \texttt{total\_word\_count};
+    \item two \textbf{alternative adjusted models}, one with \texttt{sentence\_count} and one with
+    \texttt{sentence\_length}.
+\end{itemize}
+
+This keeps the covariate adjustment interpretable and avoids unnecessary multicollinearity.
+
+\subsection{Primary Adjustment Strategy}
+The primary covariate for Step~6 should be:
+\begin{quote}
+\textbf{log-transformed total word count}
+\end{quote}
+
+This is the best first control because it is the most direct measure of overall reading load and
+is likely to be skewed in raw form.
+
+Thus, the primary covariate transformation should be:
+\begin{equation}
+w_k = z\!\left(\log(\texttt{total\_word\_count}_k)\right),
+\end{equation}
+where \(z(\cdot)\) denotes standardization to mean zero and standard deviation one.
+
+\subsection{Modeling Strategy}
+The basic unit of analysis in Step~6 is:
+\begin{quote}
+one participant-question trial.
+\end{quote}
+
+Each trial belongs simultaneously to:
+\begin{itemize}
+    \item one participant;
+    \item one question.
+\end{itemize}
+
+For this reason, the natural model for Step~6 is a \textbf{trial-level mixed-effects model}
+with random intercepts for:
+\begin{itemize}
+    \item participant;
+    \item question.
+\end{itemize}
+
+\subsection{Why a Mixed-Effects Model Is Appropriate}
+A mixed-effects model is appropriate because it directly addresses the two main sources of nuisance variation:
+\begin{itemize}
+    \item some participants may systematically show larger or smaller responses;
+    \item some questions may systematically evoke larger or smaller responses.
+\end{itemize}
+
+By including both participant and question random intercepts, the model can estimate the condition
+effect after accounting for these differences.
+
+\subsection{Primary Step~6 Model}
+Let \(y_{ik}\) denote the trial-level front ROI HbO value for participant \(i\) on question \(k\)
+in the fixed 7--11~s onset-locked window.
+Let \(A_{ik}\) be the condition indicator:
+\begin{equation}
+A_{ik} =
+\begin{cases}
+1 & \text{if the trial is Abstract} \\
+0 & \text{if the trial is Concrete}
+\end{cases}
+\end{equation}
+
+Let \(w_k\) be the standardized log word-count covariate.
+
+The primary Step~6 model should be:
+\begin{equation}
+y_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 w_k
++
+u_i
++
+v_k
++
+\varepsilon_{ik},
+\end{equation}
+where:
+\begin{itemize}
+    \item \(u_i \sim \mathcal{N}(0, \sigma_u^2)\) is the participant random intercept;
+    \item \(v_k \sim \mathcal{N}(0, \sigma_v^2)\) is the question random intercept;
+    \item \(\varepsilon_{ik} \sim \mathcal{N}(0, \sigma^2)\) is the residual term.
+\end{itemize}
+
+\subsection{Primary Inferential Target}
+The primary inferential target in Step~6 is:
+\begin{equation}
+\beta_1
+\end{equation}
+which represents the adjusted abstract-versus-concrete effect in the front ROI after controlling
+for word count and participant/question variability.
+
+\subsection{Primary Hypothesis}
+The primary hypothesis is:
+
+\paragraph{Null hypothesis}
+\begin{equation}
+H_0: \beta_1 = 0
+\end{equation}
+
+\paragraph{Alternative hypothesis}
+\begin{equation}
+H_1: \beta_1 \neq 0
+\end{equation}
+
+The significance threshold should remain:
+\begin{verbatim}
+alpha = 0.05
+\end{verbatim}
+
+\subsection{Alternative Adjusted Models}
+To assess whether the result depends on the specific structural covariate chosen, Step~6 should also fit:
+
+\subsubsection{Model A: Sentence-count model}
+\begin{equation}
+y_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 s_k
++
+u_i
++
+v_k
++
+\varepsilon_{ik},
+\end{equation}
+where:
+\begin{equation}
+s_k = z(\texttt{sentence\_count}_k)
+\end{equation}
+
+\subsubsection{Model B: Sentence-length model}
+\begin{equation}
+y_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 \ell_k
++
+u_i
++
+v_k
++
+\varepsilon_{ik},
+\end{equation}
+where:
+\begin{equation}
+\ell_k = z(\texttt{sentence\_length}_k)
+\end{equation}
+
+These alternative models are not replacements for the primary word-count model.
+They are robustness checks.
+
+\subsection{Difficulty-Adjusted Sensitivity Model}
+Because Step~2 also contains the ENEM item-level correctness value, Step~6 should include one
+additional sensitivity model that adjusts for both question size and question difficulty.
+
+Let:
+\begin{equation}
+c_k = z(\texttt{correctness}_k)
+\end{equation}
+
+Then the difficulty-adjusted sensitivity model should be:
+\begin{equation}
+y_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 w_k
++
+\beta_3 c_k
++
+u_i
++
+v_k
++
+\varepsilon_{ik}.
+\end{equation}
+
+This model is useful because it tests whether the abstract-versus-concrete effect remains after
+adjusting both for question length and for the original population-level item correctness.
+
+\subsection{Variables That Should Not Be in the Primary Model}
+To keep the Step~6 model interpretable, the following variables should \textbf{not} be included
+in the primary model:
+\begin{itemize}
+    \item response time;
+    \item participant correctness on the trial;
+    \item all three question-structure variables at once.
+\end{itemize}
+
+The reason is that response time and participant correctness may be \textbf{mediators} rather than pure confounders.
+For example, if abstract questions truly require more processing, then controlling for response time
+could remove part of the effect of interest.
+
+\subsection{Optional Sensitivity Models Involving Behavior}
+Response time and participant correctness may still be useful in \textbf{sensitivity analyses}, but they
+must be explicitly labeled as such.
+
+\subsubsection{Sensitivity model with response time}
+Let \(r_{ik}\) be standardized log response time.
+Then:
+\begin{equation}
+y_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 w_k
++
+\beta_3 r_{ik}
++
+u_i
++
+v_k
++
+\varepsilon_{ik}
+\end{equation}
+
+\subsubsection{Sensitivity model with participant correctness}
+Let \(p_{ik}\) be the participant correctness indicator.
+Then:
+\begin{equation}
+y_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 w_k
++
+\beta_3 p_{ik}
++
+u_i
++
+v_k
++
+\varepsilon_{ik}
+\end{equation}
+
+These should be interpreted carefully because they may adjust away part of the condition effect.
+
+\subsection{Balance Check Before Modeling}
+Before fitting the mixed-effects models, Step~6 should include a simple item-level balance check
+between abstract and concrete questions.
+
+The balance check should compare the two condition groups on:
+\begin{itemize}
+    \item \texttt{total\_word\_count};
+    \item \texttt{sentence\_count};
+    \item \texttt{sentence\_length};
+    \item \texttt{correctness}.
+\end{itemize}
+
+This balance check should be primarily descriptive and should report:
+\begin{itemize}
+    \item mean;
+    \item standard deviation;
+    \item median;
+    \item minimum;
+    \item maximum;
+    \item standardized mean difference.
+\end{itemize}
+
+Optional simple two-group tests may also be reported, but the emphasis should remain descriptive.
+
+\subsection{Step-by-Step Workflow}
+
+\subsubsection{Step~6.1: Freeze the Step~5 cohort}
+Reuse the same included participant-session set as Step~5.
+Do not redefine the cohort unless a documented data problem requires it.
+
+\subsubsection{Step~6.2: Build the trial-level analysis table}
+Create one row per valid participant-question trial used in Step~5.
+The trial table should include at least:
+\begin{itemize}
+    \item \texttt{participant\_id};
+    \item \texttt{question\_id};
+    \item \texttt{condition} (\texttt{abstract} or \texttt{concrete});
+    \item front ROI HbO 7--11~s mean;
+    \item back ROI HbO 7--11~s mean;
+    \item \texttt{total\_word\_count};
+    \item \texttt{sentence\_count};
+    \item \texttt{sentence\_length};
+    \item \texttt{correctness} from ENEM;
+    \item response time;
+    \item participant correctness.
+\end{itemize}
+
+\subsubsection{Step~6.3: Run the item-level balance check}
+Produce a descriptive summary comparing abstract and concrete questions on the item covariates.
+
+\subsubsection{Step~6.4: Prepare the covariates}
+Apply the following transformations:
+\begin{itemize}
+    \item \texttt{log(total\_word\_count)};
+    \item standardize continuous covariates;
+    \item code condition as binary;
+    \item verify no impossible or missing values remain in the primary model table.
+\end{itemize}
+
+\subsubsection{Step~6.5: Fit the primary word-count adjusted mixed model}
+Fit the front ROI HbO model with:
+\begin{itemize}
+    \item fixed effect of condition;
+    \item fixed effect of log word count;
+    \item random intercept for participant;
+    \item random intercept for question.
+\end{itemize}
+
+\subsubsection{Step~6.6: Fit the sentence-count and sentence-length alternative models}
+Fit the two alternative front ROI models:
+\begin{itemize}
+    \item condition + sentence count;
+    \item condition + sentence length.
+\end{itemize}
+
+\subsubsection{Step~6.7: Fit the difficulty-adjusted sensitivity model}
+Fit the front ROI model including:
+\begin{itemize}
+    \item condition;
+    \item log word count;
+    \item ENEM correctness.
+\end{itemize}
+
+\subsubsection{Step~6.8: Fit the back ROI model}
+Repeat the primary word-count adjusted model using the back ROI HbO response instead of the front ROI response.
+This is a secondary model and is useful for checking whether any adjusted effect remains primarily frontal.
+
+\subsubsection{Step~6.9: Fit behavioral sensitivity models}
+Optionally fit:
+\begin{itemize}
+    \item condition + word count + response time;
+    \item condition + word count + participant correctness.
+\end{itemize}
+
+These should be labeled as sensitivity analyses only.
+
+\subsubsection{Step~6.10: Summarize and compare the model results}
+Collect the following for each model:
+\begin{itemize}
+    \item estimate of the condition coefficient \(\beta_1\);
+    \item standard error;
+    \item test statistic;
+    \item p-value;
+    \item 95\% confidence interval;
+    \item residual variance;
+    \item participant random-intercept variance;
+    \item question random-intercept variance.
+\end{itemize}
+
+\subsection{Primary Reporting Quantities}
+The primary Step~6 results table must report:
+\begin{itemize}
+    \item number of included participants;
+    \item number of included questions;
+    \item number of included trials;
+    \item front ROI adjusted condition coefficient;
+    \item standard error;
+    \item test statistic;
+    \item p-value;
+    \item 95\% confidence interval;
+    \item word-count coefficient;
+    \item participant random-intercept variance;
+    \item question random-intercept variance.
+\end{itemize}
+
+\subsection{Secondary Reporting Quantities}
+The secondary Step~6 results tables should report:
+\begin{itemize}
+    \item sentence-count model results;
+    \item sentence-length model results;
+    \item difficulty-adjusted model results;
+    \item back ROI model results;
+    \item behavioral sensitivity model results.
+\end{itemize}
+
+\subsection{Primary Conclusion Rule}
+The final Step~6 conclusion should be based first on the condition coefficient in the
+primary word-count adjusted front ROI model.
+
+The interpretation rule should be:
+\begin{itemize}
+    \item if the adjusted condition coefficient is significant and positive, conclude that abstract
+    questions are associated with a larger front ROI HbO response than concrete questions even after
+    adjusting for question length and participant/question variability;
+    \item if the adjusted condition coefficient is significant and negative, conclude that concrete
+    questions are associated with a larger front ROI HbO response than abstract questions after adjustment;
+    \item if the adjusted condition coefficient is not significant, conclude that the adjusted model
+    does not show statistically significant evidence for a front ROI abstract-versus-concrete effect.
+\end{itemize}
+
+\subsection{Interpretation Templates}
+
+\paragraph{Template if the adjusted effect is significant and abstract \(>\) concrete.}
+In the trial-level mixed-effects analysis adjusted for log word count, abstract questions were
+associated with a significantly larger left frontal ROI HbO response than concrete questions
+(\(\beta=\ldots\), \(SE=\ldots\), \(p=\ldots\), 95\% CI \([\ldots,\ldots]\)).
+This indicates that the frontal condition effect remains after accounting for both participant-level
+and question-level variability and for differences in question length.
+
+\paragraph{Template if the adjusted effect is significant and concrete \(>\) abstract.}
+In the trial-level mixed-effects analysis adjusted for log word count, concrete questions were
+associated with a significantly larger left frontal ROI HbO response than abstract questions
+(\(\beta=\ldots\), \(SE=\ldots\), \(p=\ldots\), 95\% CI \([\ldots,\ldots]\)).
+
+\paragraph{Template if the adjusted effect is not significant.}
+In the trial-level mixed-effects analysis adjusted for log word count, the abstract-versus-concrete
+effect in the left frontal ROI was not statistically significant
+(\(\beta=\ldots\), \(SE=\ldots\), \(p=\ldots\), 95\% CI \([\ldots,\ldots]\)).
+This suggests that, after accounting for participant differences, question differences, and question
+length, the current data do not provide statistically significant evidence for a frontal condition effect.
+
+\subsection{Expected Outputs}
+
+\subsubsection*{Tables}
+\begin{verbatim}
+01_step6_item_covariate_table.csv
+02_step6_item_balance_summary.csv
+03_step6_trial_model_table.csv
+04_step6_primary_front_wordcount_model.csv
+05_step6_front_sentencecount_model.csv
+06_step6_front_sentencelength_model.csv
+07_step6_front_wordcount_difficulty_model.csv
+08_step6_back_wordcount_model.csv
+09_step6_behavior_sensitivity_models.csv
+10_step6_exclusion_log.csv
+11_step6_final_conclusion.csv
+\end{verbatim}
+
+\subsubsection*{Figures}
+\begin{verbatim}
+figures/step6/wordcount_by_condition.png
+figures/step6/sentencecount_by_condition.png
+figures/step6/sentencelength_by_condition.png
+figures/step6/enem_correctness_by_condition.png
+figures/step6/front_roi_vs_wordcount_scatter.png
+figures/step6/front_roi_partial_effect_condition.png
+figures/step6/model_residuals_primary.png
+figures/step6/model_random_intercepts.png
+\end{verbatim}
+
+\subsubsection*{Reports}
+\begin{verbatim}
+reports/step6/step6_covariate_adjusted_report.tex
+reports/step6/tables/item_balance_table.tex
+reports/step6/tables/primary_model_table.tex
+reports/step6/tables/secondary_model_table.tex
+reports/step6/text/final_conclusion.tex
+\end{verbatim}
+
+\subsection{Minimal Figures for the Main Report}
+The main Step~6 report should include at least:
+\begin{enumerate}
+    \item a balance plot for word count by condition;
+    \item a balance plot for sentence count by condition;
+    \item a balance plot for sentence length by condition;
+    \item a scatter plot of front ROI HbO versus word count, colored by condition;
+    \item a partial-effect plot showing the adjusted condition effect from the primary model;
+    \item one simple residual diagnostic plot for the primary model.
+\end{enumerate}
+
+\subsection{Quality-Control Checks}
+Before Step~6 is considered complete, verify that:
+\begin{enumerate}
+    \item the Step~5 cohort is unchanged unless explicitly re-reviewed;
+    \item the front ROI 7--11~s HbO outcome is identical to the Step~5 trial-level outcome;
+    \item condition labels are complete and valid;
+    \item the question covariates are correctly merged by question ID;
+    \item no impossible word-count or sentence-count values remain;
+    \item the primary model contains only one structural question covariate;
+    \item sentence length is not used in the same model as both word count and sentence count;
+    \item the participant and question random effects are identifiable;
+    \item the primary word-count adjusted model converges;
+    \item all alternative and sensitivity models are clearly labeled as non-primary.
+\end{enumerate}
+
+\subsection{Fallback Rule if the Mixed Model Fails}
+If the primary mixed-effects model fails to converge reliably, the fallback analysis should be:
+\begin{quote}
+a linear model with participant fixed effects and question fixed effects, keeping the same
+front ROI outcome and the same primary covariate.
+\end{quote}
+
+This fallback should be used only if needed and must be documented explicitly.
+
+\subsection{Minimal Completion Criteria}
+Step~6 is complete when:
+\begin{itemize}
+    \item the item-level balance check has been completed;
+    \item the trial-level analysis table has been built;
+    \item the primary word-count adjusted front ROI model has been fit;
+    \item the alternative structural-covariate models have been fit;
+    \item the difficulty-adjusted sensitivity model has been fit;
+    \item the back ROI model has been fit;
+    \item the primary adjusted p-value has been reported;
+    \item a short final conclusion has been generated;
+    \item all exclusions and warnings have been documented.
+\end{itemize}
+
+\subsection{Short Practical Summary}
+In simple terms, Step~6 should:
+\begin{quote}
+keep the same front ROI HbO 7--11~s outcome from Step~5, move to a trial-level mixed-effects model,
+control first for total word count, account for different participants and different questions,
+then check whether the abstract-versus-concrete effect survives that adjustment.
+\end{quote}

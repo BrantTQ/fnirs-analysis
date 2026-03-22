@@ -1,0 +1,57 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\begin{document}
+\section*{Step 8 Exploratory Back-ROI Item-Pair Report}
+\subsection*{Overview}
+\begin{tabular}{p{0.42\linewidth}p{0.50\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+Included participant-sessions from Step 7 & 36\\
+Concrete questions & 15\\
+Abstract questions & 15\\
+Tested concrete-abstract pairs & 225\\
+Pairs surviving FDR & 0\\
+Minimum paired N threshold & 10\\
+Matched-pair rule & |z(log word count difference)| <= 0.5 and |z(ENEM correctness difference)| <= 0.5\\
+Selected-pair follow-up rule & All FDR-significant pairs, otherwise the top 3 lowest-q descriptive pairs\\
+\bottomrule
+\end{tabular}
+\paragraph{Exploratory status.} Step~8 was implemented exactly as an exploratory item-pair deviation from the main pipeline, using the frozen Step~7 cohort and the Step~7 duration-aware back-ROI outcome.
+\paragraph{Top pair summary.} Top pair: 2018\_CH\_77 versus 2021\_CH\_86 (mean difference=1.864e-07, raw p=0.003431, q=0.596248).
+\paragraph{Final conclusion.} \input{text/final_conclusion.tex}
+\subsection*{Top Pairwise Results}
+\input{tables/pairwise_main_table.tex}
+\subsection*{Top Question Rankings}
+\input{tables/question_ranking_table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{../../figures/step8/pairwise_mean_difference_heatmap.png}
+\caption{Mean back-ROI concrete-minus-abstract difference heatmap for all tested item pairs.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step8/pairwise_fdr_qvalue_heatmap.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step8/pairwise_effect_size_heatmap.png}
+\caption{FDR-adjusted q-values and paired effect sizes for all tested item pairs.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step8/pairwise_raw_pvalue_heatmap.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step8/matched_pair_heatmap.png}
+\caption{Raw p-values for all tested item pairs and mean differences restricted to the matched-pair robustness subset.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.80\linewidth]{../../figures/step8/question_centered_ranking_plot.png}
+\caption{Question ranking by participant-centered back-ROI response.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{../../figures/step8/selected_pair_channel_profile.png}
+\caption{Optional channel-level follow-up for the selected item pairs. Asterisks mark channels surviving within-pair FDR correction.}
+\end{figure}
+\end{document}

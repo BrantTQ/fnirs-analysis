@@ -1,0 +1,22 @@
+question_id,question_prompt,variable_group,variable_type,n_participants,n_valid,n_missing,n_not_applicable,n_invalid,n_blank,n_unknown,n_unique_harmonized_categories,notes,min,max,mean,std,median,q1,q3
+affiliation,"Current affiliation (e.g., Bachelor student, Master student, PhD candidate, university employee):",Current academic or professional status,categorical,36,36,0,0,0,0,0,12,18 unique raw form(s) among valid responses,,,,,,,
+age,Age (in years):,Core identification and mobility variables,numeric,36,36,0,0,0,0,0,21,,20.0,63.0,34.25,10.274448195123947,30.0,27.0,38.0
+country_of_birth,"Country of birth (write in plain text, no commas):",Core identification and mobility variables,free_text,36,36,0,0,0,0,0,17,23 unique raw form(s) among valid responses,,,,,,,
+country_secondary_ed,Country where you completed most of your secondary education:,Educational background,free_text,36,36,0,0,0,0,0,19,24 unique raw form(s) among valid responses,,,,,,,
+degree_field,"Field of highest degree (e.g., Computer Science, Economics):",Educational background,free_text,36,36,0,0,0,0,0,23,26 unique raw form(s) among valid responses,,,,,,,
+department_unit,Department or Unit:,Current academic or professional status,free_text,36,36,0,0,0,0,0,24,29 unique raw form(s) among valid responses,,,,,,,
+employee_role,"If you are an employee: role (e.g., Faculty, Postdoc, Research staff, Admin staff, Technical staff):",Current academic or professional status,categorical,36,16,0,20,0,0,0,7,12 unique raw form(s) among valid responses,,,,,,,
+first_gen_he,"Are you first-generation in higher education? (answer in plain text, e.g., Yes / No / Don’t know):",Family educational background and living conditions,categorical,36,36,0,0,0,0,0,3,6 unique raw form(s) among valid responses,,,,,,,
+first_language,First language (mother tongue) — write in plain text:,Gender and language background,free_text,36,36,0,0,0,0,0,17,23 unique raw form(s) among valid responses,,,,,,,
+gender,Gender (write 'male' or 'female'):,Gender and language background,categorical,36,36,0,0,0,0,0,2,4 unique raw form(s) among valid responses,,,,,,,
+highest_degree,"Highest degree completed (e.g., Upper-secondary, Bachelor, Master, Doctorate):",Educational background,categorical,36,36,0,0,0,0,0,4,8 unique raw form(s) among valid responses,,,,,,,
+living_arrangement,"Current living arrangement (“Alone, with family, with roommates, student dormitory, prefer not to say, etc.” ):",Family educational background and living conditions,free_text,36,36,0,0,0,0,0,19,23 unique raw form(s) among valid responses,,,,,,,
+nationality,"Nationality (write in plain text, no commas):",Core identification and mobility variables,free_text,36,36,0,0,0,0,0,20,25 unique raw form(s) among valid responses,,,,,,,
+other_languages,Other languages you are comfortable using — write in plain text:,Gender and language background,free_text,36,35,0,0,0,1,0,19,20 unique raw form(s) among valid responses,,,,,,,
+parent_a_edu,Parent/Guardian A — highest education:,Family educational background and living conditions,categorical,36,36,0,0,0,0,0,8,26 unique raw form(s) among valid responses,,,,,,,
+parent_b_edu,Parent/Guardian B — highest education:,Family educational background and living conditions,categorical,36,36,0,0,0,0,0,7,24 unique raw form(s) among valid responses,,,,,,,
+primary_school_langs,Primary schooling language(s) — write in plain text as a sentence (no commas):,Gender and language background,free_text,36,36,0,0,0,0,0,18,22 unique raw form(s) among valid responses,,,,,,,
+programme_name,"If you are a student: programme name (e.g., BSc Computer Science) :",Current academic or professional status,free_text,36,3,0,31,0,2,0,3,1 response(s) present despite current show_if logic | 3 unique raw form(s) among valid responses,,,,,,,
+study_level,"If you are a student: current study level (e.g., Bachelor, Master, PhD):",Current academic or professional status,categorical,36,4,0,31,0,1,0,3,1 response(s) present despite current show_if logic | 3 unique raw form(s) among valid responses,,,,,,,
+year_in_programme,"If you are a student: year in programme (enter a number, e.g., 1, 2, 3, 4):",Current academic or professional status,numeric,36,4,0,31,0,1,0,3,1 response(s) present despite current show_if logic,1.0,3.0,2.0,0.816496580927726,2.0,1.75,2.25
+years_in_luxembourg,Years living in Luxembourg (enter a number; use 0 if not living in LU):,Core identification and mobility variables,numeric,36,36,0,0,0,0,0,15,,0.0,34.0,6.591666666666667,9.21006824854502,3.0,0.22499999999999998,8.5

@@ -1,0 +1,2 @@
+n_included_participants,n_valid_abstract_trials,n_valid_concrete_trials,primary_p_value,primary_significant,conclusion_text
+36,539,536,0.06665562904822388,False,"In the targeted fixed-window onset-locked follow-up analysis, the difference between abstract and concrete questions in the left frontal ROI during the 7-11 s post-onset window was not statistically significant (t(35)=1.8930, p=0.066656, mean difference=0.0000, 95% CI [-0.0000, 0.0000], d_z=0.3155)."

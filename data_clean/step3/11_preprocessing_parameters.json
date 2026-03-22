@@ -1,0 +1,31 @@
+{
+  "step": "Step 3",
+  "snirf_primary_file": "*.snirf",
+  "short_channel_max_dist_m": 0.01,
+  "sci_threshold": 0.75,
+  "minimum_duration_seconds": 60.0,
+  "preprocessing_order": [
+    "read_raw_snirf",
+    "replace_annotations_with_harmonized_minimum_set",
+    "optical_density",
+    "scalp_coupling_index_qc",
+    "short_channel_regression_on_od_when_available",
+    "tddr",
+    "beer_lambert_law",
+    "bandpass_filter"
+  ],
+  "bandpass_l_freq_hz": 0.01,
+  "bandpass_h_freq_hz": 0.2,
+  "beer_lambert_ppf": 6.0,
+  "software_versions": {
+    "mne": "1.11.0",
+    "mne_nirs": "0.7.3",
+    "pandas": "3.0.1"
+  },
+  "notes": [
+    "Ambiguous sessions with raw annotation code 12 were aligned to PsychoPy by interval structure.",
+    "Auxiliary streams were audited from the SNIRF HDF5 structure because MNE does not expose them as channels here.",
+    "Current .snirf files were never overwritten; all trigger provenance is retained in audit tables.",
+    "Global downstream participant exclusions are defined in materials/analysis_participant_exclusions.json and mirrored into Step 3 output tables."
+  ]
+}

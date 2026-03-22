@@ -1,0 +1,59 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\title{Step 1 Demographics Report}
+\date{}
+\begin{document}
+\maketitle
+\section*{Overview}
+This report was generated automatically from the Step 1 demographic harmonization pipeline.
+\begin{tabular}{p{0.28\linewidth}p{0.62\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+Participants included in Step 1 summaries & 36\\
+Questions summarized & 21\\
+Globally excluded participants & 2\\
+\bottomrule
+\end{tabular}
+\section*{Global Participant Exclusions}
+The following participant IDs were removed from all Step~1 analysis tables, counts, and plots after Step~3 review. Their files remain on disk for audit only, and future downstream steps should continue to honor this exclusion list.
+\begin{tabular}{p{0.28\linewidth}p{0.62\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+PID006 & Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses after Step 3 documented session 2025-11-12\_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log.\\
+PID037 & Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses because a behavioral log exists but no fNIRS session folder was found in Step 3.\\
+\bottomrule
+\end{tabular}
+\section*{Core identification and mobility variables}
+\input{questions/question_age.tex}
+\input{questions/question_country_of_birth.tex}
+\input{questions/question_nationality.tex}
+\input{questions/question_years_in_luxembourg.tex}
+\section*{Gender and language background}
+\input{questions/question_gender.tex}
+\input{questions/question_first_language.tex}
+\input{questions/question_other_languages.tex}
+\input{questions/question_primary_school_langs.tex}
+\section*{Current academic or professional status}
+\input{questions/question_affiliation.tex}
+\input{questions/question_department_unit.tex}
+\input{questions/question_programme_name.tex}
+\input{questions/question_study_level.tex}
+\input{questions/question_year_in_programme.tex}
+\input{questions/question_employee_role.tex}
+\section*{Educational background}
+\input{questions/question_highest_degree.tex}
+\input{questions/question_degree_field.tex}
+\input{questions/question_country_secondary_ed.tex}
+\section*{Family educational background and living conditions}
+\input{questions/question_parent_a_edu.tex}
+\input{questions/question_parent_b_edu.tex}
+\input{questions/question_first_gen_he.tex}
+\input{questions/question_living_arrangement.tex}
+\end{document}

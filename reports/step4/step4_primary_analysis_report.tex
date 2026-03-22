@@ -1,0 +1,86 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{array}
+\usepackage[hidelinks]{hyperref}
+\begin{document}
+\section*{Step 4 Primary ROI Analysis}
+\subsection*{Overview}
+\begin{tabular}{p{0.34\linewidth}p{0.56\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+Participant-sessions in Step 3 table & 38\\
+Primary-included participant-sessions & 36\\
+Primary valid HbO trials & 1075\\
+Manual Step 4 inclusion overrides & 2\\
+Global excluded participants & 2\\
+Logged Step 4 exclusions & 3\\
+Exploratory long channels tested & 22\\
+\bottomrule
+\end{tabular}
+\subsection*{Global Participant Exclusions}
+The shared exclusion list from earlier steps remained active in Step~4. Files were retained for audit, but these participants were not used in the ROI analyses.
+\begin{tabular}{p{0.34\linewidth}p{0.56\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+PID006 & Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses after Step 3 documented session 2025-11-12\_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log.\\
+PID037 & Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses because a behavioral log exists but no fNIRS session folder was found in Step 3.\\
+\bottomrule
+\end{tabular}
+\subsection*{Manual Step 4 Inclusions}
+The following sessions were included in Step~4 by explicit analyst override despite Step~3 review status. This deviation was requested and logged in the Step~4 specification file.
+\begin{tabular}{p{0.34\linewidth}p{0.56\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+PID025 / 2025-11-25\_002 & User-directed Step 4 override added on 2026-03-20: include this session despite Step 3 REVIEW\_BEFORE\_STEP4 status.\\
+PID034 / 2025-11-27\_003 & User-directed Step 4 override added on 2026-03-20: include this session despite Step 3 REVIEW\_BEFORE\_STEP4 status.\\
+\bottomrule
+\end{tabular}
+\subsection*{Primary Dissociation Test}
+\input{tables/primary_dissociation_table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{../../figures/step4/front_back_fourcell_plot.png}
+\caption{Participant-level four-cell HbO summary for the front and back ROIs.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.70\linewidth]{../../figures/step4/primary_dissociation_distribution.png}
+\caption{Distribution of the participant-level primary dissociation scores.}
+\end{figure}
+\subsection*{Planned Follow-Up Tests}
+\input{tables/followup_roi_tests_table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step4/front_roi_abstract_vs_concrete.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step4/back_roi_abstract_vs_concrete.png}
+\caption{Planned paired comparisons for the front and back ROIs.}
+\end{figure}
+\subsection*{Secondary Analyses}
+\begin{tabular}{p{0.34\linewidth}p{0.56\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+Secondary HbR primary-style p-value & 0.838320\\
+Smallest corrected exploratory channel p-value & 0.355121\\
+\bottomrule
+\end{tabular}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step4/front_hbo_waveform.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step4/back_hbo_waveform.png}
+\caption{Descriptive HbO waveforms aligned to question onset for the front and back ROIs.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.70\linewidth]{../../figures/step4/channel_exploratory_map.png}
+\caption{Exploratory long-channel abstract-minus-concrete HbO effects.}
+\end{figure}
+\subsection*{Final Conclusion}
+\input{text/final_conclusion.tex}
+\end{document}

@@ -1,0 +1,74 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\title{Step 2 Behavioral Report}
+\date{}
+\begin{document}
+\maketitle
+\section*{Introduction}
+This report was generated automatically from the Step 2 behavioral harmonization pipeline.
+\section*{Behavioral Overview}
+\begin{tabular}{p{0.30\linewidth}p{0.60\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+Participants included in Step 2 summaries & 36\\
+Trials included in Step 2 summaries & 1075\\
+Questions summarized & 30\\
+Globally excluded participants & 2\\
+\bottomrule
+\end{tabular}
+\section*{Global Participant Exclusions}
+The following participant IDs were removed from all Step~2 analysis tables, counts, and plots after Step~3 review. Their files remain on disk for audit only, and future downstream steps should continue to honor this exclusion list.
+\begin{tabular}{p{0.30\linewidth}p{0.60\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+PID006 & Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses after Step 3 documented session 2025-11-12\_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log.\\
+PID037 & Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses because a behavioral log exists but no fNIRS session folder was found in Step 3.\\
+\bottomrule
+\end{tabular}
+\input{groups/group_abstract_vs_concrete.tex}
+\input{groups/group_blocks.tex}
+\input{groups/group_fields.tex}
+\section*{Question-Level Summaries}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{../../figures/step2/question_accuracy_comparison.png}
+\caption{Question-level comparison of sample accuracy and ENEM correctness.}
+\end{figure}
+\input{questions/question_2017_CH_47.tex}
+\input{questions/question_2017_CH_68.tex}
+\input{questions/question_2017_CH_69.tex}
+\input{questions/question_2017_CH_75.tex}
+\input{questions/question_2018_CH_77.tex}
+\input{questions/question_2018_LC_44.tex}
+\input{questions/question_2019_CH_56.tex}
+\input{questions/question_2019_CH_64.tex}
+\input{questions/question_2019_CH_65.tex}
+\input{questions/question_2020_CH_56.tex}
+\input{questions/question_2020_CH_59.tex}
+\input{questions/question_2020_CH_70.tex}
+\input{questions/question_2020_CH_76.tex}
+\input{questions/question_2020_CH_77.tex}
+\input{questions/question_2020_CH_78.tex}
+\input{questions/question_2020_CH_82.tex}
+\input{questions/question_2020_CH_84.tex}
+\input{questions/question_2020_LC_31.tex}
+\input{questions/question_2021_CH_46.tex}
+\input{questions/question_2021_CH_51.tex}
+\input{questions/question_2021_CH_57.tex}
+\input{questions/question_2021_CH_65.tex}
+\input{questions/question_2021_CH_76.tex}
+\input{questions/question_2021_CH_83.tex}
+\input{questions/question_2021_CH_86.tex}
+\input{questions/question_2021_LC_26.tex}
+\input{questions/question_2022_CH_47.tex}
+\input{questions/question_2022_CH_51.tex}
+\input{questions/question_2022_CH_60.tex}
+\input{questions/question_2022_CH_71.tex}
+\end{document}

@@ -1,0 +1,76 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{array}
+\begin{document}
+\section*{Step 5 Fixed-Window Onset-Locked ROI Follow-Up}
+This report documents the targeted onset-locked follow-up requested after the non-significant pre-specified Step~4 primary test. Step~4 remains the primary analysis; Step~5 is a focused follow-up using the same participant-session cohort and a fixed 7--11~s post-onset HbO window.
+\subsection*{Overview}
+\begin{tabular}{p{0.38\linewidth}p{0.52\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+Step 4 included participant-sessions reused & 36\\
+Step 5 included participant-sessions & 36\\
+Valid onset-locked trials in Step 5 & 1075\\
+Primary valid abstract trials & 539\\
+Primary valid concrete trials & 536\\
+Primary window & 7.0 s to 11.0 s after onset\\
+Sensitivity windows & 6.0-10.0 s, 8.0-12.0 s, and single time point at 9.0 s\\
+Fast-response sensitivity & Exclude trials with answer latency < 11.0 s\\
+\bottomrule
+\end{tabular}
+\subsection*{Shared Global Exclusions}
+The shared exclusion list remained active in Step~5 and the excluded participants were not reintroduced.
+\begin{tabular}{p{0.38\linewidth}p{0.52\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+PID006 & Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses after Step 3 documented session 2025-11-12\_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log.\\
+PID037 & Global downstream exclusion after Step 3 review: Excluded from Step 1 and Step 2 summaries and from future downstream analyses because a behavioral log exists but no fNIRS session folder was found in Step 3.\\
+\bottomrule
+\end{tabular}
+\subsection*{Inherited Step 4 Manual Inclusions}
+Step~5 reused the Step~4 analysis cohort, including the following explicitly approved manual inclusions.
+\begin{tabular}{p{0.38\linewidth}p{0.52\linewidth}}
+\toprule
+Metric & Value\\
+\midrule
+PID025 / 2025-11-25\_002 & User-directed Step 4 override added on 2026-03-20: include this session despite Step 3 REVIEW\_BEFORE\_STEP4 status.\\
+PID034 / 2025-11-27\_003 & User-directed Step 4 override added on 2026-03-20: include this session despite Step 3 REVIEW\_BEFORE\_STEP4 status.\\
+\bottomrule
+\end{tabular}
+\subsection*{Primary Front ROI Fixed-Window Test}
+\input{tables/primary_front_test_table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step5/front_roi_window_plot.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step5/back_roi_window_plot.png}
+\caption{Participant-level fixed-window HbO summaries for the front and back ROIs.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step5/front_waveform_with_window.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step5/back_waveform_with_window.png}
+\caption{Descriptive onset-locked HbO waveforms with the 7--11~s primary analysis window shaded.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.62\linewidth]{../../figures/step5/dissociation_histogram_fixed_window.png}
+\caption{Distribution of the participant-level fixed-window HbO dissociation scores.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.88\linewidth]{../../figures/step5/topography_9s.png}
+\caption{HbO topographic comparison at 9.0~s after question onset for Abstract, Concrete, and Abstract-minus-Concrete.}
+\end{figure}
+\subsection*{Secondary and Sensitivity Results}
+\small
+\input{tables/secondary_tests_table.tex}
+\normalsize
+\paragraph{Primary follow-up result.} Front HbO p=0.066656; back HbO p=0.480986; dissociation HbO p=0.253048.
+\subsection*{Final Conclusion}
+\input{text/final_conclusion.tex}
+\end{document}

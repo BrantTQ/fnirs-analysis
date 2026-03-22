@@ -1,0 +1,626 @@
+\section{Step 1: Harmonization and Descriptive Analysis of PsychoPy Demographic Files}
+\label{sec:step1_demographics}
+% Analyst note added 2026-03-20: PID006 and PID037 are globally excluded from downstream participant-level analyses. PID006 was excluded after Step 3 documented session 2025-11-12_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log. PID037 was excluded because a behavioral log exists but no fNIRS session folder was found. Step 1 outputs are regenerated without these participants, and future steps should honor materials/analysis_participant_exclusions.json.
+
+\subsection{Objective}
+The objective of Step~1 is to create a clean, traceable, and fully documented demographic dataset
+from the PsychoPy outputs before any question-level or fNIRS-level analysis is performed.
+This step focuses only on the demographic and socioeconomic information collected before the task,
+together with the questionnaire metadata needed to interpret those responses correctly.
+
+The present study investigates abstract versus concrete exam questions using fNIRS in an educational
+setting, and the project documentation states that participant information is pseudonymized and used
+in aggregated form. The demographics component therefore needs to be clean, consistent, and easy
+to join later with behavioral and fNIRS data. \cite{step1_project_doc}
+
+\subsection{Current Raw Data Structure}
+Each participant appears only once in the dataset.
+Each participant has a dedicated folder named according to the pattern:
+\begin{verbatim}
+PID001/
+PID002/
+...
+\end{verbatim}
+
+Inside each participant folder, at minimum, the following files are expected:
+\begin{verbatim}
+enem_blocks_PID01_20251106_124958.csv
+socio_PID01_20251106_124958.json
+\end{verbatim}
+
+The \texttt{enem\_blocks} file contains event-level PsychoPy information, including the start of the
+questionnaire block and questionnaire item markers.
+The \texttt{socio} JSON file contains the actual demographic answers keyed by variable name.
+
+In addition, the file \texttt{demographics\_questions.json} defines the questionnaire schema, including
+question identifiers, prompts, variable types, required flags, and conditional display rules.
+This file should be treated as the primary questionnaire specification for Step~1. \cite{step1_demo_schema}
+
+\subsection{Principles for Step~1}
+Step~1 should follow six basic principles:
+\begin{enumerate}
+    \item Keep the workflow simple and conservative.
+    \item Never overwrite or modify any raw file.
+    \item Preserve both raw values and harmonized values.
+    \item Treat \texttt{demographics\_questions.json} as the reference schema for current sessions.
+    \item Flag ambiguous legacy values rather than forcing recodes.
+    \item Produce modular outputs: CSV tables, plots, and \LaTeX{} snippets generated automatically.
+\end{enumerate}
+
+\subsection{Scope}
+This step includes:
+\begin{itemize}
+    \item inventory of demographic-related raw files;
+    \item extraction and validation of participant identifiers and timestamps;
+    \item harmonization of demographic variables;
+    \item grouped descriptive analysis of each demographic question;
+    \item export of clean CSV files;
+    \item generation of plots for each variable;
+    \item generation of one \LaTeX{} file per variable and one master \LaTeX{} report.
+\end{itemize}
+
+This step does not include:
+\begin{itemize}
+    \item analysis of question performance;
+    \item reconstruction of missing fNIRS triggers;
+    \item preprocessing or statistical analysis of the fNIRS signals.
+\end{itemize}
+
+\subsection{Authoritative Variable List}
+The current questionnaire schema contains the following variables:
+\begin{verbatim}
+age
+country_of_birth
+nationality
+years_in_luxembourg
+gender
+first_language
+other_languages
+affiliation
+department_unit
+programme_name
+study_level
+year_in_programme
+employee_role
+highest_degree
+degree_field
+country_secondary_ed
+primary_school_langs
+parent_a_edu
+parent_b_edu
+first_gen_he
+living_arrangement
+\end{verbatim}
+
+Some of these variables are conditional.
+For example, \texttt{programme\_name}, \texttt{study\_level}, and \texttt{year\_in\_programme}
+are displayed only if affiliation matches a student pattern, while \texttt{employee\_role} is shown
+only for employee/staff/faculty/postdoc patterns. These conditions are explicitly defined in the
+questionnaire schema and must be respected during analysis. \cite{step1_demo_schema}
+
+\subsection{Question Groups}
+For organization and reporting, the variables should be analyzed in the following groups:
+
+\begin{enumerate}
+    \item \textbf{Core identification and mobility variables}
+    \begin{itemize}
+        \item \texttt{age}
+        \item \texttt{country\_of\_birth}
+        \item \texttt{nationality}
+        \item \texttt{years\_in\_luxembourg}
+    \end{itemize}
+
+    \item \textbf{Gender and language background}
+    \begin{itemize}
+        \item \texttt{gender}
+        \item \texttt{first\_language}
+        \item \texttt{other\_languages}
+        \item \texttt{primary\_school\_langs}
+    \end{itemize}
+
+    \item \textbf{Current academic or professional status}
+    \begin{itemize}
+        \item \texttt{affiliation}
+        \item \texttt{department\_unit}
+        \item \texttt{programme\_name}
+        \item \texttt{study\_level}
+        \item \texttt{year\_in\_programme}
+        \item \texttt{employee\_role}
+    \end{itemize}
+
+    \item \textbf{Educational background}
+    \begin{itemize}
+        \item \texttt{highest\_degree}
+        \item \texttt{degree\_field}
+        \item \texttt{country\_secondary\_ed}
+    \end{itemize}
+
+    \item \textbf{Family educational background and living conditions}
+    \begin{itemize}
+        \item \texttt{parent\_a\_edu}
+        \item \texttt{parent\_b\_edu}
+        \item \texttt{first\_gen\_he}
+        \item \texttt{living\_arrangement}
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Expected Inputs}
+The minimum raw inputs for Step~1 are:
+\begin{itemize}
+    \item one participant folder per participant, e.g. \texttt{PID001/};
+    \item one PsychoPy event file per participant:
+    \texttt{enem\_blocks\_PIDxx\_YYYYMMDD\_HHMMSS.csv};
+    \item one demographic response file per participant:
+    \texttt{socio\_PIDxx\_YYYYMMDD\_HHMMSS.json};
+    \item the questionnaire schema file:
+    \texttt{demographics\_questions.json}.
+\end{itemize}
+
+\subsection{Expected Outputs}
+The following outputs should be generated in Step~1:
+
+\subsubsection*{Structured tables}
+\begin{verbatim}
+01_file_manifest.csv
+02_participant_registry.csv
+03_demographics_schema.csv
+04_socio_raw_wide.csv
+05_socio_raw_long.csv
+06_socio_harmonization_dictionary.csv
+07_socio_clean_wide.csv
+08_question_summary.csv
+09_question_level_counts.csv
+10_question_missingness.csv
+\end{verbatim}
+
+\subsubsection*{Plots}
+\begin{verbatim}
+figures/step1/age_histogram.png
+figures/step1/years_in_luxembourg_histogram.png
+figures/step1/gender_barplot.png
+figures/step1/affiliation_barplot.png
+...
+\end{verbatim}
+
+\subsubsection*{\LaTeX{} outputs}
+\begin{verbatim}
+reports/step1/questions/question_age.tex
+reports/step1/questions/question_gender.tex
+reports/step1/questions/question_affiliation.tex
+...
+reports/step1/step1_demographics_report.tex
+\end{verbatim}
+
+\subsection{Folder Structure for Step~1}
+A simple and organized structure is recommended:
+\begin{verbatim}
+project/
+├── data_raw/
+│   ├── PID001/
+│   ├── PID002/
+│   └── ...
+├── data_intermediate/
+│   └── step1/
+├── data_clean/
+│   └── step1/
+├── figures/
+│   └── step1/
+├── reports/
+│   └── step1/
+│       └── questions/
+└── scripts/
+\end{verbatim}
+
+\subsection{Detailed Workflow}
+
+\subsubsection{Step~1.1: Build the raw file manifest}
+Create a manifest with one row per discovered file.
+For each file, record:
+\begin{itemize}
+    \item participant folder name;
+    \item participant ID extracted from folder;
+    \item file name;
+    \item file type (\texttt{enem\_blocks}, \texttt{socio\_json}, schema, other);
+    \item timestamp extracted from the file name;
+    \item full path;
+    \item whether the expected pair exists.
+\end{itemize}
+
+The purpose of this file is to guarantee that every participant has the expected raw inputs and that
+the paired files refer to the same recording timestamp.
+
+\subsubsection{Step~1.2: Build the participant registry}
+Create a participant registry with exactly one row per participant.
+Since each participant appears only once, the participant registry should include:
+\begin{itemize}
+    \item \texttt{participant\_id} (e.g. \texttt{PID001});
+    \item folder name;
+    \item PsychoPy file name;
+    \item socio JSON file name;
+    \item session timestamp;
+    \item matching-status flag;
+    \item notes.
+\end{itemize}
+
+Even though there is only one session per participant, it is still useful to keep the timestamp,
+because later steps will need to connect these files to the corresponding fNIRS recording.
+
+\subsubsection{Step~1.3: Parse the questionnaire schema}
+Read \texttt{demographics\_questions.json} and convert it into a flat table called
+\texttt{03\_demographics\_schema.csv}.
+For each variable, store:
+\begin{itemize}
+    \item question ID;
+    \item question prompt;
+    \item declared type;
+    \item required flag;
+    \item \texttt{show\_if} dependency, if present;
+    \item \texttt{show\_if} regular expression, if present.
+\end{itemize}
+
+This table becomes the schema reference for all downstream validation and reporting. \cite{step1_demo_schema}
+
+\subsubsection{Step~1.4: Read the raw JSON answers}
+Read all \texttt{socio\_PIDxx\_timestamp.json} files into a single raw wide table.
+At this stage:
+\begin{itemize}
+    \item do not recode any value;
+    \item do not collapse categories;
+    \item do not drop blank strings;
+    \item keep exactly what was recorded.
+\end{itemize}
+
+This table should be saved as \texttt{04\_socio\_raw\_wide.csv}.
+
+\subsubsection{Step~1.5: Convert the raw wide table to long format}
+Create a long-format version with one row per participant-variable pair.
+The minimum columns should be:
+\begin{verbatim}
+participant_id
+timestamp
+question_id
+raw_value
+source_json
+\end{verbatim}
+
+This long table should be saved as \texttt{05\_socio\_raw\_long.csv}.
+The long format will make grouped analysis, quality checks, and automated report generation much easier.
+
+\subsubsection{Step~1.6: Validate against the schema}
+For each participant and each schema variable, check:
+\begin{itemize}
+    \item whether the variable exists in the JSON;
+    \item whether the response type is compatible with the schema type;
+    \item whether a missing value is allowed;
+    \item whether the variable should have been shown according to the \texttt{show\_if} rule.
+\end{itemize}
+
+This is very important for conditional variables.
+For example:
+\begin{itemize}
+    \item if \texttt{affiliation} indicates a student, then \texttt{programme\_name},
+    \texttt{study\_level}, and \texttt{year\_in\_programme} should be evaluated as relevant fields;
+    \item if \texttt{affiliation} indicates an employee, then \texttt{employee\_role}
+    becomes relevant;
+    \item if a variable was not applicable, it should be coded as \texttt{NOT\_APPLICABLE},
+    not as ordinary missing.
+\end{itemize}
+
+\subsubsection{Step~1.7: Create the harmonization dictionary}
+Create \texttt{06\_socio\_harmonization\_dictionary.csv}.
+This file must document every transformation rule.
+It should contain at least:
+\begin{itemize}
+    \item variable name;
+    \item raw value;
+    \item harmonized value;
+    \item transformation rule;
+    \item comments;
+    \item whether the rule is exact or approximate.
+\end{itemize}
+
+No value should be changed without an explicit rule in this dictionary.
+
+\subsubsection{Step~1.8: Apply basic text cleaning}
+For all text fields, apply only conservative cleaning:
+\begin{itemize}
+    \item trim leading and trailing whitespace;
+    \item collapse repeated spaces;
+    \item standardize obvious capitalization;
+    \item preserve accents;
+    \item keep the original raw value in a separate column.
+\end{itemize}
+
+Examples:
+\begin{itemize}
+    \item \texttt{" iran "} $\rightarrow$ \texttt{"Iran"}
+    \item \texttt{"phd candidate"} $\rightarrow$ \texttt{"PhD candidate"}
+    \item \texttt{"udm liser"} $\rightarrow$ \texttt{"UDM LISER"}
+\end{itemize}
+
+This step should remain conservative.
+No advanced NLP or semantic grouping should be introduced at this stage.
+
+\subsubsection{Step~1.9: Apply variable-specific harmonization}
+Each variable should then be harmonized according to its type.
+
+\paragraph{Numeric variables}
+The following variables should be parsed as numeric when possible:
+\begin{itemize}
+    \item \texttt{age}
+    \item \texttt{years\_in\_luxembourg}
+    \item \texttt{year\_in\_programme}
+\end{itemize}
+
+Store:
+\begin{itemize}
+    \item raw string value;
+    \item parsed numeric value;
+    \item validity flag.
+\end{itemize}
+
+\paragraph{Binary or small-category variables}
+The following should be standardized to a small controlled vocabulary:
+\begin{itemize}
+    \item \texttt{gender}
+    \item \texttt{first\_gen\_he}
+\end{itemize}
+
+For example:
+\begin{itemize}
+    \item \texttt{yes}, \texttt{Yes}, \texttt{Y} $\rightarrow$ \texttt{Yes}
+    \item \texttt{no}, \texttt{No}, \texttt{N} $\rightarrow$ \texttt{No}
+    \item unclear values $\rightarrow$ \texttt{Unknown}
+\end{itemize}
+
+\paragraph{Ordered education variables}
+The following should be harmonized into ordered levels:
+\begin{itemize}
+    \item \texttt{study\_level}
+    \item \texttt{highest\_degree}
+    \item \texttt{parent\_a\_edu}
+    \item \texttt{parent\_b\_edu}
+\end{itemize}
+
+\paragraph{Open-text fields}
+The following should remain essentially open-text, with only light cleaning:
+\begin{itemize}
+    \item \texttt{country\_of\_birth}
+    \item \texttt{nationality}
+    \item \texttt{first\_language}
+    \item \texttt{other\_languages}
+    \item \texttt{department\_unit}
+    \item \texttt{programme\_name}
+    \item \texttt{degree\_field}
+    \item \texttt{country\_secondary\_ed}
+    \item \texttt{primary\_school\_langs}
+    \item \texttt{living\_arrangement}
+\end{itemize}
+
+For these fields, the goal is not to aggressively merge categories at this stage.
+The goal is to remove trivial spelling noise while preserving real heterogeneity.
+
+\subsubsection{Step~1.10: Define missingness explicitly}
+Use explicit missingness labels:
+\begin{itemize}
+    \item \texttt{MISSING}: expected but absent;
+    \item \texttt{NOT\_APPLICABLE}: hidden by questionnaire logic;
+    \item \texttt{INVALID}: present but malformed;
+    \item \texttt{UNKNOWN}: ambiguous and unresolved;
+    \item \texttt{BLANK}: empty string recorded.
+\end{itemize}
+
+This distinction is important for descriptive analysis and later modeling.
+
+\subsubsection{Step~1.11: Build the clean wide table}
+Create \texttt{07\_socio\_clean\_wide.csv}, with one row per participant and one harmonized column per variable.
+For each variable, it is recommended to keep:
+\begin{itemize}
+    \item a harmonized analysis column;
+    \item the raw value in a parallel column if needed;
+    \item a flag column for missingness or uncertainty when useful.
+\end{itemize}
+
+\subsubsection{Step~1.12: Produce grouped descriptive analysis for each question}
+Each demographic variable should receive its own descriptive analysis block.
+
+For \textbf{numeric variables}, compute:
+\begin{itemize}
+    \item number of valid responses;
+    \item number of missing, invalid, and not-applicable cases;
+    \item minimum;
+    \item maximum;
+    \item mean;
+    \item standard deviation;
+    \item median;
+    \item quartiles.
+\end{itemize}
+
+For \textbf{categorical variables}, compute:
+\begin{itemize}
+    \item number of valid responses;
+    \item number of missing, invalid, and not-applicable cases;
+    \item frequency of each harmonized category;
+    \item percentage of each harmonized category;
+    \item number of unique raw forms before harmonization.
+\end{itemize}
+
+For \textbf{free-text variables}, compute:
+\begin{itemize}
+    \item number of valid responses;
+    \item number of unique harmonized responses;
+    \item top categories by frequency;
+    \item optional grouped table if a simple manual recoding exists.
+\end{itemize}
+
+\subsubsection{Step~1.13: Export per-question result tables}
+The per-question analysis should be saved into at least three files:
+
+\paragraph{\texttt{08\_question\_summary.csv}}
+One row per variable, containing:
+\begin{itemize}
+    \item question ID;
+    \item question prompt;
+    \item variable group;
+    \item variable type;
+    \item number of participants;
+    \item number of valid responses;
+    \item number missing;
+    \item number not applicable;
+    \item number invalid;
+    \item number of unique harmonized categories;
+    \item notes.
+\end{itemize}
+
+\paragraph{\texttt{09\_question\_level\_counts.csv}}
+One row per variable-category pair, containing:
+\begin{itemize}
+    \item question ID;
+    \item harmonized category;
+    \item count;
+    \item percentage.
+\end{itemize}
+
+\paragraph{\texttt{10\_question\_missingness.csv}}
+One row per variable and missingness type, containing:
+\begin{itemize}
+    \item question ID;
+    \item missingness label;
+    \item count;
+    \item percentage.
+\end{itemize}
+
+\subsubsection{Step~1.14: Produce plots}
+Each variable should have its own plot.
+
+\paragraph{Numeric variables}
+Generate:
+\begin{itemize}
+    \item histogram;
+    \item boxplot if useful.
+\end{itemize}
+
+\paragraph{Categorical variables}
+Generate:
+\begin{itemize}
+    \item bar plot of harmonized category counts;
+    \item optionally a second bar plot for missingness profile.
+\end{itemize}
+
+\paragraph{Open-text variables}
+Generate:
+\begin{itemize}
+    \item bar plot of the most frequent cleaned responses;
+    \item truncate to top categories when necessary.
+\end{itemize}
+
+Plots should be saved in:
+\begin{verbatim}
+figures/step1/
+\end{verbatim}
+
+\subsubsection{Step~1.15: Generate one \LaTeX{} file per variable}
+For each variable, generate a separate \LaTeX{} file:
+\begin{verbatim}
+reports/step1/questions/question_<id>.tex
+\end{verbatim}
+
+Each file should contain:
+\begin{itemize}
+    \item subsection title with question prompt;
+    \item variable metadata;
+    \item short text summary;
+    \item table of counts or summary statistics;
+    \item inserted plot;
+    \item notes on harmonization and missingness.
+\end{itemize}
+
+This modular structure allows the report to be rebuilt automatically without rewriting text by hand.
+
+\subsubsection{Step~1.16: Generate a master \LaTeX{} report}
+Create a master file:
+\begin{verbatim}
+reports/step1/step1_demographics_report.tex
+\end{verbatim}
+
+This file should:
+\begin{itemize}
+    \item introduce the demographic module;
+    \item describe the data sources;
+    \item summarize the harmonization process;
+    \item include grouped sections;
+    \item load each variable file with \texttt{\textbackslash input\{...\}}.
+\end{itemize}
+
+This makes the report easy to update whenever the data are refreshed.
+
+\subsection{Granular Reporting Template for One Variable}
+Each variable-specific \LaTeX{} file should follow the same logic:
+
+\begin{verbatim}
+\subsection{Age}
+\label{sec:q_age}
+
+\paragraph{Question prompt.}
+Age (in years).
+
+\paragraph{Type.}
+Numeric, required.
+
+\paragraph{Availability.}
+N participants, N valid, N missing, N invalid.
+
+\paragraph{Summary statistics.}
+Mean, SD, median, min, max, quartiles.
+
+\paragraph{Quality notes.}
+Any implausible values, formatting corrections, or exclusions.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/step1/age_histogram.png}
+    \caption{Distribution of age.}
+\end{figure}
+\end{verbatim}
+
+For a categorical variable, the structure should be analogous, replacing summary statistics with a frequency table.
+
+\subsection{Quality-Control Checks}
+Before considering Step~1 complete, the following checks should be run:
+
+\begin{enumerate}
+    \item every participant folder has both expected files;
+    \item file timestamps match within participant;
+    \item schema variables are recognized;
+    \item no unexpected variables remain unmapped;
+    \item numeric fields parse correctly where expected;
+    \item conditional variables are correctly marked as applicable or not applicable;
+    \item frequencies are reviewed for suspicious spelling variants;
+    \item the final participant count matches the raw folder count.
+\end{enumerate}
+
+\subsection{Special Note on Legacy Sessions}
+The current questionnaire schema is text-based and uses named variables directly.
+However, earlier versions may have stored some answers as numeric option codes rather than text labels.
+If such legacy sessions exist, they must not be harmonized by guesswork.
+Instead, they should be decoded only from the original option mapping used at the time of collection.
+Until that mapping is available, such responses should be flagged as unresolved rather than forced into categories.
+
+\subsection{Minimal Completion Criteria for Step~1}
+Step~1 is complete when:
+\begin{itemize}
+    \item all participant folders have been inventoried;
+    \item all socio JSON files have been loaded;
+    \item all variables have been checked against the questionnaire schema;
+    \item a clean participant-level demographic table exists;
+    \item grouped descriptive CSV outputs exist;
+    \item one plot per variable exists;
+    \item one \LaTeX{} file per variable exists;
+    \item one master demographic report exists;
+    \item all harmonization decisions are documented.
+\end{itemize}
+
+\subsection{Practical Interpretation}
+In simple terms, Step~1 should deliver one well-organized demographic analysis package:
+a clean participant table, a schema table, harmonization logs, grouped summaries, plots, and a modular
+\LaTeX{} report that can be updated automatically whenever new participants are added.

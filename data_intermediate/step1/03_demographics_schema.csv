@@ -1,0 +1,22 @@
+question_id,question_prompt,declared_type,required,show_if_dependency,show_if_regex
+age,Age (in years):,number,True,,
+country_of_birth,"Country of birth (write in plain text, no commas):",text,True,,
+nationality,"Nationality (write in plain text, no commas):",text,True,,
+years_in_luxembourg,Years living in Luxembourg (enter a number; use 0 if not living in LU):,number,True,,
+gender,Gender (write 'male' or 'female'):,text,True,,
+first_language,First language (mother tongue) — write in plain text:,text,True,,
+other_languages,Other languages you are comfortable using — write in plain text:,text,False,,
+affiliation,"Current affiliation (e.g., Bachelor student, Master student, PhD candidate, university employee):",text,True,,
+department_unit,Department or Unit:,text,True,,
+programme_name,"If you are a student: programme name (e.g., BSc Computer Science) :",text,False,affiliation,student
+study_level,"If you are a student: current study level (e.g., Bachelor, Master, PhD):",text,False,affiliation,student
+year_in_programme,"If you are a student: year in programme (enter a number, e.g., 1, 2, 3, 4):",number,False,affiliation,student
+employee_role,"If you are an employee: role (e.g., Faculty, Postdoc, Research staff, Admin staff, Technical staff):",text,False,affiliation,employee|staff|faculty|postdoc
+highest_degree,"Highest degree completed (e.g., Upper-secondary, Bachelor, Master, Doctorate):",text,True,,
+degree_field,"Field of highest degree (e.g., Computer Science, Economics):",text,True,,
+country_secondary_ed,Country where you completed most of your secondary education:,text,True,,
+primary_school_langs,Primary schooling language(s) — write in plain text as a sentence (no commas):,text,True,,
+parent_a_edu,Parent/Guardian A — highest education:,text,True,,
+parent_b_edu,Parent/Guardian B — highest education:,text,True,,
+first_gen_he,"Are you first-generation in higher education? (answer in plain text, e.g., Yes / No / Don’t know):",text,True,,
+living_arrangement,"Current living arrangement (“Alone, with family, with roommates, student dormitory, prefer not to say, etc.” ):",text,False,,

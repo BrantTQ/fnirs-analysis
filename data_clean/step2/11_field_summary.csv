@@ -1,0 +1,3 @@
+question_field,n_unique_questions,n_valid_trials,mean_accuracy,mean_enem_correctness,mean_rt_text_to_answer
+CH,27,968,0.5650826446280992,0.386685131134491,87.35611430061984
+LC,3,107,0.5233644859813084,0.35113982206352484,115.7037823271028

@@ -1,0 +1,482 @@
+\section{Step 8: Exploratory Back-ROI Item-Pair Analysis}
+\label{sec:step8_back_roi_items}
+
+\subsection{Objective}
+The objective of Step~8 is to investigate whether the left back ROI contains
+\textbf{item-specific effects} that are not visible in the broader condition-level analyses.
+
+This step is motivated by the fact that the back ROI did not show a robust
+condition-level abstract-versus-concrete effect in the previous main analyses.
+Therefore, Step~8 does \textbf{not} aim to replace the main analyses.
+Instead, it asks a different and more targeted question:
+\begin{quote}
+Are there specific concrete questions that elicit stronger back-ROI responses than specific abstract questions?
+\end{quote}
+
+This step should be treated as \textbf{exploratory}.
+
+\subsection{Rationale}
+A global null result in the back ROI does not necessarily mean that the region is uninformative.
+It may instead mean that:
+\begin{itemize}
+    \item the back ROI does not respond to \textbf{concreteness as a broad category};
+    \item only a subset of questions drives posterior responses;
+    \item specific item content, such as imagery, spatial structure, sensory detail, or contextual layout,
+    is more important than the abstract-versus-concrete label alone.
+\end{itemize}
+
+For this reason, Step~8 focuses on the question level rather than the condition level.
+
+\subsection{Status of This Step}
+Step~8 should be described as:
+\begin{quote}
+an exploratory deviation from the main pipeline designed to test whether item-specific posterior effects
+exist even though the back ROI did not show a robust global condition-level effect.
+\end{quote}
+
+Any statistically significant findings in this step should be interpreted as:
+\begin{itemize}
+    \item evidence of \textbf{item-specific back-ROI sensitivity};
+    \item not automatic evidence of a broad concrete-greater-than-abstract posterior effect.
+\end{itemize}
+
+\subsection{Inputs}
+Step~8 should reuse the outputs of Step~7:
+\begin{itemize}
+    \item the same included participant-session cohort;
+    \item the same variable-window back-ROI trial summaries;
+    \item the same question metadata;
+    \item the same question-level covariates.
+\end{itemize}
+
+The key trial-level input is:
+\begin{quote}
+the Step~7 back ROI variable-window HbO response for each participant-question trial.
+\end{quote}
+
+\subsection{Primary ROI and Outcome}
+The ROI for this step is the same back ROI used previously.
+
+\subsubsection{Back ROI HbO channels}
+\begin{verbatim}
+S4_D2 hbo
+S3_D1 hbo
+S6_D2 hbo
+S6_D1 hbo
+S6_D5 hbo
+S7_D2 hbo
+S7_D5 hbo
+S8_D1 hbo
+S8_D5 hbo
+\end{verbatim}
+
+\subsubsection{Primary trial-level outcome}
+For participant \(i\) and question \(q\), let:
+\begin{equation}
+y^{(B)}_{iq}
+\end{equation}
+denote the Step~7 back ROI HbO response computed from the lagged variable trial window.
+
+This is the dependent variable used in all Step~8 analyses.
+
+\subsection{Core Analytical Decision}
+The core idea of Step~8 is:
+\begin{quote}
+compare each concrete question against each abstract question within participant,
+then test whether the back ROI difference for that question pair is reliable across participants.
+\end{quote}
+
+This should be done \textbf{pair by pair}, not by pooling all pairwise differences together.
+
+\subsection{Why the Pairwise Analysis Must Be Done Separately}
+If all item-pair differences were pooled together as if they were independent observations,
+the same participant would appear many times in the same global analysis, which would create
+pseudo-replication.
+
+Therefore, the correct structure is:
+\begin{itemize}
+    \item one test per concrete-abstract question pair;
+    \item each test is paired across participants;
+    \item multiple-comparison correction is then applied across all tested pairs.
+\end{itemize}
+
+\subsection{Question Groups}
+Let:
+\begin{itemize}
+    \item \(C\) denote the set of concrete questions;
+    \item \(A\) denote the set of abstract questions.
+\end{itemize}
+
+For every concrete question \(c \in C\) and abstract question \(a \in A\),
+Step~8 should evaluate the back-ROI contrast:
+\begin{equation}
+d_{i,c,a} = y^{(B)}_{i,c} - y^{(B)}_{i,a}.
+\end{equation}
+
+A positive value means that, for participant \(i\), the concrete question \(c\)
+elicited a larger back-ROI response than the abstract question \(a\).
+
+\subsection{Primary Exploratory Question}
+The primary exploratory question of Step~8 is:
+\begin{quote}
+Are there any concrete-abstract item pairs for which the mean back-ROI contrast
+is reliably greater than zero across participants?
+\end{quote}
+
+\subsection{Participant Inclusion Rules}
+A participant should contribute to a specific pairwise comparison \((c,a)\) only if:
+\begin{itemize}
+    \item the participant was included in Step~7;
+    \item the participant has a valid back-ROI response for question \(c\);
+    \item the participant has a valid back-ROI response for question \(a\).
+\end{itemize}
+
+A participant may contribute to one pair but not to another, depending on data availability.
+
+\subsection{Minimum Pairwise Sample Size}
+To avoid unstable pairwise tests, a question pair \((c,a)\) should be analyzed only if at least:
+\begin{equation}
+N_{\min} = 10
+\end{equation}
+participants contribute valid paired values.
+
+This threshold may be increased if the data support it, but it should be fixed before running the tests.
+
+\subsection{Primary Pairwise Statistical Test}
+For each valid question pair \((c,a)\), the primary test should be a two-sided paired t-test across participants.
+
+For pair \((c,a)\), define:
+\begin{equation}
+\bar{d}_{c,a} = \frac{1}{n_{c,a}} \sum_{i=1}^{n_{c,a}} d_{i,c,a}.
+\end{equation}
+
+The hypotheses are:
+
+\paragraph{Null hypothesis}
+\begin{equation}
+H_0: \mu_{c,a} = 0
+\end{equation}
+
+\paragraph{Alternative hypothesis}
+\begin{equation}
+H_1: \mu_{c,a} \neq 0
+\end{equation}
+
+This produces one paired t-test per valid concrete-abstract question pair.
+
+\subsection{Effect Size}
+For each pair \((c,a)\), report the paired effect size:
+\begin{equation}
+d_{z,c,a} = \frac{\bar{d}_{c,a}}{s_{d,c,a}},
+\end{equation}
+where \(s_{d,c,a}\) is the standard deviation of the within-participant differences for that pair.
+
+\subsection{Multiple-Comparison Correction}
+Because Step~8 performs many item-pair tests, raw p-values must not be used alone.
+
+The primary correction method should be:
+\begin{quote}
+Benjamini--Hochberg false discovery rate (FDR) correction
+\end{quote}
+applied across all tested concrete-abstract pairs.
+
+For each pair, report:
+\begin{itemize}
+    \item raw p-value;
+    \item FDR-adjusted q-value.
+\end{itemize}
+
+\subsection{Primary Interpretation Rule}
+The main interpretation rule should be:
+\begin{itemize}
+    \item if no question pair survives FDR correction, conclude that the back ROI does not show
+    reliable item-specific concrete-abstract differences in the current dataset;
+    \item if some question pairs survive FDR correction, conclude that the back ROI may be sensitive
+    to specific question content, but interpret this as \textbf{item-specific exploratory evidence},
+    not as proof of a general posterior concreteness effect.
+\end{itemize}
+
+\subsection{Step-by-Step Workflow}
+
+\subsubsection{Step~8.1: Freeze the Step~7 cohort}
+Reuse the same included participant-session set and the same back-ROI variable-window outcome from Step~7.
+
+\subsubsection{Step~8.2: Build the participant-question back-ROI matrix}
+Create a wide matrix with:
+\begin{itemize}
+    \item rows = participants;
+    \item columns = questions;
+    \item values = back-ROI variable-window HbO responses.
+\end{itemize}
+
+This matrix should preserve missing values where a participant does not have a usable response for a question.
+
+\subsubsection{Step~8.3: Separate abstract and concrete questions}
+Create two question lists:
+\begin{itemize}
+    \item all concrete questions;
+    \item all abstract questions.
+\end{itemize}
+
+\subsubsection{Step~8.4: Construct all concrete-abstract item pairs}
+Build the full cross-product:
+\begin{equation}
+C \times A.
+\end{equation}
+
+Each pair \((c,a)\) becomes one exploratory comparison.
+
+\subsubsection{Step~8.5: Compute within-participant pairwise differences}
+For each pair \((c,a)\) and each participant with both questions available, compute:
+\begin{equation}
+d_{i,c,a} = y^{(B)}_{i,c} - y^{(B)}_{i,a}.
+\end{equation}
+
+\subsubsection{Step~8.6: Run the pairwise paired t-tests}
+For each pair with at least \(N_{\min}\) participants:
+\begin{itemize}
+    \item compute the mean difference;
+    \item compute the paired t-statistic;
+    \item compute the raw p-value;
+    \item compute Cohen's \(d_z\);
+    \item record the number of contributing participants.
+\end{itemize}
+
+\subsubsection{Step~8.7: Apply FDR correction}
+Apply Benjamini--Hochberg correction across all pairwise p-values and store the corrected q-values.
+
+\subsubsection{Step~8.8: Build the pairwise result matrices}
+Create matrix-style summaries for:
+\begin{itemize}
+    \item mean pairwise difference;
+    \item paired t-statistic;
+    \item raw p-value;
+    \item FDR-adjusted q-value;
+    \item effect size;
+    \item sample size.
+\end{itemize}
+
+Rows should correspond to concrete questions and columns to abstract questions.
+
+\subsubsection{Step~8.9: Rank questions by participant-centered back-ROI response}
+To identify questions that generally evoke high or low posterior responses,
+compute a participant-centered back-ROI score:
+\begin{equation}
+z^{(B)}_{iq}
+=
+y^{(B)}_{iq}
+-
+\bar{y}^{(B)}_{i\cdot},
+\end{equation}
+where:
+\begin{equation}
+\bar{y}^{(B)}_{i\cdot}
+=
+\frac{1}{m_i}
+\sum_{q=1}^{m_i} y^{(B)}_{iq}
+\end{equation}
+is the participant's mean back-ROI response across all valid questions.
+
+Then define the question-level centered score:
+\begin{equation}
+\theta_q
+=
+\frac{1}{n_q}
+\sum_{i=1}^{n_q} z^{(B)}_{iq}.
+\end{equation}
+
+This yields a ranking of questions from highest to lowest average participant-centered back-ROI response.
+
+\subsubsection{Step~8.10: Identify top concrete and top abstract questions}
+Using the participant-centered ranking:
+\begin{itemize}
+    \item identify the top concrete questions in the back ROI;
+    \item identify the top abstract questions in the back ROI;
+    \item inspect whether any apparent back-ROI signal is dominated by a small subset of items.
+\end{itemize}
+
+\subsection{Matched-Item Robustness Check}
+Because question pairs may differ in length and difficulty, Step~8 should include a matched-item robustness analysis.
+
+\subsubsection{Primary matching covariates}
+The matched analysis should use:
+\begin{itemize}
+    \item standardized log total word count;
+    \item standardized ENEM item correctness.
+\end{itemize}
+
+Define:
+\begin{equation}
+w_q = z\!\left(\log(\texttt{total\_word\_count}_q)\right)
+\end{equation}
+and
+\begin{equation}
+c_q = z(\texttt{correctness}_q).
+\end{equation}
+
+\subsubsection{Pairwise matching distance}
+For each concrete-abstract pair \((c,a)\), define the matching distance:
+\begin{equation}
+M_{c,a}
+=
+|w_c - w_a| + |c_c - c_a|.
+\end{equation}
+
+Smaller values indicate better matching on question length and difficulty.
+
+\subsubsection{Matched-pair subset}
+A simple matched-pair robustness subset can then be defined by:
+\begin{itemize}
+    \item retaining pairs whose matching distance falls in the lowest quartile of all pairs,
+    \item or retaining pairs with:
+    \begin{equation}
+    |w_c - w_a| \leq 0.5
+    \quad \text{and} \quad
+    |c_c - c_a| \leq 0.5.
+    \end{equation}
+\end{itemize}
+
+The chosen rule should be fixed and documented before reporting results.
+
+\subsubsection{Matched-pair re-analysis}
+Repeat the pairwise testing procedure on the matched-pair subset only.
+This will show whether any apparent back-ROI effects remain when concrete and abstract items are
+more comparable in length and difficulty.
+
+\subsection{Optional Channel-Level Follow-Up}
+If any question pair survives FDR correction, or if a few question pairs show especially large
+descriptive effects, a local channel follow-up may be conducted.
+
+For those selected pairs:
+\begin{itemize}
+    \item repeat the within-participant pair comparison separately for each back-ROI channel;
+    \item apply FDR correction across the back-ROI channels for that pair;
+    \item treat the result as descriptive localization inside the back ROI.
+\end{itemize}
+
+This is optional and exploratory.
+
+\subsection{Primary Reporting Quantities}
+The main Step~8 results table must report, for each valid concrete-abstract question pair:
+\begin{itemize}
+    \item concrete question ID;
+    \item abstract question ID;
+    \item number of contributing participants;
+    \item mean paired difference;
+    \item paired t-statistic;
+    \item raw p-value;
+    \item FDR-adjusted q-value;
+    \item Cohen's \(d_z\);
+    \item word-count difference between the two questions;
+    \item ENEM-correctness difference between the two questions.
+\end{itemize}
+
+\subsection{Secondary Reporting Quantities}
+The secondary Step~8 tables should report:
+\begin{itemize}
+    \item question-level participant-centered ranking scores;
+    \item the matched-pair subset results;
+    \item optional channel-level follow-up results for selected pairs.
+\end{itemize}
+
+\subsection{Expected Outputs}
+
+\subsubsection*{Tables}
+\begin{verbatim}
+01_step8_back_roi_question_matrix.csv
+02_step8_pairwise_differences_long.csv
+03_step8_pairwise_test_results.csv
+04_step8_pairwise_fdr_results.csv
+05_step8_question_centered_ranking.csv
+06_step8_matched_pair_subset.csv
+07_step8_matched_pair_results.csv
+08_step8_selected_pair_channel_followup.csv
+09_step8_exclusion_log.csv
+10_step8_final_conclusion.csv
+\end{verbatim}
+
+\subsubsection*{Figures}
+\begin{verbatim}
+figures/step8/pairwise_mean_difference_heatmap.png
+figures/step8/pairwise_raw_pvalue_heatmap.png
+figures/step8/pairwise_fdr_qvalue_heatmap.png
+figures/step8/pairwise_effect_size_heatmap.png
+figures/step8/question_centered_ranking_plot.png
+figures/step8/matched_pair_heatmap.png
+figures/step8/selected_pair_channel_profile.png
+\end{verbatim}
+
+\subsubsection*{Reports}
+\begin{verbatim}
+reports/step8/step8_back_roi_itempair_report.tex
+reports/step8/tables/pairwise_main_table.tex
+reports/step8/tables/question_ranking_table.tex
+reports/step8/text/final_conclusion.tex
+\end{verbatim}
+
+\subsection{Minimal Figures for the Main Report}
+The main Step~8 report should include at least:
+\begin{enumerate}
+    \item a heatmap of mean back-ROI concrete-minus-abstract differences for all item pairs;
+    \item a heatmap of FDR-adjusted q-values;
+    \item a heatmap of paired effect sizes;
+    \item a ranked plot of participant-centered back-ROI question scores;
+    \item a matched-pair heatmap for the robustness subset.
+\end{enumerate}
+
+\subsection{Conclusion Rules}
+
+\paragraph{If no pairs survive FDR.}
+The exploratory item-pair analysis did not identify any concrete-abstract question pairs with
+reliable back-ROI differences after correction for multiple comparisons.
+This supports the view that the back ROI does not show robust item-specific discrimination
+in the current dataset.
+
+\paragraph{If a few pairs survive FDR.}
+The exploratory item-pair analysis identified a small number of concrete-abstract question pairs
+with reliable back-ROI differences after correction for multiple comparisons.
+These results suggest item-specific posterior sensitivity, but they should be interpreted as
+exploratory findings and not as evidence of a general back-ROI concreteness effect.
+
+\paragraph{If only raw p-values look interesting but no pairs survive correction.}
+Some question pairs showed descriptive or uncorrected differences in the back ROI, but no pair
+remained significant after correction for multiple comparisons.
+These results may still be useful for hypothesis generation, but they do not constitute robust
+inferential evidence.
+
+\subsection{Quality-Control Checks}
+Before Step~8 is considered complete, verify that:
+\begin{enumerate}
+    \item the Step~7 cohort is unchanged unless explicitly re-reviewed;
+    \item the back-ROI trial outcome is identical to the Step~7 variable-window outcome;
+    \item all question IDs are merged correctly;
+    \item each pairwise test records the actual number of contributing participants;
+    \item only pairs with at least \(N_{\min}\) participants are tested;
+    \item FDR correction is applied across all pairwise tests;
+    \item heatmaps use the same row and column ordering consistently;
+    \item matched-pair selection is defined before final interpretation;
+    \item channel-level follow-ups, if used, are clearly labeled as secondary and exploratory.
+\end{enumerate}
+
+\subsection{Minimal Completion Criteria}
+Step~8 is complete when:
+\begin{itemize}
+    \item the participant-question back-ROI matrix has been built;
+    \item all concrete-abstract item pairs have been compared;
+    \item FDR correction has been applied;
+    \item question-level participant-centered rankings have been computed;
+    \item the matched-item robustness analysis has been completed;
+    \item the main heatmaps have been generated;
+    \item a short final conclusion has been written;
+    \item all exclusions and warnings have been documented.
+\end{itemize}
+
+\subsection{Short Practical Summary}
+In simple terms, Step~8 should:
+\begin{quote}
+take the Step~7 back-ROI variable-window responses, compare each concrete question against each abstract
+question within participant, test every question pair separately across participants, correct for the
+large number of pairwise tests, rank questions by participant-centered back-ROI response, and determine
+whether the back ROI shows any reliable item-specific effects even though the broad condition-level
+back-ROI effect was null.
+\end{quote}

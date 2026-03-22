@@ -1,0 +1,37 @@
+[
+  {"id":"age","prompt":"Age (in years):","type":"number","required":true},
+
+  {"id":"country_of_birth","prompt":"Country of birth (write in plain text, no commas):","type":"text","required":true},
+  {"id":"nationality","prompt":"Nationality (write in plain text, no commas):","type":"text","required":true},
+  {"id":"years_in_luxembourg","prompt":"Years living in Luxembourg (enter a number; use 0 if not living in LU):","type":"number","required":true},
+
+  {"id":"gender","prompt":"Gender (write 'male' or 'female'):","type":"text","required":true},
+
+  {"id":"first_language","prompt":"First language (mother tongue) — write in plain text:","type":"text","required":true},
+  {"id":"other_languages","prompt":"Other languages you are comfortable using — write in plain text:","type":"text","required":false},
+
+  {"id":"affiliation","prompt":"Current affiliation (e.g., Bachelor student, Master student, PhD candidate, university employee):","type":"text","required":true},
+  {"id":"department_unit","prompt":"Department or Unit:","type":"text","required":true},
+
+  {"id":"programme_name","prompt":"If you are a student: programme name (e.g., BSc Computer Science) :","type":"text","required":false,
+   "show_if":{"id":"affiliation","regex":"student"}},
+  {"id":"study_level","prompt":"If you are a student: current study level (e.g., Bachelor, Master, PhD):","type":"text","required":false,
+   "show_if":{"id":"affiliation","regex":"student"}},
+  {"id":"year_in_programme","prompt":"If you are a student: year in programme (enter a number, e.g., 1, 2, 3, 4):","type":"number","required":false,
+   "show_if":{"id":"affiliation","regex":"student"}},
+
+  {"id":"employee_role","prompt":"If you are an employee: role (e.g., Faculty, Postdoc, Research staff, Admin staff, Technical staff):","type":"text","required":false,
+   "show_if":{"id":"affiliation","regex":"employee|staff|faculty|postdoc"}},
+
+  {"id":"highest_degree","prompt":"Highest degree completed (e.g., Upper-secondary, Bachelor, Master, Doctorate):","type":"text","required":true},
+  {"id":"degree_field","prompt":"Field of highest degree (e.g., Computer Science, Economics):","type":"text","required":true},
+
+  {"id":"country_secondary_ed","prompt":"Country where you completed most of your secondary education:","type":"text","required":true},
+  {"id":"primary_school_langs","prompt":"Primary schooling language(s) — write in plain text as a sentence (no commas):","type":"text","required":true},
+
+  {"id":"parent_a_edu","prompt":"Parent/Guardian A — highest education:","type":"text","required":true},
+  {"id":"parent_b_edu","prompt":"Parent/Guardian B — highest education:","type":"text","required":true},
+  {"id":"first_gen_he","prompt":"Are you first-generation in higher education? (answer in plain text, e.g., Yes / No / Don’t know):","type":"text","required":true},
+
+  {"id":"living_arrangement","prompt":"Current living arrangement (“Alone, with family, with roommates, student dormitory, prefer not to say, etc.” ):","type":"text","required":false}
+]

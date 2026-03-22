@@ -1,0 +1,2 @@
+analysis_label,n_included_participants,front_abstract_mean,front_concrete_mean,back_abstract_mean,back_concrete_mean,mean_dissociation,t_stat,df,p_value,ci_low,ci_high,cohens_d,alpha
+Primary HbO dissociation,36,-2.881883168962887e-08,-5.172329820376467e-08,-5.556745755942947e-08,-5.48349915011882e-08,2.3636932572377075e-08,1.3547276588858308,35,0.1841851783948605,-1.1783857650630715e-08,5.9057722795384864e-08,0.22578794314763845,0.05
