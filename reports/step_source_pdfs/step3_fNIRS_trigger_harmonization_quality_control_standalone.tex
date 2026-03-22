@@ -1,0 +1,534 @@
+
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+\begin{document}
+\sloppy
+\section{Step 3: fNIRS Trigger Harmonization, Session Quality Control, and Basic Preprocessing}
+\label{sec:step3_fnirs}
+% Analyst note added 2026-03-20: PID006 and PID037 are globally excluded from downstream participant-level analyses. PID006 was excluded after Step 3 documented session 2025-11-12_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log. PID037 was excluded because a behavioral log exists but no fNIRS session folder was found. Step 3 raw QC outputs remain for audit, but future downstream steps should honor materials/analysis_participant_exclusions.json.
+
+\subsection{Objective}
+The objective of Step~3 is to prepare a clean, auditable, and minimally processed fNIRS dataset
+for later analysis.
+This step is intentionally simple and has three goals only:
+\begin{enumerate}
+    \item verify that each participant is linked to the correct fNIRS session folder and files;
+    \item harmonize missing or incomplete triggers using the PsychoPy logs when justified;
+    \item apply a basic preprocessing pipeline in MNE to produce files ready for Step~4.
+\end{enumerate}
+
+This step does \textbf{not} perform the final scientific analysis of the fNIRS signal.
+Its function is to ensure that the data are complete enough, correctly matched, well documented,
+and consistently preprocessed before any question-level or group-level interpretation.
+
+\subsection{Core Design Choice}
+The atomic unit of analysis in Step~3 is not a single file but a
+\textbf{participant-session folder}, for example:
+\begin{verbatim}
+PID001/2025-11-06_008/
+\end{verbatim}
+
+All file checks, trigger checks, preprocessing, logging, and status assignment must be done
+at the level of this participant-session folder.
+
+\subsection{Raw Session Folder Structure}
+A typical session folder contains files such as:
+\begin{verbatim}
+/PID001/2025-11-06_008/2025-11-06_008.nirs
+/PID001/2025-11-06_008/2025-11-06_008.snirf
+/PID001/2025-11-06_008/2025-11-06_008.snirf.bak_pre_marker_fix
+/PID001/2025-11-06_008/2025-11-06_008.wl1
+/PID001/2025-11-06_008/2025-11-06_008.wl2
+/PID001/2025-11-06_008/2025-11-06_008.zip
+/PID001/2025-11-06_008/2025-11-06_008_calibration.json
+/PID001/2025-11-06_008/2025-11-06_008_config.hdr
+/PID001/2025-11-06_008/2025-11-06_008_config.json
+/PID001/2025-11-06_008/2025-11-06_008_description.json
+/PID001/2025-11-06_008/2025-11-06_008_probeInfo.json
+/PID001/2025-11-06_008/digpts.txt
+\end{verbatim}
+
+\subsection{Canonical File Usage in This Project}
+To keep the pipeline simple and consistent, the files in each session folder should be used as follows:
+
+\subsubsection*{Primary analysis file}
+\begin{itemize}
+    \item \texttt{<session>.snirf}
+\end{itemize}
+
+This is the main file to be loaded into MNE for trigger inspection, annotation handling,
+quality control, and preprocessing.
+
+\subsubsection*{Audit and traceability file}
+\begin{itemize}
+    \item \texttt{<session>.snirf.bak\_pre\_marker\_fix}
+\end{itemize}
+
+This file must be preserved as audit evidence.
+If it exists, it should be compared once against the current \texttt{.snirf} to determine whether
+the current file already contains previous marker edits.
+
+\subsubsection*{Auxiliary metadata files}
+\begin{itemize}
+    \item \texttt{<session>\_probeInfo.json}
+    \item \texttt{<session>\_config.json}
+    \item \texttt{<session>\_description.json}
+    \item \texttt{<session>\_calibration.json}
+    \item \texttt{digpts.txt}
+    \item \texttt{<session>\_config.hdr}
+\end{itemize}
+
+These files are not the main analysis input, but they should be used for metadata verification,
+montage checks, and documentation.
+
+\subsubsection*{Legacy or archival files}
+\begin{itemize}
+    \item \texttt{<session>.nirs}
+    \item \texttt{<session>.wl1}
+    \item \texttt{<session>.wl2}
+    \item \texttt{<session>.zip}
+\end{itemize}
+
+These files should be retained for traceability, but the main Step~3 pipeline should not rely on them.
+
+\subsection{Main Rule for Trigger Checking}
+Trigger checking must be performed \textbf{within participant-session}.
+Participants do not all need to have the same total number of triggers, because some participants
+did not finish the full task.
+A participant-session should be considered valid when:
+\begin{itemize}
+    \item the PsychoPy log indicates an early stop or incomplete session, and
+    \item the fNIRS trigger sequence matches that participant's actual completed portion of the task,
+    either directly or after justified trigger repair.
+\end{itemize}
+
+Therefore, Step~3 compares:
+\begin{quote}
+fNIRS triggers for one participant-session \quad versus \quad PsychoPy-derived expected triggers
+for the same participant-session.
+\end{quote}
+
+\subsection{Scope}
+Step~3 includes:
+\begin{itemize}
+    \item session inventory and validation of raw files;
+    \item extraction of native triggers from the \texttt{.snirf} file;
+    \item reconstruction of expected triggers from PsychoPy;
+    \item trigger comparison and repair when missing triggers can be safely inserted;
+    \item participant-session quality control;
+    \item basic preprocessing of the fNIRS signal;
+    \item full documentation of all issues and final session status.
+\end{itemize}
+
+Step~3 excludes:
+\begin{itemize}
+    \item condition-level fNIRS analysis;
+    \item statistical comparison between abstract and concrete questions;
+    \item ROI-level scientific interpretation;
+    \item final figures and inferential results.
+\end{itemize}
+
+\subsection{Guiding Principles}
+\begin{enumerate}
+    \item Keep the workflow simple.
+    \item Never overwrite the raw session files.
+    \item Use the \texttt{.snirf} file as the working raw file.
+    \item Preserve the provenance of every trigger and every repair.
+    \item Do not silently exclude problematic sessions.
+    \item Log all participant-session issues explicitly.
+    \item Use a single standard preprocessing path unless a session clearly fails.
+\end{enumerate}
+
+\subsection{Inputs}
+Step~3 requires:
+\begin{itemize}
+    \item the participant-session folder for each PID;
+    \item the corresponding PsychoPy task log;
+    \item the clean Step~2 question reconstruction, or the PsychoPy event reconstruction used in Step~2;
+    \item the final montage information for the study;
+    \item the information that the final montage is left-lateralized and includes short channels and accelerometer data.
+\end{itemize}
+
+\subsection{Expected Outputs}
+
+\subsubsection*{Manifest and trigger tables}
+\begin{verbatim}
+01_fnirs_session_manifest.csv
+02_fnirs_trigger_raw.csv
+03_psychopy_trigger_expected.csv
+04_trigger_comparison_by_session.csv
+05_trigger_repair_log.csv
+06_fnirs_trigger_harmonized.csv
+\end{verbatim}
+
+\subsubsection*{Quality-control tables}
+\begin{verbatim}
+07_fnirs_session_status.csv
+08_fnirs_channel_qc.csv
+09_fnirs_problem_log.csv
+10_fnirs_file_audit.csv
+\end{verbatim}
+
+\subsubsection*{Preprocessing outputs}
+\begin{verbatim}
+11_preprocessing_parameters.json
+12_preprocessed_file_manifest.csv
+data_clean/step3/preprocessed/PID001_2025-11-06_008_preprocessed_raw.fif
+data_clean/step3/preprocessed/PID002_2025-11-06_009_preprocessed_raw.fif
+...
+\end{verbatim}
+
+\subsubsection*{Reports}
+\begin{verbatim}
+reports/step3/step3_fnirs_preprocessing_report.tex
+reports/step3/session_notes/PID001_2025-11-06_008.tex
+reports/step3/session_notes/PID002_2025-11-06_009.tex
+...
+\end{verbatim}
+
+\subsection{Internal Structure of Step~3}
+To keep the workflow very clear, Step~3 is divided into four blocks:
+\begin{enumerate}
+    \item \textbf{Step~3A: Session inventory and file validation}
+    \item \textbf{Step~3B: Trigger extraction and harmonization}
+    \item \textbf{Step~3C: Session-level quality control}
+    \item \textbf{Step~3D: Basic preprocessing in MNE}
+\end{enumerate}
+
+\subsection{Step~3A: Session Inventory and File Validation}
+
+\subsubsection{Step~3A.1: Build the session manifest}
+Create one row per participant-session folder.
+For each row, record:
+\begin{itemize}
+    \item \texttt{participant\_id}
+    \item \texttt{session\_id}
+    \item session folder path
+    \item \texttt{snirf\_file}
+    \item \texttt{snirf\_backup\_file}
+    \item \texttt{psychopy\_file}
+    \item file timestamp
+    \item whether the session folder is readable
+    \item notes
+\end{itemize}
+
+\subsubsection{Step~3A.2: Verify expected file presence}
+For each session folder, verify whether the following exist:
+\begin{itemize}
+    \item main \texttt{.snirf} file;
+    \item \texttt{.snirf.bak\_pre\_marker\_fix} file, if available;
+    \item \texttt{\_probeInfo.json};
+    \item \texttt{\_config.json};
+    \item \texttt{\_description.json};
+    \item \texttt{\_calibration.json};
+    \item \texttt{digpts.txt};
+    \item paired PsychoPy file.
+\end{itemize}
+
+The absence of some metadata files may not exclude the session, but it must be documented.
+
+\subsubsection{Step~3A.3: Define analysis and audit roles for files}
+Each session manifest row should explicitly record:
+\begin{itemize}
+    \item which file is the primary raw analysis file;
+    \item which file is the audit backup;
+    \item which files are auxiliary metadata only;
+    \item whether any previous marker-fix backup exists.
+\end{itemize}
+
+\subsubsection{Step~3A.4: Check raw file identity}
+Before any preprocessing, confirm that the \texttt{.snirf} file loaded for one session truly belongs
+to that participant-session by checking:
+\begin{itemize}
+    \item session folder name;
+    \item file stem;
+    \item session timestamp;
+    \item correspondence to the PsychoPy session.
+\end{itemize}
+
+\subsection{Step~3B: Trigger Extraction and Harmonization}
+
+\subsubsection{Step~3B.1: Extract native triggers from the \texttt{.snirf} file}
+For each session, extract the native events or annotations present in the current \texttt{.snirf}.
+Store at least:
+\begin{itemize}
+    \item \texttt{participant\_id}
+    \item \texttt{session\_id}
+    \item \texttt{event\_time\_fnirs}
+    \item \texttt{event\_label\_raw}
+    \item \texttt{event\_code\_raw}
+    \item \texttt{source = snirf}
+\end{itemize}
+
+\subsubsection{Step~3B.2: Audit the backup marker file when present}
+If \texttt{.snirf.bak\_pre\_marker\_fix} exists, compare its event table with the current \texttt{.snirf}.
+The goal is not to create a second pipeline, but simply to document:
+\begin{itemize}
+    \item whether the current \texttt{.snirf} already differs from the backup;
+    \item whether previous manual or scripted marker fixes likely occurred;
+    \item whether the current file should be treated as already modified.
+\end{itemize}
+
+\subsubsection{Step~3B.3: Build expected triggers from PsychoPy}
+From the PsychoPy log, reconstruct the expected sequence of task events for the same participant-session.
+At minimum, the expected trigger table should include:
+\begin{itemize}
+    \item \texttt{participant\_id}
+    \item \texttt{session\_id}
+    \item \texttt{event\_order}
+    \item \texttt{event\_type}
+    \item \texttt{event\_time\_psychopy}
+    \item \texttt{block}
+    \item \texttt{trial\_idx\_in\_block}
+    \item \texttt{question\_id}
+    \item \texttt{source = psychopy}
+\end{itemize}
+
+\subsubsection{Step~3B.4: Define the minimum harmonized trigger set}
+To keep Step~3 simple, the minimum trigger set for harmonization should be:
+\begin{itemize}
+    \item \texttt{block\_start}
+    \item \texttt{question\_start}
+    \item \texttt{answer}
+    \item \texttt{block\_end}
+\end{itemize}
+
+For this project, \texttt{question\_start} should be defined as the PsychoPy event corresponding to the
+beginning of question presentation.
+
+\subsubsection{Step~3B.5: Compare fNIRS and PsychoPy trigger sequences}
+For each participant-session, compare:
+\begin{itemize}
+    \item total number of question-start events;
+    \item total number of answer events;
+    \item total number of block-start events;
+    \item total number of block-end events;
+    \item event ordering.
+\end{itemize}
+
+A session should then be assigned one comparison result:
+\begin{itemize}
+    \item \texttt{MATCH\_RAW}
+    \item \texttt{MATCH\_INCOMPLETE\_SESSION}
+    \item \texttt{MISSING\_TRIGGERS\_REPAIRABLE}
+    \item \texttt{MISMATCH\_REVIEW\_REQUIRED}
+\end{itemize}
+
+\subsubsection{Step~3B.6: Repair missing triggers when justified}
+If the fNIRS file is missing triggers but the alignment with PsychoPy is still reliable,
+create a harmonized trigger table.
+The repair logic must remain simple:
+\begin{enumerate}
+    \item keep all original fNIRS triggers;
+    \item add only the missing triggers from PsychoPy;
+    \item never delete original trigger information from the audit tables;
+    \item mark every inserted trigger explicitly as repaired;
+    \item do not force repair when alignment is uncertain.
+\end{enumerate}
+
+\subsubsection{Step~3B.7: Store trigger provenance}
+Every harmonized trigger row should contain:
+\begin{itemize}
+    \item \texttt{participant\_id}
+    \item \texttt{session\_id}
+    \item \texttt{event\_type}
+    \item \texttt{event\_time\_final}
+    \item \texttt{event\_source\_final}
+    \item \texttt{raw\_snirf\_present}
+    \item \texttt{inserted\_from\_psychopy}
+    \item \texttt{repair\_confidence}
+    \item \texttt{notes}
+\end{itemize}
+
+\subsection{Step~3C: Session-Level Quality Control}
+
+\subsubsection{Step~3C.1: Verify recording readability and duration}
+For each participant-session, confirm:
+\begin{itemize}
+    \item the \texttt{.snirf} file opens successfully in MNE;
+    \item the sampling information is readable;
+    \item the recording duration is non-zero and plausible;
+    \item the annotation structure is readable.
+\end{itemize}
+
+\subsubsection{Step~3C.2: Verify channel presence}
+For each participant-session, record:
+\begin{itemize}
+    \item total number of channels;
+    \item number of long channels;
+    \item number of short channels;
+    \item presence or absence of accelerometer information;
+    \item whether channel names are complete and consistent.
+\end{itemize}
+
+\subsubsection{Step~3C.3: Verify montage-related metadata}
+Using \texttt{\_probeInfo.json}, \texttt{digpts.txt}, and related metadata files, verify:
+\begin{itemize}
+    \item that the expected montage information exists;
+    \item that the session appears to correspond to the intended left-sided montage;
+    \item that short-channel information is available when expected;
+    \item that there are no obvious file-level inconsistencies.
+\end{itemize}
+
+\subsubsection{Step~3C.4: Log participant-session problems}
+Every session with any issue must be written to a problem log.
+Typical issues include:
+\begin{itemize}
+    \item missing \texttt{.snirf} file;
+    \item unreadable \texttt{.snirf} file;
+    \item unresolved trigger mismatch;
+    \item missing or unclear short channels;
+    \item missing accelerometer information;
+    \item implausibly short recording;
+    \item preprocessing failure.
+\end{itemize}
+
+\subsubsection{Step~3C.5: Assign a session QC label}
+Each participant-session should receive one quality-control label:
+\begin{itemize}
+    \item \texttt{OK}
+    \item \texttt{OK\_WITH\_WARNINGS}
+    \item \texttt{REVIEW\_REQUIRED}
+    \item \texttt{EXCLUDE}
+\end{itemize}
+
+\subsection{Step~3D: Basic Preprocessing in MNE}
+
+\subsubsection{Step~3D.1: Load the main \texttt{.snirf} file}
+Use the main \texttt{.snirf} file as the raw analysis file for each participant-session.
+At this stage, attach or verify:
+\begin{itemize}
+    \item participant ID;
+    \item session ID;
+    \item harmonized annotations or equivalent event structure;
+    \item bad-channel markings when identified.
+\end{itemize}
+
+\subsubsection{Step~3D.2: Convert raw intensity to optical density}
+This should be the first signal-processing step in the pipeline.
+
+\subsubsection{Step~3D.3: Compute basic channel quality}
+On optical density data, compute a simple channel quality metric and document poor channels.
+Channels marked as problematic must remain visible in the QC tables and reports.
+
+\subsubsection{Step~3D.4: Apply one motion-correction step}
+To keep the pipeline basic, use a single motion-correction method.
+A simple default is to apply TDDR before conversion to haemoglobin.
+
+\subsubsection{Step~3D.5: Convert to haemoglobin concentration}
+After the optical-density stage and motion correction, convert the data to haemoglobin concentration.
+
+\subsubsection{Step~3D.6: Apply simple filtering}
+Apply one standard filter configuration to the haemoglobin data.
+The exact parameters used must be stored in:
+\begin{verbatim}
+11_preprocessing_parameters.json
+\end{verbatim}
+
+\subsubsection{Step~3D.7: Use short channels when available}
+If short channels are present and valid, apply short-channel correction in the standard branch.
+If they are missing or not usable, document this clearly and continue with the same basic pipeline
+without adding unnecessary complexity.
+
+\subsubsection{Step~3D.8: Retain accelerometer information for QC}
+If accelerometer data are present in the session, retain them for inspection and documentation.
+At this stage, accelerometer data do not need a separate advanced modeling branch.
+
+\subsubsection{Step~3D.9: Save the preprocessed output}
+For each participant-session, save one preprocessed output file that will be used in Step~4.
+The saved file must contain:
+\begin{itemize}
+    \item preprocessed fNIRS signal;
+    \item harmonized trigger annotations or equivalent event structure;
+    \item marked bad channels;
+    \item participant-session identifiers.
+\end{itemize}
+
+\subsection{Documentation Required for Every Participant-Session}
+For complete traceability, the report should state for every participant-session:
+\begin{itemize}
+    \item whether the main \texttt{.snirf} file was found;
+    \item whether a backup pre-marker-fix \texttt{.snirf} file exists;
+    \item whether the current \texttt{.snirf} appears already marker-modified;
+    \item whether the paired PsychoPy file was found;
+    \item whether the trigger sequence matched directly;
+    \item whether trigger repair was needed;
+    \item whether the recording was complete or incomplete;
+    \item whether short channels were present;
+    \item whether accelerometer information was present;
+    \item how many channels were marked problematic;
+    \item whether preprocessing completed successfully;
+    \item final session status.
+\end{itemize}
+
+\subsection{Quality-Control Checks}
+Before Step~3 is considered complete, the following checks should be run:
+\begin{enumerate}
+    \item every participant-session folder has a manifest entry;
+    \item every session has one declared primary raw file;
+    \item every session has one trigger-comparison result;
+    \item repaired triggers are explicitly marked;
+    \item unresolved trigger mismatches are logged;
+    \item the presence of short channels is recorded;
+    \item the presence of accelerometer information is recorded;
+    \item bad channels are documented;
+    \item preprocessing parameters are saved;
+    \item every output file is linked to exactly one participant-session;
+    \item every participant-session has a final status.
+\end{enumerate}
+
+\subsection{Final Status Labels}
+At the end of Step~3, each participant-session should receive one final status:
+\begin{itemize}
+    \item \texttt{READY\_FOR\_STEP4}
+    \item \texttt{READY\_FOR\_STEP4\_WITH\_WARNINGS}
+    \item \texttt{REVIEW\_BEFORE\_STEP4}
+    \item \texttt{EXCLUDE\_FROM\_STEP4}
+\end{itemize}
+
+\subsection{Minimal Completion Criteria for Step~3}
+Step~3 is complete when:
+\begin{itemize}
+    \item all participant-session folders have been inventoried;
+    \item all \texttt{.snirf} files have been checked;
+    \item all expected PsychoPy triggers have been reconstructed;
+    \item trigger comparison has been completed for every session;
+    \item missing triggers have been repaired when justified;
+    \item unresolved sessions are explicitly documented;
+    \item a harmonized trigger table exists;
+    \item a basic preprocessing pipeline has been completed;
+    \item preprocessed output files exist for all usable sessions;
+    \item participant-session QC and problem logs are complete.
+\end{itemize}
+
+\subsection{Handoff to Step~4}
+Step~4 should start only from the outputs of Step~3:
+\begin{itemize}
+    \item preprocessed fNIRS files;
+    \item harmonized trigger table;
+    \item session-level QC table;
+    \item problem log;
+    \item preprocessing parameter file.
+\end{itemize}
+
+\subsection{Short Practical Summary}
+In simple terms, Step~3 should:
+\begin{quote}
+use the participant-session folder as the working unit, load the \texttt{.snirf} file,
+check and repair triggers using PsychoPy when needed, verify session quality, run a basic
+MNE preprocessing pipeline, and document every issue before passing the data to Step~4.
+\end{quote}
+
+\end{document}

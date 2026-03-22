@@ -1,0 +1,786 @@
+
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+\begin{document}
+\sloppy
+\section{Step 2: Question-Level Behavioral Harmonization and Descriptive Analysis}
+\label{sec:step2_behavior}
+% Analyst note added 2026-03-20: PID006 and PID037 are globally excluded from downstream participant-level analyses. PID006 was excluded after Step 3 documented session 2025-11-12_002 as an implausibly short 10.420224 second recording with no paired PsychoPy log. PID037 was excluded because a behavioral log exists but no fNIRS session folder was found. Step 2 outputs are regenerated without these participants, and future steps should honor materials/analysis_participant_exclusions.json.
+
+\subsection{Objective}
+The objective of Step~2 is to build a clean, question-level behavioral dataset that links:
+\begin{itemize}
+    \item participant responses from the PsychoPy task logs;
+    \item question metadata from \texttt{filtered\_questions.json};
+    \item derived behavioral measures such as response time and correctness;
+    \item descriptive comparisons between participant performance and the original ENEM item correctness.
+\end{itemize}
+
+This step remains intentionally simple.
+It focuses only on the behavioral side of the task and does not yet modify fNIRS files or analyze the fNIRS signals.
+Its purpose is to produce a well-organized and fully documented behavioral dataset that can later be aligned with the fNIRS recordings.
+
+\subsection{Main Goal}
+In practical terms, Step~2 should answer the following basic questions:
+\begin{itemize}
+    \item Which questions were shown to each participant?
+    \item Which answers did participants choose?
+    \item Were those answers correct or incorrect?
+    \item How long did participants take on each question?
+    \item How do participant-level and item-level performance patterns differ between abstract and concrete questions?
+    \item How does the observed participant accuracy compare with the original ENEM correctness for the same items?
+    \item How do simple text properties of the items, such as word count and sentence length, relate to the observed behavioral patterns?
+\end{itemize}
+
+\subsection{Raw Data Sources}
+Step~2 relies on two main raw sources.
+
+\subsubsection*{1. PsychoPy task log}
+For each participant, the file
+\begin{verbatim}
+enem_blocks_PIDxx_YYYYMMDD_HHMMSS.csv
+\end{verbatim}
+contains event-level task information, including at least the following columns:
+\begin{verbatim}
+t_abs
+phase
+block
+trial_idx_in_block
+question_number
+question_year
+question_type
+question_field
+marker_name
+marker_code
+rt_from_phase
+choice
+correct
+button_click_time
+option_view_time
+note
+\end{verbatim}
+
+The relevant phases include:
+\begin{itemize}
+    \item \texttt{q\_text\_on}
+    \item \texttt{q\_stem\_on}
+    \item \texttt{q\_options\_on}
+    \item \texttt{answer}
+    \item \texttt{iti}
+    \item \texttt{block\_start}
+    \item \texttt{block\_end}
+\end{itemize}
+
+\subsubsection*{2. Question metadata}
+The file
+\begin{verbatim}
+filtered_questions.json
+\end{verbatim}
+contains item-level metadata, including variables such as:
+\begin{verbatim}
+type
+correctness
+answer
+total_word_count
+sentence_count
+sentence_length
+\end{verbatim}
+
+Depending on the version of the file, it may also contain question text, field, year, options, and other metadata.
+
+\subsection{Interpretation of the Raw Structure}
+The PsychoPy task presents each item in stages:
+\begin{enumerate}
+    \item text onset;
+    \item stem onset;
+    \item options onset;
+    \item answer.
+\end{enumerate}
+
+This is useful because Step~2 can reconstruct not only a single response time, but also a small set of simple timing components:
+\begin{itemize}
+    \item time from text onset to stem onset;
+    \item time from stem onset to options onset;
+    \item time from options onset to answer;
+    \item total time from first presentation to answer.
+\end{itemize}
+
+This is still a basic descriptive approach, but it is more informative than keeping only one undifferentiated response-time measure.
+
+\subsection{Scope}
+This step includes:
+\begin{itemize}
+    \item extraction of question-level behavioral data from the PsychoPy logs;
+    \item harmonization of question identifiers;
+    \item creation of a clean participant-question table;
+    \item derivation of timing variables;
+    \item derivation of participant correctness by comparing selected answers with the correct option;
+    \item joining participant responses with question metadata from \texttt{filtered\_questions.json};
+    \item descriptive summaries by question, question type, block, field, year, and participant;
+    \item descriptive comparison between participant sample accuracy and ENEM correctness;
+    \item export of CSV outputs, plots, and modular \LaTeX{} files.
+\end{itemize}
+
+This step excludes:
+\begin{itemize}
+    \item trigger repair in the fNIRS files;
+    \item fNIRS preprocessing;
+    \item fNIRS statistical analysis;
+    \item advanced inferential modeling;
+    \item mixed models, hierarchical models, or psychometric models.
+\end{itemize}
+
+\subsection{Unit of Analysis}
+Step~2 should explicitly define three units of analysis.
+
+\subsubsection*{Participant-question level}
+This is the main unit.
+Each row corresponds to one participant responding to one question.
+
+\subsubsection*{Question level}
+Each row corresponds to one unique question, aggregated across all participants who saw that question.
+
+\subsubsection*{Participant level}
+Each row corresponds to one participant, summarizing their overall task behavior and their behavior separately for abstract and concrete questions.
+
+\subsection{Core Principle}
+Because different participants may have seen different questions, and because block timing may cause some questions not to be reached, every summary in Step~2 must always report its denominator.
+In other words, all descriptive results must make clear:
+\begin{itemize}
+    \item how many participants were exposed to the item;
+    \item how many answered it;
+    \item how many valid response times are available;
+    \item how many valid correctness labels are available.
+\end{itemize}
+
+\subsection{Recommended Question Identifier}
+A stable question identifier should be defined before any merge.
+A practical recommendation is:
+\begin{verbatim}
+question_id = question_year + "_" + question_field + "_" + question_number
+\end{verbatim}
+
+If \texttt{filtered\_questions.json} already contains a unique item ID, that identifier should be preferred.
+The same identifier must be used in all Step~2 outputs.
+
+\subsection{Derived Variables}
+The clean trial table should contain, at minimum, the following groups of variables.
+
+\subsubsection*{Participant and session variables}
+\begin{itemize}
+    \item \texttt{participant\_id}
+    \item \texttt{timestamp}
+    \item \texttt{source\_log}
+\end{itemize}
+
+\subsubsection*{Task-position variables}
+\begin{itemize}
+    \item \texttt{block}
+    \item \texttt{block\_type} (Abstract or Concrete)
+    \item \texttt{block\_index\_within\_type} (1 to 5)
+    \item \texttt{global\_block\_order} (1 to 10)
+    \item \texttt{trial\_idx\_in\_block} (1 to 3)
+    \item \texttt{trial\_idx\_global}
+    \item \texttt{order\_condition} (AbstractFirst or ConcreteFirst)
+\end{itemize}
+
+\subsubsection*{Question metadata variables}
+\begin{itemize}
+    \item \texttt{question\_id}
+    \item \texttt{question\_number}
+    \item \texttt{question\_year}
+    \item \texttt{question\_field}
+    \item \texttt{question\_type}
+    \item \texttt{correct\_answer}
+    \item \texttt{enem\_correctness}
+    \item \texttt{total\_word\_count}
+    \item \texttt{sentence\_count}
+    \item \texttt{sentence\_length}
+\end{itemize}
+
+\subsubsection*{Behavioral response variables}
+\begin{itemize}
+    \item \texttt{chosen\_answer}
+    \item \texttt{participant\_correct}
+    \item \texttt{response\_status}
+    \item \texttt{answer\_available}
+\end{itemize}
+
+\subsubsection*{Timing variables}
+\begin{itemize}
+    \item \texttt{t\_text\_on}
+    \item \texttt{t\_stem\_on}
+    \item \texttt{t\_options\_on}
+    \item \texttt{t\_answer}
+    \item \texttt{rt\_text\_to\_stem}
+    \item \texttt{rt\_stem\_to\_options}
+    \item \texttt{rt\_options\_to\_answer}
+    \item \texttt{rt\_text\_to\_answer}
+    \item \texttt{rt\_stem\_to\_answer}
+\end{itemize}
+
+\subsubsection*{Normalized timing variables}
+Because questions differ in length, it is useful to create very simple normalized timing measures:
+\begin{itemize}
+    \item \texttt{sec\_per\_word} = \texttt{rt\_text\_to\_answer / total\_word\_count}
+    \item \texttt{sec\_per\_sentence} = \texttt{rt\_text\_to\_answer / sentence\_count}
+\end{itemize}
+
+These variables remain descriptive only.
+They are included because raw time alone may be misleading when items differ substantially in length.
+
+\subsection{Expected Outputs}
+
+\subsubsection*{Structured tables}
+\begin{verbatim}
+01_question_file_manifest.csv
+02_question_metadata_raw.csv
+03_question_metadata_clean.csv
+04_behavior_events_raw.csv
+05_behavior_trial_raw.csv
+06_behavior_trial_clean.csv
+07_question_summary.csv
+08_question_answer_distribution.csv
+09_type_summary.csv
+10_block_summary.csv
+11_field_summary.csv
+12_year_summary.csv
+13_participant_behavior_summary.csv
+14_exam_vs_sample_comparison.csv
+15_behavior_missingness.csv
+\end{verbatim}
+
+\subsubsection*{Plots}
+\begin{verbatim}
+figures/step2/accuracy_by_type.png
+figures/step2/rt_total_by_type.png
+figures/step2/enem_vs_sample_accuracy.png
+figures/step2/word_count_vs_rt.png
+figures/step2/word_count_vs_accuracy.png
+figures/step2/question_accuracy_comparison.png
+figures/step2/question_rt_distribution.png
+\end{verbatim}
+
+\subsubsection*{\LaTeX{} outputs}
+\begin{verbatim}
+reports/step2/questions/question_<question_id>.tex
+reports/step2/groups/group_abstract_vs_concrete.tex
+reports/step2/groups/group_blocks.tex
+reports/step2/groups/group_fields.tex
+reports/step2/step2_behavior_report.tex
+\end{verbatim}
+
+\subsection{Detailed Workflow}
+
+\subsubsection{Step~2.1: Build the file manifest}
+Create a manifest that lists, for each participant:
+\begin{itemize}
+    \item participant folder;
+    \item PsychoPy log file name;
+    \item timestamp extracted from file name;
+    \item whether the log is readable;
+    \item whether a paired demographic file exists;
+    \item notes on any irregularity.
+\end{itemize}
+
+The purpose of this file is to ensure that all later behavioral analyses are traceable back to the raw source file.
+
+\subsubsection{Step~2.2: Parse and flatten \texttt{filtered\_questions.json}}
+Convert \texttt{filtered\_questions.json} into a tabular question-metadata file.
+For each question, extract at least:
+\begin{itemize}
+    \item question ID;
+    \item year;
+    \item field;
+    \item type;
+    \item correct answer;
+    \item ENEM correctness;
+    \item total word count;
+    \item sentence count;
+    \item sentence length.
+\end{itemize}
+
+Save this as:
+\begin{verbatim}
+02_question_metadata_raw.csv
+\end{verbatim}
+
+\subsubsection{Step~2.3: Clean and validate question metadata}
+Create a cleaned question metadata table.
+At this stage:
+\begin{itemize}
+    \item standardize field names;
+    \item standardize type labels to exactly \texttt{Abstract} and \texttt{Concrete} or a fixed lower-case equivalent;
+    \item validate that ENEM correctness is numeric and lies between 0 and 1;
+    \item validate that correct answer is one of \texttt{A}, \texttt{B}, \texttt{C}, \texttt{D}, or \texttt{E};
+    \item validate that text-complexity variables are numeric and positive when present.
+\end{itemize}
+
+Save the cleaned table as:
+\begin{verbatim}
+03_question_metadata_clean.csv
+\end{verbatim}
+
+\subsubsection{Step~2.4: Extract event-level task data from the PsychoPy logs}
+Read all \texttt{enem\_blocks} files and concatenate the relevant task rows into one raw event table.
+Keep only the fields needed for behavioral reconstruction:
+\begin{itemize}
+    \item participant ID;
+    \item timestamp;
+    \item phase;
+    \item block;
+    \item trial index in block;
+    \item question identifiers;
+    \item \texttt{t\_abs};
+    \item \texttt{choice};
+    \item \texttt{button\_click\_time};
+    \item \texttt{option\_view\_time};
+    \item marker fields;
+    \item notes.
+\end{itemize}
+
+Save this as:
+\begin{verbatim}
+04_behavior_events_raw.csv
+\end{verbatim}
+
+\subsubsection{Step~2.5: Reconstruct one row per participant-question trial}
+Group the event table by participant, block, trial index, and question identifier, and reconstruct one trial row for each presented question.
+
+For each trial, identify:
+\begin{itemize}
+    \item the text onset event;
+    \item the stem onset event;
+    \item the options onset event;
+    \item the answer event, if present.
+\end{itemize}
+
+This yields a raw trial table with one row per participant-question attempt.
+Save it as:
+\begin{verbatim}
+05_behavior_trial_raw.csv
+\end{verbatim}
+
+\subsubsection{Step~2.6: Derive timing variables}
+For each reconstructed trial, compute:
+\begin{itemize}
+    \item \texttt{rt\_text\_to\_stem = t\_stem\_on - t\_text\_on}
+    \item \texttt{rt\_stem\_to\_options = t\_options\_on - t\_stem\_on}
+    \item \texttt{rt\_options\_to\_answer = t\_answer - t\_options\_on}
+    \item \texttt{rt\_text\_to\_answer = t\_answer - t\_text\_on}
+    \item \texttt{rt\_stem\_to\_answer = t\_answer - t\_stem\_on}
+\end{itemize}
+
+Also compute:
+\begin{itemize}
+    \item \texttt{sec\_per\_word}
+    \item \texttt{sec\_per\_sentence}
+\end{itemize}
+
+If any phase is missing, the derived timing variable should be set to missing and flagged explicitly.
+
+\subsubsection{Step~2.7: Derive answer and correctness variables}
+The PsychoPy log stores the participant's selected option in the \texttt{choice} column of the \texttt{answer} row.
+Use this selected option and compare it with the correct option from \texttt{filtered\_questions.json}.
+
+Create:
+\begin{itemize}
+    \item \texttt{chosen\_answer}
+    \item \texttt{correct\_answer}
+    \item \texttt{participant\_correct}
+\end{itemize}
+
+Recommended coding:
+\begin{itemize}
+    \item \texttt{participant\_correct = 1} if chosen answer matches correct answer;
+    \item \texttt{participant\_correct = 0} if chosen answer does not match correct answer;
+    \item missing if the answer event is absent or unusable.
+\end{itemize}
+
+\subsubsection{Step~2.8: Define response-status categories}
+Use simple explicit status labels:
+\begin{itemize}
+    \item \texttt{ANSWERED\_VALID}
+    \item \texttt{ANSWERED\_INVALID}
+    \item \texttt{MISSING\_ANSWER}
+    \item \texttt{PARTIAL\_TRIAL}
+    \item \texttt{UNMATCHED\_QUESTION}
+\end{itemize}
+
+These categories should be used throughout Step~2 to keep the data traceable and auditable.
+
+\subsubsection{Step~2.9: Join with question metadata}
+Merge the participant-question trial table with the cleaned question metadata.
+At this stage, validate:
+\begin{itemize}
+    \item that the question type in the log matches the question type in the metadata;
+    \item that the question year and field are consistent;
+    \item that each presented item finds exactly one metadata row.
+\end{itemize}
+
+If any trial does not match cleanly to a question in the metadata, keep the row but flag it for manual review.
+
+\subsubsection{Step~2.10: Derive block-order variables}
+From the block labels such as \texttt{A1}, \texttt{A2}, \texttt{C1}, and so on, derive:
+\begin{itemize}
+    \item \texttt{block\_type}
+    \item \texttt{block\_index\_within\_type}
+    \item \texttt{global\_block\_order}
+    \item \texttt{order\_condition}
+\end{itemize}
+
+This is important because the experimental script presents five blocks of one type first and then five blocks of the other type.
+Even in a basic descriptive workflow, order should be retained as a documented variable.
+
+\subsubsection{Step~2.11: Build the clean trial table}
+Save the final cleaned participant-question dataset as:
+\begin{verbatim}
+06_behavior_trial_clean.csv
+\end{verbatim}
+
+This should be the main Step~2 analysis table.
+It should contain one row per participant-question trial, all relevant metadata, timing variables, correctness variables, and quality flags.
+
+\subsubsection{Step~2.12: Produce question-level summaries}
+For each unique question, compute:
+\begin{itemize}
+    \item number of participants exposed;
+    \item number of valid answers;
+    \item number correct;
+    \item sample accuracy;
+    \item ENEM correctness;
+    \item difference between sample accuracy and ENEM correctness;
+    \item mean and median response time;
+    \item standard deviation of response time;
+    \item mean normalized timing measures;
+    \item answer distribution across A--E.
+\end{itemize}
+
+Save these results as:
+\begin{verbatim}
+07_question_summary.csv
+08_question_answer_distribution.csv
+\end{verbatim}
+
+\subsubsection{Step~2.13: Compare participant sample accuracy with ENEM correctness}
+For each question, define:
+\begin{verbatim}
+difficulty_gap = sample_accuracy - enem_correctness
+\end{verbatim}
+
+This quantity should be interpreted descriptively:
+\begin{itemize}
+    \item a positive value means the sample found the item easier than the original ENEM population;
+    \item a negative value means the sample found the item harder than the original ENEM population.
+\end{itemize}
+
+This comparison is useful, but it must be described carefully.
+The two groups are not the same population, so this is a descriptive comparison, not a formal calibration exercise.
+
+Save the comparison table as:
+\begin{verbatim}
+14_exam_vs_sample_comparison.csv
+\end{verbatim}
+
+\subsubsection{Step~2.14: Produce type-level summaries}
+Aggregate the clean trial table by question type:
+\begin{itemize}
+    \item Abstract
+    \item Concrete
+\end{itemize}
+
+For each type, compute:
+\begin{itemize}
+    \item number of trials;
+    \item number of valid answers;
+    \item mean sample accuracy;
+    \item mean response time;
+    \item median response time;
+    \item mean ENEM correctness of the presented items;
+    \item mean word count;
+    \item mean sentence count;
+    \item mean sentence length.
+\end{itemize}
+
+Save this table as:
+\begin{verbatim}
+09_type_summary.csv
+\end{verbatim}
+
+\subsubsection{Step~2.15: Produce block-level summaries}
+Aggregate by:
+\begin{itemize}
+    \item block label;
+    \item block type;
+    \item global block order;
+    \item trial position within block.
+\end{itemize}
+
+For each grouping, compute:
+\begin{itemize}
+    \item number of presented questions;
+    \item number of answered questions;
+    \item mean response time;
+    \item mean accuracy;
+    \item mean normalized timing measures.
+\end{itemize}
+
+This helps identify simple fatigue or order effects without introducing complex modeling.
+
+Save the result as:
+\begin{verbatim}
+10_block_summary.csv
+\end{verbatim}
+
+\subsubsection{Step~2.16: Produce field-level and year-level summaries}
+Aggregate by:
+\begin{itemize}
+    \item \texttt{question\_field}
+    \item \texttt{question\_year}
+\end{itemize}
+
+For each group, compute:
+\begin{itemize}
+    \item number of questions;
+    \item number of valid trials;
+    \item mean accuracy;
+    \item mean ENEM correctness;
+    \item mean response time.
+\end{itemize}
+
+Save these tables as:
+\begin{verbatim}
+11_field_summary.csv
+12_year_summary.csv
+\end{verbatim}
+
+\subsubsection{Step~2.17: Produce participant-level summaries}
+For each participant, compute:
+\begin{itemize}
+    \item number of questions shown;
+    \item number of valid answers;
+    \item overall accuracy;
+    \item overall mean response time;
+    \item abstract-question accuracy;
+    \item concrete-question accuracy;
+    \item abstract-question mean response time;
+    \item concrete-question mean response time;
+    \item order condition.
+\end{itemize}
+
+This participant-level table is especially useful for later merging with fNIRS summaries.
+
+Save it as:
+\begin{verbatim}
+13_participant_behavior_summary.csv
+\end{verbatim}
+
+\subsubsection{Step~2.18: Produce missingness and quality tables}
+Create a missingness table that reports, for each variable and each response-status category:
+\begin{itemize}
+    \item count;
+    \item percentage.
+\end{itemize}
+
+Save it as:
+\begin{verbatim}
+15_behavior_missingness.csv
+\end{verbatim}
+
+\subsection{Minimal Descriptive Analyses to Include}
+
+\subsubsection*{A. Question-level analysis}
+For each question:
+\begin{itemize}
+    \item sample size;
+    \item sample accuracy;
+    \item ENEM correctness;
+    \item difficulty gap;
+    \item answer distribution;
+    \item mean and median response time;
+    \item question length variables.
+\end{itemize}
+
+\subsubsection*{B. Abstract vs concrete analysis}
+Compare abstract and concrete questions descriptively on:
+\begin{itemize}
+    \item sample accuracy;
+    \item response time;
+    \item normalized timing;
+    \item average word count;
+    \item average sentence count;
+    \item average sentence length;
+    \item average ENEM correctness.
+\end{itemize}
+
+\subsubsection*{C. Item-length analysis}
+Describe how item length relates to behavior using:
+\begin{itemize}
+    \item scatter plot of word count versus mean response time;
+    \item scatter plot of word count versus sample accuracy;
+    \item optional tables sorted by longest questions and shortest questions.
+\end{itemize}
+
+\subsubsection*{D. Position analysis}
+Describe how behavior varies by:
+\begin{itemize}
+    \item block order;
+    \item question position within block;
+    \item order condition.
+\end{itemize}
+
+\subsection{Plots}
+The following plots are recommended for the basic Step~2 report.
+
+\subsubsection*{Core plots}
+\begin{itemize}
+    \item bar plot of sample accuracy by question type;
+    \item boxplot or violin-free boxplot of response time by question type;
+    \item scatter plot of ENEM correctness versus sample accuracy;
+    \item scatter plot of word count versus mean response time;
+    \item scatter plot of word count versus sample accuracy.
+\end{itemize}
+
+\subsubsection*{Question-level plots}
+\begin{itemize}
+    \item bar plot of sample accuracy by question;
+    \item paired comparison plot of sample accuracy and ENEM correctness by question;
+    \item answer-distribution plot for each question.
+\end{itemize}
+
+\subsubsection*{Block and participant plots}
+\begin{itemize}
+    \item accuracy by global block order;
+    \item response time by global block order;
+    \item participant-level abstract versus concrete summary plot.
+\end{itemize}
+
+\subsection{Per-Question \LaTeX{} Reporting}
+One modular \LaTeX{} file should be created for each question:
+\begin{verbatim}
+reports/step2/questions/question_<question_id>.tex
+\end{verbatim}
+
+Each file should contain:
+\begin{itemize}
+    \item question identifier;
+    \item question metadata table;
+    \item sample exposure count;
+    \item answer distribution;
+    \item sample accuracy;
+    \item ENEM correctness;
+    \item difficulty gap;
+    \item response-time summary;
+    \item corresponding plot or plots;
+    \item notes on any data-quality issue.
+\end{itemize}
+
+\subsection{Master \LaTeX{} Report}
+Create:
+\begin{verbatim}
+reports/step2/step2_behavior_report.tex
+\end{verbatim}
+
+This report should contain:
+\begin{itemize}
+    \item a short introduction to the behavioral analysis;
+    \item a description of the raw files and reconstruction logic;
+    \item a section on item metadata;
+    \item a section on overall task performance;
+    \item a section on abstract versus concrete comparisons;
+    \item a section on question-level summaries;
+    \item a section on item-length summaries;
+    \item a section on data-quality and missingness;
+    \item \texttt{\textbackslash input\{...\}} statements for modular question or group files.
+\end{itemize}
+
+\subsection{Template for One Question Report}
+Each question-specific \LaTeX{} file can follow a structure such as:
+
+\begin{verbatim}
+\subsection{Question <question_id>}
+\label{sec:q_<question_id>}
+
+\paragraph{Metadata.}
+Year, field, type, correct answer, ENEM correctness, word count, sentence count, sentence length.
+
+\paragraph{Exposure and validity.}
+N exposed, N answered, N valid.
+
+\paragraph{Performance.}
+Sample accuracy, ENEM correctness, difficulty gap.
+
+\paragraph{Timing.}
+Mean, SD, median for total response time and normalized timing.
+
+\paragraph{Answer distribution.}
+Counts and percentages for A, B, C, D, and E.
+
+\paragraph{Notes.}
+Any issue with missing events, inconsistent metadata, or unusual answer patterns.
+\end{verbatim}
+
+\subsection{Quality-Control Checks}
+Before Step~2 is considered complete, the following checks should be run:
+\begin{enumerate}
+    \item every participant log is readable;
+    \item each question trial has a valid participant ID and block label;
+    \item event phases are reconstructed correctly;
+    \item the answer event is identified correctly;
+    \item chosen answers are limited to A--E;
+    \item metadata merges uniquely to each question;
+    \item question type in the log matches question type in the metadata;
+    \item ENEM correctness values are within the interval $[0,1]$;
+    \item response-time variables are non-negative;
+    \item normalized timing variables are computed only when denominators are valid;
+    \item denominators are reported in all summary tables.
+\end{enumerate}
+
+\subsection{What We Intentionally Do Not Do Yet}
+To keep Step~2 simple and robust, the following are intentionally postponed:
+\begin{itemize}
+    \item no inferential tests between abstract and concrete items;
+    \item no mixed-effects modeling;
+    \item no item-response modeling;
+    \item no formal equating between the sample and the ENEM population;
+    \item no integration with fNIRS signals yet.
+\end{itemize}
+
+\subsection{Minimal Completion Criteria for Step~2}
+Step~2 should be considered complete when:
+\begin{itemize}
+    \item all participant PsychoPy logs have been read;
+    \item a clean participant-question table exists;
+    \item question metadata from \texttt{filtered\_questions.json} have been merged;
+    \item correctness and timing variables have been derived;
+    \item item-level and type-level summary tables exist;
+    \item sample accuracy has been descriptively compared with ENEM correctness;
+    \item basic plots have been generated;
+    \item modular \LaTeX{} outputs have been generated;
+    \item all data-quality issues have been documented.
+\end{itemize}
+
+\subsection{Short Practical Summary}
+In simple terms, Step~2 should transform the PsychoPy task logs into one clean behavioral dataset with one row per participant-question response, enriched with item metadata from \texttt{filtered\_questions.json}, and produce a basic descriptive analysis of:
+\begin{itemize}
+    \item time;
+    \item correctness;
+    \item abstract versus concrete differences;
+    \item question difficulty;
+    \item comparison with original ENEM correctness;
+    \item simple item-length effects.
+\end{itemize}
+
+\end{document}
