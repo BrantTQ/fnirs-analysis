@@ -1,0 +1,27 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\begin{document}
+\section*{Step 12 Four-ROI Continuous Abstractness Analysis}
+This side analysis reused the Step 10/11 cohort and trial table, recomputed the variable-window HbO outcome for four user-defined ROIs, and fit the Step 11 continuous abstractness model separately for each ROI. Holm correction was applied across the four primary ROI tests.
+\subsection*{ROI Definitions}
+\input{tables/roi_definitions.tex}
+\input{tables/channel_summary.tex}
+\subsection*{ROI Model Results}
+\input{tables/roi_results.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\linewidth]{../../figures/step12/step12_roi_coefficients.png}
+\caption{Continuous abstractness coefficients and 95\% confidence intervals for the four ROI-specific models.}
+\end{figure}
+\subsection*{Descriptive Waveforms}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.96\linewidth]{../../figures/step12/step12_roi_waveforms.png}
+\caption{Onset-locked descriptive HbO waveforms for the four ROI definitions, averaged within participant-session and then across the Step 10/11 cohort.}
+\end{figure}
+\subsection*{Conclusion}
+\input{text/final_conclusion.tex}
+\end{document}

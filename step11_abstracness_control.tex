@@ -1,0 +1,633 @@
+\section{Step 11: Continuous Abstractness Analysis Using the Question-Level Abstractness Score}
+\label{sec:step11_continuous_abstractness}
+
+\subsection{Objective}
+The objective of Step~11 is to replace the binary abstract-versus-concrete label with the
+\textbf{continuous abstractness score} produced by the question-classification algorithm and test
+whether the fNIRS response varies continuously with the level of abstractness.
+
+This step is motivated by the possibility that the binary label may be too coarse.
+Two questions may both be labeled \texttt{abstract} while still differing substantially in their
+degree of abstractness, and the same is true for questions labeled \texttt{concrete}.
+A continuous score preserves this information.
+
+The main question of Step~11 is:
+\begin{quote}
+In the left frontal ROI, is the duration-aware HbO response associated with the continuous level
+of abstractness of the question after adjusting for block structure, question length, and item difficulty?
+\end{quote}
+
+\subsection{Why This Step Is Needed}
+The previous steps treated abstractness as a binary construct.
+That was useful for the first analyses, but it may have discarded meaningful variation.
+If the neural effect depends on the \textbf{degree} of abstractness rather than a strict category threshold,
+a continuous-score analysis may be more appropriate.
+
+This step therefore treats abstractness as a \textbf{continuum} rather than a dichotomy.
+
+\subsection{Core Analytical Decision}
+To keep Step~11 interpretable, the following elements should remain fixed from Step~10:
+\begin{enumerate}
+    \item the same trial-level frontal outcome;
+    \item the same duration-aware variable-window signal summary;
+    \item the same included participant-session cohort in the primary analysis;
+    \item the same block covariates;
+    \item the same item covariates:
+    \begin{itemize}
+        \item standardized log total word count;
+        \item standardized ENEM item correctness.
+    \end{itemize}
+\end{enumerate}
+
+The main change in Step~11 is:
+\begin{quote}
+replace the binary condition label with the continuous abstractness score.
+\end{quote}
+
+\subsection{Important Modeling Rule}
+The binary abstract/concrete label should \textbf{not} be included in the same primary model
+as the continuous abstractness score.
+
+The reason is that the binary label is presumably derived from the score by thresholding.
+Including both in the same model would create strong collinearity and make the coefficients hard to interpret.
+
+Therefore:
+\begin{itemize}
+    \item the \textbf{primary model} uses the continuous score only;
+    \item the \textbf{binary-label model} is retained only as a benchmark model in a separate analysis.
+\end{itemize}
+
+\subsection{Primary Outcome}
+The primary outcome remains the same as in Steps~9 and~10:
+\begin{quote}
+the trial-level left frontal ROI HbO response computed from the duration-aware variable window.
+\end{quote}
+
+Keeping the same dependent variable ensures that Step~11 isolates the effect of replacing the
+binary label with the continuous abstractness score.
+
+\subsection{Primary ROI Definition}
+The primary ROI remains the same left frontal ROI used previously.
+
+\subsubsection{Front ROI HbO channels}
+\begin{verbatim}
+S2_D6 hbo
+S2_D4 hbo
+S1_D6 hbo
+S1_D3 hbo
+S5_D6 hbo
+S5_D4 hbo
+S5_D3 hbo
+\end{verbatim}
+
+\subsubsection{Back ROI HbO benchmark channels}
+The back ROI is retained only as a secondary benchmark:
+\begin{verbatim}
+S4_D2 hbo
+S3_D1 hbo
+S6_D2 hbo
+S6_D1 hbo
+S6_D5 hbo
+S7_D2 hbo
+S7_D5 hbo
+S8_D1 hbo
+S8_D5 hbo
+\end{verbatim}
+
+\subsubsection{Short-separation pairs excluded from inference}
+\begin{verbatim}
+S1_D8
+S2_D9
+S3_D10
+S4_D11
+S5_D12
+S6_D13
+S7_D14
+S8_D15
+\end{verbatim}
+
+\subsection{Primary Predictor: Continuous Abstractness Score}
+Let \(\texttt{score}_q\) denote the algorithmic abstractness score for question \(q\).
+
+Before fitting the model, the score should be transformed so that:
+\begin{quote}
+higher values always mean \textbf{more abstract}.
+\end{quote}
+
+If the original score is oriented in the opposite direction, it should first be multiplied by \(-1\).
+
+Then define the standardized abstractness score:
+\begin{equation}
+a_q = z(\texttt{score}_q),
+\end{equation}
+where \(z(\cdot)\) denotes standardization to mean zero and standard deviation one.
+
+\subsection{Interpretation of the Score Coefficient}
+With this coding:
+\begin{itemize}
+    \item a \textbf{positive} abstractness coefficient means that more abstract questions are associated
+    with a larger frontal ROI response;
+    \item a \textbf{negative} abstractness coefficient means that more concrete questions are associated
+    with a larger frontal ROI response.
+\end{itemize}
+
+This sign interpretation should be stated explicitly in the report.
+
+\subsection{Additional Covariates}
+Step~11 should retain the same item-level and block-level covariates used in Step~10.
+
+Let:
+\begin{equation}
+g_{iq} \in \{1,\dots,10\}
+\end{equation}
+denote realized global block order, and
+\begin{equation}
+p_{iq} \in \{1,2,3\}
+\end{equation}
+denote within-block trial position.
+
+Let:
+\begin{equation}
+w_q = z\!\left(\log(\texttt{total\_word\_count}_q)\right)
+\end{equation}
+and
+\begin{equation}
+c_q = z(\texttt{correctness}_q).
+\end{equation}
+
+\subsection{Primary Step~11 Model}
+Let \(y^{(F)}_{iq}\) denote the duration-aware front ROI HbO response for participant \(i\) on question \(q\).
+
+The primary Step~11 model should be:
+\begin{equation}
+y^{(F)}_{iq}
+=
+\beta_0
++
+\beta_1 a_q
++
+\beta_2 g_{iq}
++
+\beta_3 p_{iq}
++
+\beta_4 w_q
++
+\beta_5 c_q
++
+\alpha_i
++
+\varepsilon_{iq},
+\end{equation}
+where:
+\begin{itemize}
+    \item \(\alpha_i\) is a participant fixed effect;
+    \item \(\varepsilon_{iq}\) is the residual term.
+\end{itemize}
+
+\subsection{Primary Inferential Target}
+The primary inferential target is:
+\begin{equation}
+\beta_1,
+\end{equation}
+which represents the association between abstractness level and frontal ROI response after adjustment.
+
+\subsection{Primary Hypothesis}
+The primary hypotheses are:
+
+\paragraph{Null hypothesis}
+\begin{equation}
+H_0: \beta_1 = 0
+\end{equation}
+
+\paragraph{Alternative hypothesis}
+\begin{equation}
+H_1: \beta_1 \neq 0
+\end{equation}
+
+The significance threshold should remain:
+\begin{verbatim}
+alpha = 0.05
+\end{verbatim}
+
+\subsection{Primary Inference Strategy}
+The preferred inference method should be:
+\begin{quote}
+two-way cluster-robust standard errors by participant and question
+\end{quote}
+if the implementation is stable.
+
+If two-way clustered standard errors are unavailable or unstable, the primary fallback should be:
+\begin{quote}
+participant-clustered standard errors,
+\end{quote}
+with question-clustered and HC3 standard errors reported as sensitivity analyses.
+
+\subsection{Score Diagnostics Before Modeling}
+Before fitting the main model, Step~11 should include a score-diagnostic section.
+
+At minimum, this section should report:
+\begin{itemize}
+    \item the raw range of the abstractness score;
+    \item the mean, standard deviation, median, minimum, and maximum of the score;
+    \item a histogram of the score;
+    \item the score distribution split by the existing binary abstract/concrete label;
+    \item the cutoff used to derive the binary label, if one exists;
+    \item the number of questions above and below the cutoff;
+    \item the correlation of the score with:
+    \begin{itemize}
+        \item total word count;
+        \item sentence count;
+        \item sentence length;
+        \item ENEM item correctness;
+        \item response time.
+    \end{itemize}
+\end{itemize}
+
+This section is important because it helps determine whether the abstractness score is mostly capturing
+abstractness itself or whether it is strongly entangled with other item properties.
+
+\subsection{Benchmark Model with Binary Label}
+To compare the continuous-score approach against the older binary approach, Step~11 should fit one benchmark model:
+\begin{equation}
+y^{(F)}_{iq}
+=
+\gamma_0
++
+\gamma_1 A_q
++
+\gamma_2 g_{iq}
++
+\gamma_3 p_{iq}
++
+\gamma_4 w_q
++
+\gamma_5 c_q
++
+\alpha_i
++
+\varepsilon_{iq},
+\end{equation}
+where:
+\begin{equation}
+A_q =
+\begin{cases}
+1 & \text{if question } q \text{ is Abstract} \\
+0 & \text{if question } q \text{ is Concrete}
+\end{cases}
+\end{equation}
+
+This model is included only as a benchmark.
+Its purpose is to compare:
+\begin{itemize}
+    \item the continuous-score specification;
+    \item the thresholded binary specification.
+\end{itemize}
+
+\subsection{Nonlinearity Sensitivity Model}
+Because the relationship between abstractness and neural response may not be perfectly linear,
+Step~11 should include one quadratic sensitivity model:
+\begin{equation}
+y^{(F)}_{iq}
+=
+\beta_0
++
+\beta_1 a_q
++
+\beta_2 a_q^2
++
+\beta_3 g_{iq}
++
+\beta_4 p_{iq}
++
+\beta_5 w_q
++
+\beta_6 c_q
++
+\alpha_i
++
+\varepsilon_{iq}.
+\end{equation}
+
+This model tests whether the relationship is curved rather than strictly linear.
+
+\subsection{Strength-of-Abstractness Sensitivity Model}
+If the binary label was derived from a cutoff \(t\), Step~11 may also include a sensitivity model
+based on the distance from the cutoff:
+\begin{equation}
+d_q = z(|\texttt{score}_q - t|).
+\end{equation}
+
+A benchmark threshold-strength model may then be:
+\begin{equation}
+y^{(F)}_{iq}
+=
+\beta_0
++
+\beta_1 A_q
++
+\beta_2 d_q
++
+\beta_3 g_{iq}
++
+\beta_4 p_{iq}
++
+\beta_5 w_q
++
+\beta_6 c_q
++
+\alpha_i
++
+\varepsilon_{iq}.
+\end{equation}
+
+This is optional, but useful if you want to test whether the neural effect depends on how strongly
+abstract or concrete an item is relative to the classification threshold.
+
+\subsection{Secondary Back ROI Benchmark}
+Because the back ROI remained null in the previous steps, it should stay secondary here.
+Still, one benchmark back-ROI model may be fit:
+\begin{equation}
+y^{(B)}_{iq}
+=
+\beta_0
++
+\beta_1 a_q
++
+\beta_2 g_{iq}
++
+\beta_3 p_{iq}
++
+\beta_4 w_q
++
+\beta_5 c_q
++
+\alpha_i
++
+\varepsilon_{iq}.
+\end{equation}
+
+This model is included only to check whether the continuous score reveals anything in the back ROI
+that the binary label did not.
+
+\subsection{Fixed-Window Benchmark Sensitivity}
+Because Step~6 used the fixed 7--11~s frontal outcome and because that outcome previously gave one of
+the strongest near-threshold frontal results, Step~11 should include one benchmark model using:
+\begin{quote}
+the Step~6 fixed-window front ROI outcome with the continuous abstractness score.
+\end{quote}
+
+This allows a direct comparison between:
+\begin{itemize}
+    \item the duration-aware continuous-score result;
+    \item the fixed-window continuous-score result.
+\end{itemize}
+
+\subsection{No-Override Sensitivity}
+Step~11 should also include the same no-override sensitivity used in Step~10:
+repeat the primary continuous-score model after removing the two inherited manual-inclusion sessions:
+\begin{itemize}
+    \item PID025 / 2025-11-25 002
+    \item PID034 / 2025-11-27 003
+\end{itemize}
+
+\subsection{Influence Analysis}
+Because the abstractness score is a question-level variable, Step~11 should include a
+leave-one-question-out influence analysis.
+
+For each question \(q\):
+\begin{itemize}
+    \item remove all trials from question \(q\);
+    \item refit the primary continuous-score model;
+    \item record the new abstractness coefficient;
+    \item record the new p-value and confidence interval.
+\end{itemize}
+
+This analysis will show whether the apparent abstractness effect depends heavily on one or a few questions.
+
+\subsection{Optional Leave-One-Participant-Out Check}
+If computationally feasible, Step~11 may also include a leave-one-participant-out analysis:
+\begin{itemize}
+    \item remove one participant-session at a time;
+    \item refit the primary model;
+    \item record the abstractness coefficient and p-value.
+\end{itemize}
+
+\subsection{Step-by-Step Workflow}
+
+\subsubsection{Step~11.1: Freeze the Step~10 trial table}
+Start from the same Step~10 trial-level duration-aware frontal outcome and the same block metadata.
+
+\subsubsection{Step~11.2: Merge the abstractness score by question}
+Add the algorithmic question-level abstractness score to every trial using question ID as the merge key.
+
+\subsubsection{Step~11.3: Align score direction}
+Confirm that higher values mean more abstract.
+If necessary, reverse the sign of the raw score.
+
+\subsubsection{Step~11.4: Run score diagnostics}
+Produce:
+\begin{itemize}
+    \item histogram of the score;
+    \item score distribution by binary label;
+    \item score cutoff summary;
+    \item correlations with word count, sentence count, sentence length, ENEM correctness, and response time.
+\end{itemize}
+
+\subsubsection{Step~11.5: Standardize the continuous predictors}
+Compute:
+\begin{itemize}
+    \item standardized abstractness score;
+    \item standardized log total word count;
+    \item standardized ENEM correctness.
+\end{itemize}
+
+\subsubsection{Step~11.6: Fit the primary continuous-score model}
+Fit the participant-fixed-effects model using the continuous abstractness score as the main predictor.
+
+\subsubsection{Step~11.7: Compute robust standard errors}
+Use:
+\begin{itemize}
+    \item two-way cluster-robust SE by participant and question if stable;
+    \item otherwise participant-clustered SE as the primary fallback.
+\end{itemize}
+
+\subsubsection{Step~11.8: Fit the benchmark binary-label model}
+Fit the benchmark model using the thresholded abstract/concrete label instead of the continuous score.
+
+\subsubsection{Step~11.9: Fit the quadratic sensitivity model}
+Fit the nonlinear continuous-score model with the squared score term.
+
+\subsubsection{Step~11.10: Fit the optional threshold-strength model}
+If a cutoff is available, fit the label-plus-distance benchmark model.
+
+\subsubsection{Step~11.11: Fit the back ROI benchmark}
+Fit the secondary back-ROI continuous-score model.
+
+\subsubsection{Step~11.12: Fit the fixed-window benchmark}
+Repeat the continuous-score model using the Step~6 fixed-window frontal outcome.
+
+\subsubsection{Step~11.13: Fit the no-override sensitivity}
+Repeat the primary continuous-score model after removing PID025 and PID034.
+
+\subsubsection{Step~11.14: Run the leave-one-question-out analysis}
+Refit the primary model once per question exclusion.
+
+\subsubsection{Step~11.15: Optionally run the leave-one-participant-out analysis}
+Refit the primary model once per participant-session exclusion, if desired.
+
+\subsection{Primary Reporting Quantities}
+The primary Step~11 results table must report:
+\begin{itemize}
+    \item number of included participants;
+    \item number of included questions;
+    \item number of included trials;
+    \item abstractness-score coefficient \(\beta_1\);
+    \item standard error;
+    \item test statistic;
+    \item p-value;
+    \item 95\% confidence interval;
+    \item block-order coefficient;
+    \item within-block-position coefficient;
+    \item log-word-count coefficient;
+    \item ENEM-correctness coefficient;
+    \item robust-SE type used in the primary report.
+\end{itemize}
+
+\subsection{Secondary Reporting Quantities}
+The secondary Step~11 tables should report:
+\begin{itemize}
+    \item score-diagnostic summary;
+    \item benchmark binary-label results;
+    \item quadratic-model results;
+    \item optional threshold-strength results;
+    \item back-ROI benchmark results;
+    \item fixed-window benchmark results;
+    \item no-override sensitivity results;
+    \item leave-one-question-out coefficient range;
+    \item optional leave-one-participant-out coefficient range.
+\end{itemize}
+
+\subsection{Primary Conclusion Rule}
+The final Step~11 conclusion should be based on the coefficient \(\beta_1\) from the
+primary continuous-score model.
+
+The interpretation rule should be:
+\begin{itemize}
+    \item if \(\beta_1\) is significant and positive, conclude that more abstract questions are associated
+    with a larger frontal ROI response;
+    \item if \(\beta_1\) is significant and negative, conclude that more concrete questions are associated
+    with a larger frontal ROI response;
+    \item if \(\beta_1\) is non-significant, conclude that the continuous abstractness score does not
+    show a statistically significant linear association with the frontal ROI response in the current dataset.
+\end{itemize}
+
+\subsection{Interpretation Templates}
+
+\paragraph{Template if the continuous abstractness effect is significant and positive.}
+In the participant-fixed-effects regression using the continuous abstractness score, more abstract
+questions were associated with a significantly larger left frontal ROI HbO response
+(\(\beta=\ldots\), \(SE=\ldots\), \(p=\ldots\), 95\% CI \([\ldots,\ldots]\)).
+This suggests that the neural effect is better described as a continuous abstractness gradient
+than as a thresholded abstract-versus-concrete category difference.
+
+\paragraph{Template if the continuous abstractness effect is significant and negative.}
+In the participant-fixed-effects regression using the continuous abstractness score, more concrete
+questions were associated with a significantly larger left frontal ROI HbO response
+(\(\beta=\ldots\), \(SE=\ldots\), \(p=\ldots\), 95\% CI \([\ldots,\ldots]\)).
+This suggests that the frontal effect is better characterized as increasing with concreteness rather
+than with abstractness.
+
+\paragraph{Template if the continuous abstractness effect is not significant.}
+In the participant-fixed-effects regression using the continuous abstractness score, the association
+between abstractness level and left frontal ROI HbO response was not statistically significant
+(\(\beta=\ldots\), \(SE=\ldots\), \(p=\ldots\), 95\% CI \([\ldots,\ldots]\)).
+This suggests that replacing the binary label with a continuous abstractness measure does not by itself
+yield robust evidence for a frontal abstractness effect in the current dataset.
+
+\subsection{Expected Outputs}
+
+\subsubsection*{Tables}
+\begin{verbatim}
+01_step11_score_diagnostics.csv
+02_step11_score_correlations.csv
+03_step11_primary_continuous_model.csv
+04_step11_binary_benchmark_model.csv
+05_step11_quadratic_model.csv
+06_step11_threshold_strength_model.csv
+07_step11_back_roi_benchmark.csv
+08_step11_fixed_window_benchmark.csv
+09_step11_no_override_results.csv
+10_step11_leave_one_question_out.csv
+11_step11_leave_one_participant_out.csv
+12_step11_final_conclusion.csv
+\end{verbatim}
+
+\subsubsection*{Figures}
+\begin{verbatim}
+figures/step11/score_histogram.png
+figures/step11/score_by_binary_label.png
+figures/step11/score_vs_wordcount.png
+figures/step11/score_vs_correctness.png
+figures/step11/continuous_partial_effect_plot.png
+figures/step11/continuous_vs_binary_benchmark.png
+figures/step11/quadratic_effect_plot.png
+figures/step11/no_override_comparison.png
+figures/step11/leave_one_question_out_plot.png
+\end{verbatim}
+
+\subsubsection*{Reports}
+\begin{verbatim}
+reports/step11/step11_continuous_abstractness_report.tex
+reports/step11/tables/primary_continuous_table.tex
+reports/step11/tables/benchmark_table.tex
+reports/step11/text/final_conclusion.tex
+\end{verbatim}
+
+\subsection{Minimal Figures for the Main Report}
+The main Step~11 report should include at least:
+\begin{enumerate}
+    \item histogram of the abstractness score;
+    \item score distribution split by the binary abstract/concrete label;
+    \item scatter plot of score versus word count;
+    \item scatter plot of score versus ENEM correctness;
+    \item partial-effect plot for the primary continuous-score model;
+    \item benchmark comparison between the continuous-score and binary-label models;
+    \item leave-one-question-out abstractness coefficient plot.
+\end{enumerate}
+
+\subsection{Quality-Control Checks}
+Before Step~11 is considered complete, verify that:
+\begin{enumerate}
+    \item the Step~10 frontal outcome is unchanged;
+    \item the abstractness score is merged correctly by question ID;
+    \item the direction of the score is aligned so that higher means more abstract;
+    \item the continuous score is not included in the same primary model as the binary label;
+    \item the primary robust-SE specification is documented clearly;
+    \item the no-override sensitivity removes only PID025 and PID034;
+    \item leave-one-question-out runs cover all included questions;
+    \item the score diagnostics are reported before interpretation.
+\end{enumerate}
+
+\subsection{Minimal Completion Criteria}
+Step~11 is complete when:
+\begin{itemize}
+    \item the abstractness score has been merged and validated;
+    \item the score-diagnostic section has been completed;
+    \item the primary continuous-score model has been fit;
+    \item the binary benchmark model has been fit;
+    \item the quadratic sensitivity model has been fit;
+    \item the back-ROI benchmark has been completed;
+    \item the fixed-window and no-override sensitivities have been completed;
+    \item the leave-one-question-out analysis has been completed;
+    \item the final conclusion has been written.
+\end{itemize}
+
+\subsection{Short Practical Summary}
+In simple terms, Step~11 should:
+\begin{quote}
+take the same frontal duration-aware outcome from Step~10, replace the binary abstract/concrete
+label with the continuous abstractness score from the classification algorithm, test whether the
+frontal signal changes continuously with abstractness level, compare that result against the old
+binary-label benchmark, and determine whether the neural effect is better described as a gradient
+than as a thresholded category difference.
+\end{quote}

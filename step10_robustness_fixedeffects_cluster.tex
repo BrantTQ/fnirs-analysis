@@ -1,0 +1,505 @@
+\section{Step 10: Final Robustness Check with Simpler Fixed-Effects and Cluster-Robust Regression}
+\label{sec:step10_final_robustness}
+
+\subsection{Objective}
+The objective of Step~10 is to perform the final robustness check of the frontal condition effect
+using a simpler regression framework than the mixed-effects models used in Steps~6--9.
+
+This step is intended to answer one last question:
+\begin{quote}
+If the same frontal outcome is analyzed with a simpler fixed-effects regression and robust standard errors,
+does the abstract-versus-concrete effect remain, weaken further, or disappear?
+\end{quote}
+
+This step should be the \textbf{last reanalysis step} before write-up.
+Its purpose is not to open a new inferential branch, but to determine whether the remaining frontal
+tendency is robust to a simpler and more transparent specification.
+
+\subsection{Why Step~10 Is Needed}
+The previous steps showed a consistent but fragile pattern:
+\begin{itemize}
+    \item the Step~5 fixed-window front ROI result was near threshold;
+    \item the Step~6 covariate-adjusted front ROI model was even closer to threshold;
+    \item the Step~7 duration-aware front ROI model remained positive but non-significant;
+    \item the Step~9 block-adjusted front ROI model weakened further and became clearly non-significant.
+\end{itemize}
+
+At the same time, the mixed-effects reports repeatedly indicated that:
+\begin{itemize}
+    \item the optimizer converged with boundary warnings;
+    \item participant random-intercept variance was extremely small;
+    \item question random-intercept variance was extremely small.
+\end{itemize}
+
+This suggests that the data may be close to a simpler regression limit.
+Therefore, Step~10 should test whether the main conclusion changes when the mixed-effects machinery
+is replaced by a simpler fixed-effects and robust-inference approach.
+
+\subsection{Core Analytical Decision}
+To keep Step~10 interpretable, the following elements should remain fixed from Step~9:
+\begin{enumerate}
+    \item the same Step~9 frontal outcome;
+    \item the same trial table and block metadata;
+    \item the same included participant-session cohort in the primary analysis;
+    \item the same item covariates:
+    \begin{itemize}
+        \item standardized log total word count;
+        \item standardized ENEM item correctness.
+    \end{itemize}
+\end{enumerate}
+
+The main change in Step~10 is:
+\begin{quote}
+replace the mixed-effects model with a simpler regression using participant fixed effects and
+cluster-robust standard errors.
+\end{quote}
+
+\subsection{Primary Outcome}
+The primary Step~10 outcome should remain the same as in Step~9:
+\begin{quote}
+the trial-level left frontal ROI HbO response computed from the duration-aware variable window.
+\end{quote}
+
+Keeping the same dependent variable ensures that Step~10 isolates the effect of changing the
+modeling framework rather than changing the signal summary.
+
+\subsection{Primary ROI Definition}
+The primary ROI remains the same left frontal ROI used in Steps~5--9.
+
+\subsubsection{Front ROI HbO channels}
+\begin{verbatim}
+S2_D6 hbo
+S2_D4 hbo
+S1_D6 hbo
+S1_D3 hbo
+S5_D6 hbo
+S5_D4 hbo
+S5_D3 hbo
+\end{verbatim}
+
+\subsubsection{Short-separation pairs excluded from inference}
+\begin{verbatim}
+S1_D8
+S2_D9
+S3_D10
+S4_D11
+S5_D12
+S6_D13
+S7_D14
+S8_D15
+\end{verbatim}
+
+\subsection{Important Identifiability Note}
+A full model with both \textbf{participant fixed effects} and \textbf{question fixed effects}
+is \textbf{not suitable} for the primary Step~10 condition test.
+
+The reason is that:
+\begin{itemize}
+    \item condition is a question-level attribute;
+    \item word count is a question-level attribute;
+    \item ENEM item correctness is a question-level attribute.
+\end{itemize}
+
+If question fixed effects are added, these variables become perfectly collinear with the question dummies
+and their coefficients cannot be estimated.
+
+Therefore, the primary Step~10 model should use:
+\begin{itemize}
+    \item participant fixed effects;
+    \item question-level covariates;
+    \item cluster-robust standard errors.
+\end{itemize}
+
+Question-level dependence is then handled through robust inference and influence diagnostics rather than
+through question fixed effects.
+
+\subsection{Variables Used in the Primary Model}
+Let:
+\begin{equation}
+y^{(F)}_{ik}
+\end{equation}
+denote the Step~9 duration-aware front ROI HbO response for participant \(i\) on trial \(k\).
+
+Let:
+\begin{equation}
+A_{ik} =
+\begin{cases}
+1 & \text{if the trial is Abstract} \\
+0 & \text{if the trial is Concrete}
+\end{cases}
+\end{equation}
+
+Let:
+\begin{equation}
+g_{ik} \in \{1,\dots,10\}
+\end{equation}
+be realized global block order, and
+\begin{equation}
+p_{ik} \in \{1,2,3\}
+\end{equation}
+be within-block position.
+
+Let:
+\begin{equation}
+w_k = z\!\left(\log(\texttt{total\_word\_count}_k)\right)
+\end{equation}
+and
+\begin{equation}
+c_k = z(\texttt{correctness}_k).
+\end{equation}
+
+\subsection{Primary Step~10 Model}
+The primary Step~10 model should be:
+\begin{equation}
+y^{(F)}_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 g_{ik}
++
+\beta_3 p_{ik}
++
+\beta_4 w_k
++
+\beta_5 c_k
++
+\alpha_i
++
+\varepsilon_{ik},
+\end{equation}
+where:
+\begin{itemize}
+    \item \(\alpha_i\) is a participant fixed effect;
+    \item \(\varepsilon_{ik}\) is the residual term.
+\end{itemize}
+
+This model keeps participant-level heterogeneity explicit without relying on a random-effects variance
+that appears to be close to zero in the earlier mixed models.
+
+\subsection{Primary Inference Strategy}
+The primary inferential target remains:
+\begin{equation}
+\beta_1,
+\end{equation}
+the adjusted abstract-versus-concrete effect in the left frontal ROI.
+
+The preferred inference method should be:
+\begin{quote}
+two-way cluster-robust standard errors by participant and question
+\end{quote}
+if the software implementation is stable.
+
+If two-way clustered standard errors are not available or are unstable, the primary fallback should be:
+\begin{quote}
+participant-clustered standard errors,
+\end{quote}
+with question-clustered standard errors reported as a sensitivity analysis.
+
+\subsection{Primary Hypothesis}
+The primary hypotheses are:
+
+\paragraph{Null hypothesis}
+\begin{equation}
+H_0: \beta_1 = 0
+\end{equation}
+
+\paragraph{Alternative hypothesis}
+\begin{equation}
+H_1: \beta_1 \neq 0
+\end{equation}
+
+The significance threshold should remain:
+\begin{verbatim}
+alpha = 0.05
+\end{verbatim}
+
+\subsection{Why Condition Order Is Not in the Primary Model}
+Participant-level condition order was included in Step~9 as a mixed-model covariate.
+In Step~10, participant fixed effects absorb all participant-level constants.
+Therefore, condition order cannot be estimated separately in the primary fixed-effects regression.
+
+This is acceptable, because the point of Step~10 is not to rebuild every Step~9 coefficient.
+The point is to test whether the frontal condition effect survives in a simpler and more robust
+participant-fixed-effects framework.
+
+\subsection{Secondary Sensitivity Models}
+To complete the final robustness check, Step~10 should include the following secondary analyses.
+
+\subsubsection{Sensitivity Model A: Participant-clustered standard errors}
+Fit the primary model and report participant-clustered standard errors.
+
+\subsubsection{Sensitivity Model B: Question-clustered standard errors}
+Fit the primary model and report question-clustered standard errors.
+
+\subsubsection{Sensitivity Model C: HC3 heteroskedasticity-robust standard errors}
+Fit the primary model and report HC3 robust standard errors.
+
+\subsubsection{Sensitivity Model D: Step~6 fixed-window benchmark}
+Repeat the same regression structure using the Step~6 fixed-window front ROI outcome instead of the
+Step~9 duration-aware outcome.
+
+This provides a final benchmark between:
+\begin{itemize}
+    \item the duration-aware frontal outcome;
+    \item the fixed-window frontal outcome.
+\end{itemize}
+
+\subsubsection{Sensitivity Model E: No-override cohort}
+Repeat the primary regression after removing the two inherited manual-inclusion sessions:
+\begin{itemize}
+    \item PID025 / 2025-11-25 002
+    \item PID034 / 2025-11-27 003
+\end{itemize}
+
+This is important because those sessions were retained by explicit analyst override in the earlier
+pipeline and remained part of the downstream cohort.
+
+\subsection{Leave-One-Question-Out Influence Analysis}
+Because question fixed effects cannot be used in the primary condition model, Step~10 should include
+a leave-one-question-out influence analysis.
+
+For each question \(q\):
+\begin{itemize}
+    \item remove all trials corresponding to \(q\);
+    \item refit the primary participant-fixed-effects model;
+    \item store the new condition coefficient \(\hat{\beta}_1^{(-q)}\);
+    \item store the new p-value and confidence interval.
+\end{itemize}
+
+This analysis will show whether the frontal condition effect depends heavily on one or a few questions.
+
+\subsection{Optional Leave-One-Participant-Out Check}
+If computationally feasible, Step~10 may also include a leave-one-participant-out analysis:
+\begin{itemize}
+    \item remove one participant-session at a time;
+    \item refit the primary model;
+    \item record the condition coefficient and p-value.
+\end{itemize}
+
+This is optional, but useful for verifying that the result is not being driven by one unusually
+influential participant.
+
+\subsection{Secondary Back ROI Benchmark}
+The back ROI has been consistently null and should remain secondary.
+Still, one benchmark participant-fixed-effects model may be fit for the back ROI:
+\begin{equation}
+y^{(B)}_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 g_{ik}
++
+\beta_3 p_{ik}
++
+\beta_4 w_k
++
+\beta_5 c_k
++
+\alpha_i
++
+\varepsilon_{ik}.
+\end{equation}
+
+This model is included only as a final benchmark and should not be emphasized.
+
+\subsection{Step-by-Step Workflow}
+
+\subsubsection{Step~10.1: Freeze the Step~9 trial table}
+Start from the same Step~9 trial-level duration-aware frontal outcome and the same merged block metadata.
+
+\subsubsection{Step~10.2: Build the primary regression table}
+Create one row per valid trial, including:
+\begin{itemize}
+    \item participant ID;
+    \item question ID;
+    \item condition;
+    \item duration-aware front ROI outcome;
+    \item global block order;
+    \item within-block position;
+    \item standardized log total word count;
+    \item standardized ENEM item correctness.
+\end{itemize}
+
+\subsubsection{Step~10.3: Fit the participant-fixed-effects primary model}
+Fit the primary OLS regression with participant fixed effects and robust inference.
+
+\subsubsection{Step~10.4: Compute the primary robust standard errors}
+Use:
+\begin{itemize}
+    \item two-way clustered standard errors by participant and question, if available;
+    \item otherwise participant-clustered standard errors as the primary fallback.
+\end{itemize}
+
+\subsubsection{Step~10.5: Fit the alternative robust-SE versions}
+Refit the same model with:
+\begin{itemize}
+    \item participant-clustered SE;
+    \item question-clustered SE;
+    \item HC3 SE.
+\end{itemize}
+
+\subsubsection{Step~10.6: Fit the fixed-window benchmark}
+Repeat the same participant-fixed-effects regression using the Step~6 fixed-window frontal outcome.
+
+\subsubsection{Step~10.7: Fit the no-override sensitivity}
+Repeat the primary duration-aware regression after removing PID025 and PID034.
+
+\subsubsection{Step~10.8: Run the leave-one-question-out analysis}
+Refit the primary model 30 times, each time dropping one question.
+
+\subsubsection{Step~10.9: Optionally run the leave-one-participant-out analysis}
+Refit the primary model once per participant-session exclusion, if desired.
+
+\subsubsection{Step~10.10: Fit the secondary back ROI benchmark}
+Fit the back ROI participant-fixed-effects benchmark model.
+
+\subsection{Primary Reporting Quantities}
+The primary Step~10 results table must report:
+\begin{itemize}
+    \item number of included participants;
+    \item number of included questions;
+    \item number of included trials;
+    \item condition coefficient \(\beta_1\);
+    \item standard error;
+    \item test statistic;
+    \item p-value;
+    \item 95\% confidence interval;
+    \item block-order coefficient;
+    \item within-block-position coefficient;
+    \item log-word-count coefficient;
+    \item ENEM-correctness coefficient;
+    \item robust-SE type used in the primary report.
+\end{itemize}
+
+\subsection{Secondary Reporting Quantities}
+The secondary Step~10 tables should report:
+\begin{itemize}
+    \item participant-clustered results;
+    \item question-clustered results;
+    \item HC3 results;
+    \item fixed-window benchmark results;
+    \item no-override sensitivity results;
+    \item leave-one-question-out coefficient range;
+    \item optional leave-one-participant-out coefficient range;
+    \item back-ROI benchmark results.
+\end{itemize}
+
+\subsection{Primary Conclusion Rule}
+The final Step~10 conclusion should be based on the condition coefficient \(\beta_1\) from the
+primary participant-fixed-effects model.
+
+The interpretation rule should be:
+\begin{itemize}
+    \item if the coefficient remains significant under the primary robust inference, conclude that
+    the frontal condition effect survives a simpler fixed-effects robustness check;
+    \item if the coefficient is non-significant and remains unstable across the sensitivity models,
+    conclude that the residual frontal tendency does not survive a final simpler-model robustness analysis;
+    \item if the coefficient changes sign or depends strongly on a small number of questions or participants,
+    conclude that the frontal tendency is fragile and highly influence-sensitive.
+\end{itemize}
+
+\subsection{Interpretation Templates}
+
+\paragraph{Template if the frontal condition effect survives.}
+In the final participant-fixed-effects robustness analysis, the abstract-versus-concrete effect
+in the left frontal ROI remained after controlling for block order, within-block position,
+question length, and item difficulty
+(\(\beta=\ldots\), \(SE=\ldots\), \(p=\ldots\), 95\% CI \([\ldots,\ldots]\)).
+This suggests that the frontal condition tendency is not an artifact of the mixed-effects specification.
+
+\paragraph{Template if the frontal condition effect does not survive.}
+In the final participant-fixed-effects robustness analysis, the abstract-versus-concrete effect
+in the left frontal ROI was not statistically significant
+(\(\beta=\ldots\), \(SE=\ldots\), \(p=\ldots\), 95\% CI \([\ldots,\ldots]\)).
+Together with the previous block-adjusted and duration-aware results, this suggests that the frontal
+condition tendency remains descriptive but does not receive robust statistical support in the current dataset.
+
+\paragraph{Template if the result is highly influence-sensitive.}
+In the final participant-fixed-effects robustness analysis, the abstract-versus-concrete coefficient
+was unstable across influence checks, indicating that the apparent frontal tendency depends strongly
+on a small subset of questions and/or participants.
+This pattern argues against a robust condition-level frontal effect in the current dataset.
+
+\subsection{Expected Outputs}
+
+\subsubsection*{Tables}
+\begin{verbatim}
+01_step10_primary_fe_table.csv
+02_step10_primary_fe_results.csv
+03_step10_cluster_participant_results.csv
+04_step10_cluster_question_results.csv
+05_step10_hc3_results.csv
+06_step10_fixed_window_benchmark.csv
+07_step10_no_override_results.csv
+08_step10_leave_one_question_out.csv
+09_step10_leave_one_participant_out.csv
+10_step10_back_roi_benchmark.csv
+11_step10_exclusion_log.csv
+12_step10_final_conclusion.csv
+\end{verbatim}
+
+\subsubsection*{Figures}
+\begin{verbatim}
+figures/step10/primary_condition_coefficient_plot.png
+figures/step10/robust_se_comparison.png
+figures/step10/fixed_vs_variable_fe_benchmark.png
+figures/step10/no_override_comparison.png
+figures/step10/leave_one_question_out_plot.png
+figures/step10/leave_one_participant_out_plot.png
+\end{verbatim}
+
+\subsubsection*{Reports}
+\begin{verbatim}
+reports/step10/step10_final_robustness_report.tex
+reports/step10/tables/primary_fe_table.tex
+reports/step10/tables/sensitivity_table.tex
+reports/step10/text/final_conclusion.tex
+\end{verbatim}
+
+\subsection{Minimal Figures for the Main Report}
+The main Step~10 report should include at least:
+\begin{enumerate}
+    \item coefficient plot for the primary participant-fixed-effects model;
+    \item comparison of robust-SE variants;
+    \item fixed-window versus duration-aware benchmark comparison;
+    \item no-override sensitivity comparison;
+    \item leave-one-question-out condition coefficient plot.
+\end{enumerate}
+
+\subsection{Quality-Control Checks}
+Before Step~10 is considered complete, verify that:
+\begin{enumerate}
+    \item the Step~9 trial-level frontal outcome is unchanged;
+    \item participant fixed effects are correctly constructed;
+    \item question-level covariates are correctly merged;
+    \item question fixed effects are not mistakenly included in the primary condition model;
+    \item the primary robust-SE specification is documented clearly;
+    \item the no-override sensitivity removes only PID025 and PID034;
+    \item leave-one-question-out runs cover all included questions;
+    \item all sensitivity models are clearly labeled as secondary.
+\end{enumerate}
+
+\subsection{Minimal Completion Criteria}
+Step~10 is complete when:
+\begin{itemize}
+    \item the primary participant-fixed-effects model has been fit;
+    \item robust-SE sensitivity analyses have been completed;
+    \item the fixed-window benchmark has been fit;
+    \item the no-override sensitivity has been fit;
+    \item the leave-one-question-out analysis has been completed;
+    \item the back-ROI benchmark has been completed;
+    \item the final robustness conclusion has been written.
+\end{itemize}
+
+\subsection{Short Practical Summary}
+In simple terms, Step~10 should:
+\begin{quote}
+take the Step~9 duration-aware frontal outcome, replace the mixed model with a simpler
+participant-fixed-effects regression, use robust standard errors, test whether the frontal
+condition effect survives, repeat the analysis without the two inherited manual-override sessions,
+check whether the result depends heavily on one or a few questions, and then stop the reanalysis cycle.
+\end{quote}

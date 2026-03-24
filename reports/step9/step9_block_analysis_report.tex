@@ -1,0 +1,75 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{caption}
+\title{Step 9 Block-Structure, Order, and Adaptation Analysis}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+\section*{Overview}
+This report implements the Step 9 block-adjusted analysis using the same Step 7 participant-session cohort, yielding 36 participant-sessions, 30 questions, and 1075 valid trials.
+The realized block metadata were merged from the cleaned behavioral table, so all diagnostics and models use the actual session order rather than an idealized task template.
+Descriptively, the valid-trial counts by early blocks began as block 1: 39 abstract trials, block 1: 69 concrete trials, block 2: 39 abstract trials, block 2: 68 concrete trials.
+\section*{Primary Model}
+\input{tables/primary_block_model_table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{../../figures/step9/primary_block_adjusted_condition_effect.png}
+\caption{Primary block-adjusted fixed-effect estimates for the front ROI variable-window model.}
+\end{figure}
+\section*{Descriptive Block Diagnostics}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{../../figures/step9/front_roi_by_global_block_order.png}
+\caption{Mean front ROI response by realized global block order and condition.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{../../figures/step9/front_roi_by_withinblock_position.png}
+\caption{Mean front ROI response by within-block question position and condition.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{../../figures/step9/response_time_by_global_block_order.png}
+\caption{Mean response time by realized global block order and condition.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{../../figures/step9/early_vs_late_condition_plot.png}
+\caption{Early-versus-late block-half descriptive comparison by condition.}
+\end{figure}
+\input{tables/block_count_table.tex}
+\section*{Secondary Models And Benchmarks}
+\input{tables/interaction_models_table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{../../figures/step9/condition_by_blockorder_interaction_plot.png}
+\caption{Observed condition difference across global block order with the interaction-model trend overlaid.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{../../figures/step9/condition_by_ordercondition_plot.png}
+\caption{Front ROI response by participant-level condition order.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{../../figures/step9/fixed_vs_variable_block_benchmark.png}
+\caption{Benchmark comparison between the duration-aware and fixed-window block-adjusted front ROI models.}
+\end{figure}
+\section*{Warnings And Notes}
+\begin{itemize}
+\item \texttt{MODEL\_PRIMARY\_FRONT\_BLOCK\_ADJUSTED}: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+\item \texttt{MODEL\_CONDITION\_BY\_BLOCK\_ORDER}: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+\item \texttt{MODEL\_CONDITION\_BY\_POSITION}: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+\item \texttt{MODEL\_CONDITION\_BY\_ORDER\_CONDITION}: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+\item \texttt{MODEL\_EARLY\_VS\_LATE\_SENSITIVITY}: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+\item \texttt{MODEL\_BACK\_BLOCK\_ADJUSTED}: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+\item \texttt{MODEL\_FIXED\_WINDOW\_BENCHMARK}: Model type=MixedLM; optimizer=lbfgs; fallback\_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+\end{itemize}
+\section*{Final Conclusion}
+\input{text/final_conclusion.tex}
+\end{document}

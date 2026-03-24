@@ -1,0 +1,6 @@
+variable,label,n_questions,pearson_r,p_value
+total_word_count,Total word count,30,0.04034802122445377,0.8323483133804661
+sentence_count,Sentence count,30,-0.01101943496993809,0.9539135648064091
+sentence_length,Average sentence length,30,0.03463216063404097,0.855832103674032
+enem_correctness,ENEM item correctness,30,0.40048020180958627,0.028305374136361396
+mean_response_time_sec,Mean response time,30,0.010296720898280792,0.9569332882067427

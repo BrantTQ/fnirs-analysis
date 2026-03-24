@@ -1,0 +1,14 @@
+stage,level,reason_code,n_rows,detail
+cohort,info,STEP7_COHORT_REUSED,36,Step 9 reused the Step 7 included participant-session cohort without additional manual exclusions.
+merge_step2,info,STEP2_BLOCK_METADATA_MERGE,0,Merged realized block order and condition-order metadata from the cleaned Step 2 behavioral table.
+merge_step6,info,STEP6_FIXED_WINDOW_MERGE,0,Merged the fixed-window front ROI outcome for the Step 9 benchmark sensitivity model.
+qc,info,TRIAL_INDEX_CHECK,0,Checked that the cumulative trial index agreed between Step 7 and Step 2.
+qc,info,STEP9_MODEL_ELIGIBILITY,0,"Checked that the Step 9 trial table contained all required block variables, covariates, and benchmark outcomes."
+qc,info,CONDITION_ORDER_VARIATION,2,The participant-level condition order was informative and retained in the Step 9 models.
+model_fit,warning,MODEL_PRIMARY_FRONT_BLOCK_ADJUSTED,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_CONDITION_BY_BLOCK_ORDER,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_CONDITION_BY_POSITION,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_CONDITION_BY_ORDER_CONDITION,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_EARLY_VS_LATE_SENSITIVITY,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_BACK_BLOCK_ADJUSTED,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.
+model_fit,warning,MODEL_FIXED_WINDOW_BENCHMARK,1,Model type=MixedLM; optimizer=lbfgs; fallback_used=False; warnings=lbfgs: The MLE may be on the boundary of the parameter space.

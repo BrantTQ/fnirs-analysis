@@ -1,0 +1,2 @@
+n_rois_tested,n_trials,n_participants,n_questions,multiple_testing_method,n_holm_significant_rois,best_raw_p_roi,best_raw_p_value,best_holm_p_value,conclusion_text
+4,1075,36,30,Holm,0,Anterior Ventral,0.12595692447210818,0.5038276978884327,"Using the Step 10/11 trial table and the Step 11 continuous abstractness model separately within four new ROIs, none of the ROI-specific abstractness effects survived Holm correction across the four tests. The smallest raw p-value was in Anterior Ventral (beta=1.642e-08, SE=1.042e-08, raw p=0.125957, Holm p=0.503828)."

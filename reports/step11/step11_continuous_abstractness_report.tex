@@ -1,0 +1,50 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\begin{document}
+\section*{Step 11 Continuous Abstractness Report}
+\subsection*{Score Diagnostics}
+\input{tables/score_diagnostics_table.tex}
+\input{tables/score_correlation_table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step11/score_histogram.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step11/score_by_binary_label.png}
+\caption{Distribution of the raw question-level abstractness score and its split by the existing binary label.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step11/score_vs_wordcount.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step11/score_vs_correctness.png}
+\caption{Question-level abstractness score against two key item properties retained in the regression models.}
+\end{figure}
+\subsection*{Primary Continuous-Score Model}
+\input{tables/primary_continuous_table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\linewidth]{../../figures/step11/continuous_partial_effect_plot.png}
+\caption{Primary continuous-score partial-effect visualization. Higher values indicate more abstract questions.}
+\end{figure}
+\subsection*{Benchmarks And Sensitivity Checks}
+\input{tables/benchmark_table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{../../figures/step11/continuous_vs_binary_benchmark.png}
+\includegraphics[width=0.48\linewidth]{../../figures/step11/no_override_comparison.png}
+\caption{Comparison against the binary benchmark and the no-override sensitivity model.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\linewidth]{../../figures/step11/quadratic_effect_plot.png}
+\caption{Quadratic sensitivity model across the raw abstractness score.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{../../figures/step11/leave_one_question_out_plot.png}
+\caption{Leave-one-question-out abstractness coefficients with 95\% confidence intervals.}
+\end{figure}
+\subsection*{Final Conclusion}
+\input{text/final_conclusion.tex}
+\end{document}

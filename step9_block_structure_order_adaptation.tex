@@ -1,0 +1,664 @@
+\section{Step 9: Block-Structure, Order, and Adaptation Analysis}
+\label{sec:step9_blocks}
+
+\subsection{Objective}
+The objective of Step~9 is to test whether the frontal condition effect observed in the previous
+steps is partly explained by the blocked structure of the experiment.
+
+More specifically, this step asks:
+\begin{quote}
+After explicitly modeling block order, within-block position, and condition order, does the
+abstract-versus-concrete effect in the left frontal ROI remain?
+\end{quote}
+
+This step is motivated by the fact that the previous inferential models focused on:
+\begin{itemize}
+    \item question condition;
+    \item question length and structure;
+    \item ENEM item correctness;
+    \item participant and question variability,
+\end{itemize}
+but did not yet promote the block structure itself to an explicit inferential component.
+
+\subsection{Why This Step Is Needed}
+The previous steps showed:
+\begin{itemize}
+    \item a near-threshold frontal effect in the fixed-window covariate-adjusted model;
+    \item a weaker but still positive frontal effect in the duration-aware variable-window model;
+    \item repeated null findings in the back ROI;
+    \item no robust back-ROI item-pair effects after multiple-comparison correction.
+\end{itemize}
+
+Therefore, the next important question is whether the remaining frontal tendency is:
+\begin{itemize}
+    \item a condition effect;
+    \item a block-order effect;
+    \item a fatigue or adaptation effect across the session;
+    \item an effect of trial position within the block;
+    \item or some combination of these.
+\end{itemize}
+
+\subsection{Core Analytical Decision}
+To keep Step~9 interpretable, the following elements should remain fixed from Step~7:
+\begin{enumerate}
+    \item the same included participant-session cohort;
+    \item the same duration-aware front ROI outcome;
+    \item the same long-channel-only rule;
+    \item the same front ROI as the primary ROI;
+    \item the same short-channel exclusion from inference;
+    \item the same question-level covariates:
+    \begin{itemize}
+        \item log total word count;
+        \item ENEM item correctness.
+    \end{itemize}
+\end{enumerate}
+
+The main change in Step~9 is:
+\begin{quote}
+explicitly include the block structure of the experiment as fixed effects in the trial-level model.
+\end{quote}
+
+\subsection{Design Assumption}
+This step assumes the blocked task structure described earlier in the project workflow:
+\begin{itemize}
+    \item 10 blocks in total;
+    \item 3 questions per block;
+    \item 5 blocks assigned to one condition and 5 blocks assigned to the other condition.
+\end{itemize}
+
+If the implementation file contains a different realized block structure for some participants,
+the actual Step~9 trial table should use the realized block metadata rather than the idealized design.
+
+\subsection{Primary Scientific Question}
+The primary Step~9 question is:
+\begin{quote}
+In the left frontal ROI, does the condition effect remain after adjusting for block order,
+within-block trial position, condition order, question length, and item difficulty?
+\end{quote}
+
+\subsection{Primary Outcome}
+The primary outcome should remain the same as in Step~7:
+\begin{quote}
+the trial-level left frontal ROI HbO response computed from the duration-aware variable window.
+\end{quote}
+
+This is retained so that Step~9 isolates the effect of modeling block structure rather than changing
+the signal summary again.
+
+\subsection{Primary ROI Definition}
+The primary ROI remains the same left frontal ROI used previously.
+
+\subsubsection{Front ROI HbO channels}
+\begin{verbatim}
+S2_D6 hbo
+S2_D4 hbo
+S1_D6 hbo
+S1_D3 hbo
+S5_D6 hbo
+S5_D4 hbo
+S5_D3 hbo
+\end{verbatim}
+
+\subsubsection{Back ROI HbO channels}
+The back ROI is retained as a secondary benchmark:
+\begin{verbatim}
+S4_D2 hbo
+S3_D1 hbo
+S6_D2 hbo
+S6_D1 hbo
+S6_D5 hbo
+S7_D2 hbo
+S7_D5 hbo
+S8_D1 hbo
+S8_D5 hbo
+\end{verbatim}
+
+\subsubsection{Short-separation pairs excluded from inference}
+\begin{verbatim}
+S1_D8
+S2_D9
+S3_D10
+S4_D11
+S5_D12
+S6_D13
+S7_D14
+S8_D15
+\end{verbatim}
+
+\subsection{Block Variables to Construct}
+Step~9 should create the following block-related variables for each valid trial.
+
+\subsubsection{Global block order}
+\begin{equation}
+g_{ik} \in \{1,2,\dots,10\}
+\end{equation}
+This is the order of the block in the full session.
+
+\subsubsection{Within-block trial position}
+\begin{equation}
+p_{ik} \in \{1,2,3\}
+\end{equation}
+This is the position of the question inside the block.
+
+\subsubsection{Condition order}
+Let:
+\begin{equation}
+o_i =
+\begin{cases}
+1 & \text{if the participant saw Abstract blocks first} \\
+0 & \text{if the participant saw Concrete blocks first}
+\end{cases}
+\end{equation}
+
+If the task did not actually vary this order across participants, this variable should be dropped
+and documented as non-informative.
+
+\subsubsection{Block half}
+Define:
+\begin{equation}
+h_{ik} =
+\begin{cases}
+0 & \text{if } g_{ik} \in \{1,2,3,4,5\} \\
+1 & \text{if } g_{ik} \in \{6,7,8,9,10\}
+\end{cases}
+\end{equation}
+
+This variable provides a simple early-versus-late sensitivity analysis.
+
+\subsubsection{Optional cumulative trial order}
+For descriptive purposes, it is also useful to define:
+\begin{equation}
+m_{ik} \in \{1,2,\dots,30\},
+\end{equation}
+the cumulative trial number within the full session.
+
+This variable is optional and should not replace the primary block variables above.
+
+\subsection{Primary Covariates}
+Step~9 should retain the same item-level covariates used in the Step~7 primary model:
+\begin{equation}
+w_k = z\!\left(\log(\texttt{total\_word\_count}_k)\right)
+\end{equation}
+and
+\begin{equation}
+c_k = z(\texttt{correctness}_k).
+\end{equation}
+
+\subsection{Primary Condition Variable}
+Let:
+\begin{equation}
+A_{ik} =
+\begin{cases}
+1 & \text{if the trial is Abstract} \\
+0 & \text{if the trial is Concrete}
+\end{cases}
+\end{equation}
+
+\subsection{Primary Step~9 Model}
+Let \(y^{(F)}_{ik}\) denote the Step~7 duration-aware front ROI HbO response for participant \(i\)
+on trial \(k\).
+
+The primary Step~9 model should be:
+\begin{equation}
+y^{(F)}_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 g_{ik}
++
+\beta_3 p_{ik}
++
+\beta_4 o_i
++
+\beta_5 w_k
++
+\beta_6 c_k
++
+u_i
++
+v_q
++
+\varepsilon_{ik},
+\end{equation}
+where:
+\begin{itemize}
+    \item \(u_i \sim \mathcal{N}(0,\sigma_u^2)\) is the participant random intercept;
+    \item \(v_q \sim \mathcal{N}(0,\sigma_v^2)\) is the question random intercept;
+    \item \(\varepsilon_{ik} \sim \mathcal{N}(0,\sigma^2)\) is the residual term.
+\end{itemize}
+
+\subsection{Primary Inferential Target}
+The primary inferential target remains:
+\begin{equation}
+\beta_1,
+\end{equation}
+which represents the adjusted abstract-versus-concrete effect after controlling for:
+\begin{itemize}
+    \item global block order;
+    \item within-block trial position;
+    \item condition order;
+    \item question length;
+    \item question difficulty;
+    \item participant differences;
+    \item question differences.
+\end{itemize}
+
+\subsection{Primary Hypothesis}
+The primary hypotheses are:
+
+\paragraph{Null hypothesis}
+\begin{equation}
+H_0: \beta_1 = 0
+\end{equation}
+
+\paragraph{Alternative hypothesis}
+\begin{equation}
+H_1: \beta_1 \neq 0
+\end{equation}
+
+The significance threshold should remain:
+\begin{verbatim}
+alpha = 0.05
+\end{verbatim}
+
+\subsection{Secondary Block-Interaction Models}
+After the primary block-adjusted model, Step~9 should fit a small number of secondary interaction models.
+
+\subsubsection{Secondary Model A: Condition $\times$ Global Block Order}
+\begin{equation}
+y^{(F)}_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 g_{ik}
++
+\beta_3 p_{ik}
++
+\beta_4 o_i
++
+\beta_5 w_k
++
+\beta_6 c_k
++
+\beta_7 (A_{ik} \times g_{ik})
++
+u_i
++
+v_q
++
+\varepsilon_{ik}
+\end{equation}
+
+This model tests whether the condition effect changes across the session.
+
+\subsubsection{Secondary Model B: Condition $\times$ Within-Block Position}
+\begin{equation}
+y^{(F)}_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 g_{ik}
++
+\beta_3 p_{ik}
++
+\beta_4 o_i
++
+\beta_5 w_k
++
+\beta_6 c_k
++
+\beta_7 (A_{ik} \times p_{ik})
++
+u_i
++
+v_q
++
+\varepsilon_{ik}
+\end{equation}
+
+This model tests whether the condition effect changes from the first to the third question within each block.
+
+\subsubsection{Secondary Model C: Condition $\times$ Condition Order}
+\begin{equation}
+y^{(F)}_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 g_{ik}
++
+\beta_3 p_{ik}
++
+\beta_4 o_i
++
+\beta_5 w_k
++
+\beta_6 c_k
++
+\beta_7 (A_{ik} \times o_i)
++
+u_i
++
+v_q
++
+\varepsilon_{ik}
+\end{equation}
+
+This model tests whether the condition effect depends on whether a participant encountered
+Abstract blocks first or Concrete blocks first.
+
+\subsection{Early-vs-Late Sensitivity Model}
+For a simpler interpretive check, Step~9 should also include:
+\begin{equation}
+y^{(F)}_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 h_{ik}
++
+\beta_3 (A_{ik} \times h_{ik})
++
+\beta_4 w_k
++
+\beta_5 c_k
++
+u_i
++
+v_q
++
+\varepsilon_{ik}
+\end{equation}
+
+This model asks whether the condition effect differs between the first half and second half
+of the session.
+
+\subsection{Secondary Back ROI Model}
+Because the back ROI has been consistently null in the previous steps, it should remain secondary here.
+Still, Step~9 should fit one back-ROI block-adjusted model as a benchmark:
+\begin{equation}
+y^{(B)}_{ik}
+=
+\beta_0
++
+\beta_1 A_{ik}
++
+\beta_2 g_{ik}
++
+\beta_3 p_{ik}
++
+\beta_4 o_i
++
+\beta_5 w_k
++
+\beta_6 c_k
++
+u_i
++
+v_q
++
+\varepsilon_{ik}
+\end{equation}
+
+\subsection{Fixed-Window Benchmark Sensitivity}
+Because Step~6 used a fixed 7--11~s frontal outcome and gave the strongest near-threshold frontal result,
+Step~9 should include one benchmark analysis that repeats the primary block-adjusted model
+using the Step~6 fixed-window front ROI outcome instead of the Step~7 duration-aware outcome.
+
+This allows a direct comparison between:
+\begin{itemize}
+    \item duration-aware block-adjusted frontal effects;
+    \item fixed-window block-adjusted frontal effects.
+\end{itemize}
+
+\subsection{Descriptive Block Diagnostics}
+Before fitting the mixed models, Step~9 should include a descriptive block-focused diagnostic section.
+
+At minimum, this should report:
+\begin{itemize}
+    \item mean frontal ROI response by global block order and condition;
+    \item mean frontal ROI response by within-block position and condition;
+    \item mean response time by global block order and condition;
+    \item number of valid trials by block and condition;
+    \item simple plots of early vs late blocks by condition.
+\end{itemize}
+
+These diagnostics are important because they make block effects visible before any model is fit.
+
+\subsection{Step-by-Step Workflow}
+
+\subsubsection{Step~9.1: Freeze the Step~7 trial table}
+Reuse the same included participant-session cohort and the same duration-aware front ROI outcome from Step~7.
+
+\subsubsection{Step~9.2: Merge block metadata}
+For each valid trial, add:
+\begin{itemize}
+    \item block label;
+    \item global block order;
+    \item within-block trial position;
+    \item participant-level condition order;
+    \item block half;
+    \item optional cumulative trial index.
+\end{itemize}
+
+\subsubsection{Step~9.3: Run descriptive block diagnostics}
+Create descriptive summaries and figures showing how the frontal ROI and response time vary across:
+\begin{itemize}
+    \item global block order;
+    \item within-block position;
+    \item early vs late session half;
+    \item condition order when available.
+\end{itemize}
+
+\subsubsection{Step~9.4: Fit the primary block-adjusted front ROI model}
+Fit the primary mixed-effects model with:
+\begin{itemize}
+    \item condition;
+    \item global block order;
+    \item within-block position;
+    \item condition order;
+    \item log word count;
+    \item ENEM correctness;
+    \item random intercept for participant;
+    \item random intercept for question.
+\end{itemize}
+
+\subsubsection{Step~9.5: Fit the secondary interaction models}
+Fit:
+\begin{itemize}
+    \item condition \(\times\) global block order;
+    \item condition \(\times\) within-block position;
+    \item condition \(\times\) condition order.
+\end{itemize}
+
+\subsubsection{Step~9.6: Fit the early-vs-late sensitivity model}
+Fit the simpler block-half model to test whether the condition effect differs between early and late blocks.
+
+\subsubsection{Step~9.7: Fit the secondary back ROI block-adjusted model}
+Fit the benchmark back-ROI block-adjusted model.
+
+\subsubsection{Step~9.8: Fit the fixed-window benchmark model}
+Repeat the primary block-adjusted model using the Step~6 fixed-window frontal outcome.
+
+\subsubsection{Step~9.9: Summarize model coefficients and conclusions}
+Collect:
+\begin{itemize}
+    \item the adjusted condition coefficient;
+    \item the main block coefficients;
+    \item the interaction coefficients;
+    \item standard errors;
+    \item p-values;
+    \item confidence intervals;
+    \item participant and question random-intercept variances.
+\end{itemize}
+
+\subsection{Primary Reporting Quantities}
+The primary Step~9 results table must report:
+\begin{itemize}
+    \item number of included participants;
+    \item number of included questions;
+    \item number of included trials;
+    \item condition coefficient \(\beta_1\);
+    \item standard error;
+    \item test statistic;
+    \item p-value;
+    \item 95\% confidence interval;
+    \item global block-order coefficient;
+    \item within-block position coefficient;
+    \item condition-order coefficient;
+    \item log word-count coefficient;
+    \item ENEM-correctness coefficient;
+    \item participant random-intercept variance;
+    \item question random-intercept variance.
+\end{itemize}
+
+\subsection{Secondary Reporting Quantities}
+The secondary Step~9 tables should report:
+\begin{itemize}
+    \item condition \(\times\) block-order interaction results;
+    \item condition \(\times\) within-block-position interaction results;
+    \item condition \(\times\) order-condition interaction results;
+    \item early-vs-late sensitivity results;
+    \item secondary back-ROI model results;
+    \item fixed-window benchmark results.
+\end{itemize}
+
+\subsection{Primary Conclusion Rule}
+The final Step~9 conclusion should be based first on the condition coefficient \(\beta_1\)
+from the primary block-adjusted front ROI model.
+
+The interpretation rule should be:
+\begin{itemize}
+    \item if the adjusted condition coefficient remains significant, conclude that the frontal
+    condition effect persists even after explicit control for block structure;
+    \item if the adjusted condition coefficient weakens substantially or becomes clearly null,
+    conclude that part of the previous frontal tendency may reflect block structure or session order;
+    \item if one of the condition-by-block interaction terms is significant, conclude that the
+    condition effect varies across the blocked structure of the task and should not be treated
+    as block-invariant.
+\end{itemize}
+
+\subsection{Interpretation Templates}
+
+\paragraph{Template if the frontal condition effect survives block adjustment.}
+In the block-adjusted mixed-effects analysis, the abstract-versus-concrete effect in the left frontal ROI
+remained after controlling for global block order, within-block trial position, condition order,
+question length, and item difficulty
+(\(\beta=\ldots\), \(SE=\ldots\), \(p=\ldots\), 95\% CI \([\ldots,\ldots]\)).
+This suggests that the frontal condition effect is not explained primarily by the blocked structure
+of the task.
+
+\paragraph{Template if the frontal condition effect weakens after block adjustment.}
+In the block-adjusted mixed-effects analysis, the abstract-versus-concrete effect in the left frontal ROI
+was reduced and no longer statistically significant after controlling for block structure
+(\(\beta=\ldots\), \(SE=\ldots\), \(p=\ldots\), 95\% CI \([\ldots,\ldots]\)).
+This suggests that part of the previously observed frontal tendency may be attributable to session order,
+within-block position, or other blocked-task effects.
+
+\paragraph{Template if a condition-by-block interaction is significant.}
+The block-adjusted analysis identified a significant interaction between condition and block structure
+(\(\beta=\ldots\), \(SE=\ldots\), \(p=\ldots\)).
+This indicates that the condition effect changes across the blocked progression of the session and
+should not be interpreted as constant across time.
+
+\subsection{Expected Outputs}
+
+\subsubsection*{Tables}
+\begin{verbatim}
+01_step9_trial_block_table.csv
+02_step9_block_descriptive_summary.csv
+03_step9_primary_front_block_adjusted_model.csv
+04_step9_condition_by_blockorder_model.csv
+05_step9_condition_by_position_model.csv
+06_step9_condition_by_ordercondition_model.csv
+07_step9_early_late_sensitivity_model.csv
+08_step9_back_block_adjusted_model.csv
+09_step9_fixed_window_block_benchmark.csv
+10_step9_exclusion_log.csv
+11_step9_final_conclusion.csv
+\end{verbatim}
+
+\subsubsection*{Figures}
+\begin{verbatim}
+figures/step9/front_roi_by_global_block_order.png
+figures/step9/front_roi_by_withinblock_position.png
+figures/step9/response_time_by_global_block_order.png
+figures/step9/early_vs_late_condition_plot.png
+figures/step9/primary_block_adjusted_condition_effect.png
+figures/step9/condition_by_blockorder_interaction_plot.png
+figures/step9/condition_by_ordercondition_plot.png
+figures/step9/fixed_vs_variable_block_benchmark.png
+\end{verbatim}
+
+\subsubsection*{Reports}
+\begin{verbatim}
+reports/step9/step9_block_analysis_report.tex
+reports/step9/tables/primary_block_model_table.tex
+reports/step9/tables/interaction_models_table.tex
+reports/step9/text/final_conclusion.tex
+\end{verbatim}
+
+\subsection{Minimal Figures for the Main Report}
+The main Step~9 report should include at least:
+\begin{enumerate}
+    \item frontal ROI response by global block order, separated by condition;
+    \item frontal ROI response by within-block trial position, separated by condition;
+    \item response time by global block order, separated by condition;
+    \item an early-vs-late condition comparison figure;
+    \item a coefficient plot for the primary block-adjusted condition effect;
+    \item a benchmark comparison between the duration-aware and fixed-window block-adjusted models.
+\end{enumerate}
+
+\subsection{Quality-Control Checks}
+Before Step~9 is considered complete, verify that:
+\begin{enumerate}
+    \item the Step~7 cohort is unchanged unless explicitly re-reviewed;
+    \item the trial-level frontal outcome is identical to the Step~7 duration-aware outcome;
+    \item block labels and block order are correctly reconstructed;
+    \item within-block trial position is valid for all included trials;
+    \item condition order is correctly assigned at the participant level, or explicitly documented as unavailable;
+    \item the primary model includes both block structure and item covariates;
+    \item the primary model converges;
+    \item interaction models are clearly labeled as secondary;
+    \item the back ROI remains secondary;
+    \item the fixed-window benchmark is clearly labeled as a sensitivity analysis.
+\end{enumerate}
+
+\subsection{Fallback Rule}
+If the primary mixed-effects model fails to converge reliably, the fallback analysis should be:
+\begin{quote}
+a linear model with participant fixed effects and question fixed effects, keeping the same
+front ROI duration-aware outcome and the same block and item covariates.
+\end{quote}
+
+\subsection{Minimal Completion Criteria}
+Step~9 is complete when:
+\begin{itemize}
+    \item the trial-level block table has been built;
+    \item descriptive block diagnostics have been completed;
+    \item the primary block-adjusted front ROI model has been fit;
+    \item the secondary block-interaction models have been fit;
+    \item the early-vs-late sensitivity has been completed;
+    \item the back-ROI benchmark has been fit;
+    \item the fixed-window benchmark has been fit;
+    \item the primary adjusted p-value has been reported;
+    \item a short final conclusion has been generated;
+    \item all exclusions and warnings have been documented.
+\end{itemize}
+
+\subsection{Short Practical Summary}
+In simple terms, Step~9 should:
+\begin{quote}
+take the Step~7 duration-aware frontal ROI outcome, explicitly add block order and within-block
+position into the mixed-effects model, test whether the frontal condition effect survives that adjustment,
+and determine whether the remaining signal is better explained by condition, by session order,
+or by adaptation across the blocked task structure.
+\end{quote}

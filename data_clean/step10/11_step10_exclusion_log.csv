@@ -1,0 +1,13 @@
+stage,level,reason_code,n_rows,detail
+input,info,STEP9_TRIAL_TABLE_REUSED,1075,Step 10 started from the Step 9 included trial table without changing the duration-aware front ROI outcome.
+cohort,info,MANUAL_OVERRIDE_FLAGGED,60,PID025 and PID034 were flagged for the no-override sensitivity but retained in the primary Step 10 cohort.
+model_fit,info,MODEL_PRIMARY_FE,1,Robust SE type=Two-way cluster (participant + question); warnings=none
+model_fit,info,MODEL_PARTICIPANT_CLUSTER,1,Robust SE type=Participant-clustered; warnings=none
+model_fit,info,MODEL_QUESTION_CLUSTER,1,Robust SE type=Question-clustered; warnings=none
+model_fit,info,MODEL_HC3,1,Robust SE type=HC3 heteroskedasticity-robust; warnings=none
+model_fit,info,MODEL_FIXED_WINDOW_BENCHMARK,1,Robust SE type=Two-way cluster (participant + question); warnings=none
+model_fit,info,MODEL_NO_OVERRIDE,1,Robust SE type=Two-way cluster (participant + question); warnings=none
+sensitivity,info,NO_OVERRIDE_REMOVAL,60,"The no-override sensitivity removed only PID025 and PID034, as specified."
+influence,info,LEAVE_ONE_QUESTION_OUT_COMPLETE,30,Completed one leave-one-question-out participant-fixed-effects refit per included question.
+influence,info,LEAVE_ONE_PARTICIPANT_OUT_COMPLETE,36,Completed one leave-one-participant-out participant-fixed-effects refit per included participant-session.
+model_fit,info,MODEL_BACK_ROI_BENCHMARK,1,Robust SE type=Two-way cluster (participant + question); warnings=none

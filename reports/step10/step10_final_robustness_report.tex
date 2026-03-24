@@ -1,0 +1,51 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{float}
+\begin{document}
+\section*{Step 10 Final Robustness Report}
+This report implements the final participant-fixed-effects robustness check using the same Step~9 duration-aware front ROI outcome and the same included cohort, with 36 participant-sessions, 30 questions, and 1075 trials.
+The primary inferential specification used Two-way cluster (participant + question).
+\subsection*{Primary Model}
+\input{tables/primary_fe_table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\linewidth]{../../figures/step10/primary_condition_coefficient_plot.png}
+\caption{Coefficient plot for the primary participant-fixed-effects model.}
+\end{figure}
+\subsection*{Sensitivity Models}
+\input{tables/sensitivity_table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\linewidth]{../../figures/step10/robust_se_comparison.png}
+\caption{Condition coefficient under the robust standard-error variants.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\linewidth]{../../figures/step10/fixed_vs_variable_fe_benchmark.png}
+\caption{Final fixed-window versus duration-aware benchmark under participant fixed effects.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\linewidth]{../../figures/step10/no_override_comparison.png}
+\caption{Primary cohort versus no-override sensitivity comparison.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{../../figures/step10/leave_one_question_out_plot.png}
+\caption{Leave-one-question-out condition coefficients with 95\% confidence intervals.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{../../figures/step10/leave_one_participant_out_plot.png}
+\caption{Leave-one-participant-out condition coefficients with 95\% confidence intervals.}
+\end{figure}
+\subsection*{Warnings And Notes}
+\begin{itemize}
+\item No Step 10-specific warnings were generated.
+\end{itemize}
+\subsection*{Final Conclusion}
+\input{text/final_conclusion.tex}
+\end{document}

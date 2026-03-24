@@ -16,7 +16,8 @@
     "answer": "D",
     "total_word_count": 132,
     "sentence_count": 7,
-    "sentence_length": 18.86
+    "sentence_length": 18.86,
+    "abstracness": 0.16670000000000007
   },
   {
     "year": "2020",
@@ -35,7 +36,8 @@
     "answer": "E",
     "total_word_count": 127,
     "sentence_count": 5,
-    "sentence_length": 25.4
+    "sentence_length": 25.4,
+    "abstracness": 1.0
   },
   {
     "year": "2021",
@@ -54,7 +56,8 @@
     "answer": "D",
     "total_word_count": 190,
     "sentence_count": 9,
-    "sentence_length": 21.11
+    "sentence_length": 21.11,
+    "abstracness": 0.16670000000000007
   },
   {
     "year": "2017",
@@ -73,7 +76,8 @@
     "answer": "D",
     "total_word_count": 62,
     "sentence_count": 2,
-    "sentence_length": 31.0
+    "sentence_length": 31.0,
+    "abstracness": 0.33329999999999993
   },
   {
     "year": "2017",
@@ -92,7 +96,8 @@
     "answer": "A",
     "total_word_count": 49,
     "sentence_count": 1,
-    "sentence_length": 49.0
+    "sentence_length": 49.0,
+    "abstracness": 0.16670000000000007
   },
   {
     "year": "2017",
@@ -111,7 +116,8 @@
     "answer": "E",
     "total_word_count": 62,
     "sentence_count": 4,
-    "sentence_length": 15.5
+    "sentence_length": 15.5,
+    "abstracness": 0.33329999999999993
   },
   {
     "year": "2017",
@@ -130,7 +136,8 @@
     "answer": "D",
     "total_word_count": 109,
     "sentence_count": 4,
-    "sentence_length": 27.25
+    "sentence_length": 27.25,
+    "abstracness": 0.33329999999999993
   },
   {
     "year": "2018",
@@ -149,7 +156,8 @@
     "answer": "D",
     "total_word_count": 50,
     "sentence_count": 1,
-    "sentence_length": 50.0
+    "sentence_length": 50.0,
+    "abstracness": 0.0
   },
   {
     "year": "2019",
@@ -168,7 +176,8 @@
     "answer": "D",
     "total_word_count": 72,
     "sentence_count": 2,
-    "sentence_length": 36.0
+    "sentence_length": 36.0,
+    "abstracness": 1.0
   },
   {
     "year": "2019",
@@ -187,7 +196,8 @@
     "answer": "C",
     "total_word_count": 107,
     "sentence_count": 11,
-    "sentence_length": 9.73
+    "sentence_length": 9.73,
+    "abstracness": 1.0
   },
   {
     "year": "2019",
@@ -206,7 +216,8 @@
     "answer": "A",
     "total_word_count": 88,
     "sentence_count": 3,
-    "sentence_length": 29.33
+    "sentence_length": 29.33,
+    "abstracness": 1.0
   },
   {
     "year": "2020",
@@ -225,7 +236,8 @@
     "answer": "D",
     "total_word_count": 29,
     "sentence_count": 2,
-    "sentence_length": 14.5
+    "sentence_length": 14.5,
+    "abstracness": 0.33329999999999993
   },
   {
     "year": "2020",
@@ -244,7 +256,8 @@
     "answer": "C",
     "total_word_count": 68,
     "sentence_count": 4,
-    "sentence_length": 17.0
+    "sentence_length": 17.0,
+    "abstracness": 0.33329999999999993
   },
   {
     "year": "2020",
@@ -263,7 +276,8 @@
     "answer": "E",
     "total_word_count": 69,
     "sentence_count": 2,
-    "sentence_length": 34.5
+    "sentence_length": 34.5,
+    "abstracness": 0.33329999999999993
   },
   {
     "year": "2020",
@@ -282,7 +296,8 @@
     "answer": "B",
     "total_word_count": 78,
     "sentence_count": 6,
-    "sentence_length": 13.0
+    "sentence_length": 13.0,
+    "abstracness": 1.0
   },
   {
     "year": "2020",
@@ -301,7 +316,8 @@
     "answer": "A",
     "total_word_count": 79,
     "sentence_count": 1,
-    "sentence_length": 79.0
+    "sentence_length": 79.0,
+    "abstracness": 1.0
   },
   {
     "year": "2020",
@@ -320,7 +336,8 @@
     "answer": "C",
     "total_word_count": 28,
     "sentence_count": 1,
-    "sentence_length": 28.0
+    "sentence_length": 28.0,
+    "abstracness": 0.33329999999999993
   },
   {
     "year": "2020",
@@ -339,7 +356,8 @@
     "answer": "A",
     "total_word_count": 105,
     "sentence_count": 7,
-    "sentence_length": 15.0
+    "sentence_length": 15.0,
+    "abstracness": 0.16670000000000007
   },
   {
     "year": "2020",
@@ -358,7 +376,8 @@
     "answer": "E",
     "total_word_count": 58,
     "sentence_count": 1,
-    "sentence_length": 58.0
+    "sentence_length": 58.0,
+    "abstracness": 0.33329999999999993
   },
   {
     "year": "2021",
@@ -377,7 +396,8 @@
     "answer": "B",
     "total_word_count": 65,
     "sentence_count": 5,
-    "sentence_length": 13.0
+    "sentence_length": 13.0,
+    "abstracness": 0.33329999999999993
   },
   {
     "year": "2021",
@@ -396,7 +416,8 @@
     "answer": "A",
     "total_word_count": 56,
     "sentence_count": 3,
-    "sentence_length": 18.67
+    "sentence_length": 18.67,
+    "abstracness": 1.0
   },
   {
     "year": "2021",
@@ -415,7 +436,8 @@
     "answer": "D",
     "total_word_count": 44,
     "sentence_count": 2,
-    "sentence_length": 22.0
+    "sentence_length": 22.0,
+    "abstracness": 1.0
   },
   {
     "year": "2021",
@@ -434,7 +456,8 @@
     "answer": "A",
     "total_word_count": 70,
     "sentence_count": 3,
-    "sentence_length": 23.33
+    "sentence_length": 23.33,
+    "abstracness": 1.0
   },
   {
     "year": "2021",
@@ -453,7 +476,8 @@
     "answer": "B",
     "total_word_count": 86,
     "sentence_count": 5,
-    "sentence_length": 17.2
+    "sentence_length": 17.2,
+    "abstracness": 0.33329999999999993
   },
   {
     "year": "2021",
@@ -472,7 +496,8 @@
     "answer": "A",
     "total_word_count": 120,
     "sentence_count": 3,
-    "sentence_length": 40.0
+    "sentence_length": 40.0,
+    "abstracness": 1.0
   },
   {
     "year": "2021",
@@ -491,7 +516,8 @@
     "answer": "A",
     "total_word_count": 60,
     "sentence_count": 1,
-    "sentence_length": 60.0
+    "sentence_length": 60.0,
+    "abstracness": 1.0
   },
   {
     "year": "2022",
@@ -510,7 +536,8 @@
     "answer": "E",
     "total_word_count": 114,
     "sentence_count": 4,
-    "sentence_length": 28.5
+    "sentence_length": 28.5,
+    "abstracness": 1.0
   },
   {
     "year": "2022",
@@ -529,7 +556,8 @@
     "answer": "E",
     "total_word_count": 91,
     "sentence_count": 5,
-    "sentence_length": 18.2
+    "sentence_length": 18.2,
+    "abstracness": 1.0
   },
   {
     "year": "2022",
@@ -548,7 +576,8 @@
     "answer": "B",
     "total_word_count": 89,
     "sentence_count": 4,
-    "sentence_length": 22.25
+    "sentence_length": 22.25,
+    "abstracness": 1.0
   },
   {
     "year": "2022",
@@ -567,6 +596,7 @@
     "answer": "A",
     "total_word_count": 59,
     "sentence_count": 3,
-    "sentence_length": 19.67
+    "sentence_length": 19.67,
+    "abstracness": 1.0
   }
 ]

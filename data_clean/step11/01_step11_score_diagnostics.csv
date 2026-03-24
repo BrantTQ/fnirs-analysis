@@ -1,0 +1,2 @@
+n_questions,score_direction_aligned_more_abstract_is_higher,raw_score_mean,raw_score_sd,raw_score_median,raw_score_min,raw_score_max,raw_score_range,binary_cutoff_used,n_questions_below_cutoff,n_questions_at_cutoff,n_questions_above_cutoff,binary_cutoff_reproduces_existing_label,n_binary_abstract,n_binary_concrete
+30,True,0.6333266666666667,0.3800619032458405,0.66665,0.0,1.0,1.0,0.5,15,0,15,True,15,15
