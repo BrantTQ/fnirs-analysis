@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import shutil
 import subprocess
 import warnings
 from pathlib import Path
@@ -20,11 +21,15 @@ from matplotlib.lines import Line2D
 
 ROOT = Path(__file__).resolve().parents[1]
 STEP6_TRIAL_PATH = ROOT / "data_clean" / "step6" / "03_step6_trial_model_table.csv"
-STEP6_PRIMARY_MODEL_PATH = ROOT / "data_clean" / "step6" / "04_step6_primary_front_wordcount_model.csv"
+STEP6_PRIMARY_MODEL_PATH = ROOT / "data_clean" / "step6" / "04_step6_primary_roi_wordcount_models.csv"
 STEP3_STATUS_PATH = ROOT / "data_clean" / "step3" / "07_fnirs_session_status.csv"
+STEP6_FIGURES_DIR = ROOT / "figures" / "step6"
 
 FIGURES_DIR = ROOT / "figures" / "step6_visualization"
 REPORTS_DIR = ROOT / "reports" / "step6_visualization"
+BUNDLE_DIR = ROOT / "four_roi_steps" / "step6_revised"
+BUNDLE_REPORTS_DIR = BUNDLE_DIR / "report"
+BUNDLE_VISUALS_DIR = BUNDLE_DIR / "visuals"
 
 CONDITIONS = ("Abstract", "Concrete")
 CHROMOPHORES = ("hbo", "hbr")
@@ -36,10 +41,50 @@ TOPOMAP_SERIES_TIMES = np.arange(4.0, 11.0, 1.0)
 COMPARISON_TIME = 9.0
 TOPOMAP_ARGS = dict(extrapolate="local")
 SHORT_PAIRS = {"S1_D8", "S2_D9", "S3_D10", "S4_D11", "S5_D12", "S6_D13", "S7_D14", "S8_D15"}
-FRONT_PAIRS = ["S2_D6", "S2_D4", "S1_D6", "S1_D3", "S5_D6", "S5_D4", "S5_D3"]
-TRANSITION_PAIRS = ["S5_D7", "S4_D4", "S4_D7", "S3_D3", "S3_D7", "S6_D7"]
-BACK_PAIRS = ["S4_D2", "S3_D1", "S6_D2", "S6_D1", "S6_D5", "S7_D2", "S7_D5", "S8_D1", "S8_D5"]
-LONG_PAIRS = FRONT_PAIRS + TRANSITION_PAIRS + BACK_PAIRS
+SHARED_STEP6_FIGURES = [
+    "wordcount_by_condition.png",
+    "sentencecount_by_condition.png",
+    "sentencelength_by_condition.png",
+    "enem_correctness_by_condition.png",
+    "primary_roi_condition_coefficients.png",
+    "roi_vs_wordcount_scatter_grid.png",
+    "primary_model_residuals_grid.png",
+]
+ROI_SPECS: list[dict[str, Any]] = [
+    {
+        "roi_slug": "anterior_dorsal",
+        "roi_label": "Anterior Dorsal",
+        "pairs": ["S1_D6", "S1_D3", "S3_D3", "S5_D3", "S5_D6"],
+    },
+    {
+        "roi_slug": "anterior_ventral",
+        "roi_label": "Anterior Ventral",
+        "pairs": ["S2_D4", "S2_D6", "S5_D4", "S4_D4", "S5_D7"],
+    },
+    {
+        "roi_slug": "posterior_dorsal",
+        "roi_label": "Posterior Dorsal",
+        "pairs": ["S3_D7", "S3_D1", "S8_D1", "S8_D5", "S6_D1"],
+    },
+    {
+        "roi_slug": "posterior_ventral",
+        "roi_label": "Posterior Ventral",
+        "pairs": ["S7_D2", "S7_D5", "S6_D2", "S4_D2", "S4_D7", "S6_D7"],
+    },
+]
+
+
+def unique_pairs(pairs: list[str]) -> list[str]:
+    ordered: list[str] = []
+    seen: set[str] = set()
+    for pair in pairs:
+        if pair not in seen:
+            ordered.append(pair)
+            seen.add(pair)
+    return ordered
+
+
+LONG_PAIRS = unique_pairs([pair for roi in ROI_SPECS for pair in roi["pairs"]])
 LONG_HBO_CHANNELS = [f"{pair_id} hbo" for pair_id in LONG_PAIRS]
 LONG_HBR_CHANNELS = [f"{pair_id} hbr" for pair_id in LONG_PAIRS]
 ALL_LONG_CHANNELS = LONG_HBO_CHANNELS + LONG_HBR_CHANNELS
@@ -47,9 +92,41 @@ HBO_SLICE = slice(0, len(LONG_HBO_CHANNELS))
 HBR_SLICE = slice(len(LONG_HBO_CHANNELS), len(ALL_LONG_CHANNELS))
 
 
+def reset_directory_contents(path: Path) -> None:
+    path.mkdir(parents=True, exist_ok=True)
+    for child in path.iterdir():
+        if child.is_file():
+            child.unlink()
+        elif child.is_dir():
+            shutil.rmtree(child)
+
+
+def clear_report_outputs(report_dir: Path, stem: str) -> None:
+    report_dir.mkdir(parents=True, exist_ok=True)
+    for suffix in [".aux", ".log", ".out", ".pdf", ".tex"]:
+        target = report_dir / f"{stem}{suffix}"
+        if target.exists():
+            target.unlink()
+
+
 def ensure_directories() -> None:
-    for path in [FIGURES_DIR, REPORTS_DIR]:
-        path.mkdir(parents=True, exist_ok=True)
+    reset_directory_contents(FIGURES_DIR)
+    reset_directory_contents(BUNDLE_VISUALS_DIR)
+    clear_report_outputs(REPORTS_DIR, "step6_visualization_report")
+    clear_report_outputs(BUNDLE_REPORTS_DIR, "step6_visualization_report")
+
+
+def copy_shared_step6_figures() -> None:
+    for filename in SHARED_STEP6_FIGURES:
+        source = STEP6_FIGURES_DIR / filename
+        if not source.exists():
+            raise FileNotFoundError(f"Missing shared Step 6 figure: {source}")
+        shutil.copy2(source, FIGURES_DIR / filename)
+
+
+def sync_bundle_visuals() -> None:
+    for source in FIGURES_DIR.glob("*.png"):
+        shutil.copy2(source, BUNDLE_VISUALS_DIR / source.name)
 
 
 def sanitize_for_tex(text: Any) -> str:
@@ -159,7 +236,7 @@ def load_inputs() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
 
 
 def get_representative_session(trial_df: pd.DataFrame) -> tuple[str, str]:
-    included_df = trial_df[trial_df["eligible_primary_model"]].copy()
+    included_df = trial_df[trial_df["eligible_modeling"]].copy()
     included_df = included_df.sort_values(["participant_id", "session_id"]).reset_index(drop=True)
     first_row = included_df.iloc[0]
     return str(first_row["participant_id"]), str(first_row["session_id"])
@@ -169,7 +246,7 @@ def plot_sensor_geometry(raw: mne.io.BaseRaw, participant_id: str, session_id: s
     hbo_channel_names = [name for name in raw.ch_names if name.endswith(" hbo")]
     source_points: dict[str, np.ndarray] = {}
     detector_points: dict[str, np.ndarray] = {}
-    channel_points: list[tuple[str, np.ndarray, bool]] = []
+    channel_points: list[tuple[str, np.ndarray, bool, bool]] = []
 
     for channel_name in hbo_channel_names:
         pair_id = channel_name.replace(" hbo", "")
@@ -180,7 +257,7 @@ def plot_sensor_geometry(raw: mne.io.BaseRaw, participant_id: str, session_id: s
         detector = np.asarray(ch["loc"][6:9], dtype=float)
         source_points[source_id] = source
         detector_points[detector_id] = detector
-        channel_points.append((pair_id, midpoint, pair_id in SHORT_PAIRS))
+        channel_points.append((pair_id, midpoint, pair_id in SHORT_PAIRS, pair_id in LONG_PAIRS))
 
     scalp_points = []
     if raw.info.get("dig"):
@@ -206,22 +283,38 @@ def plot_sensor_geometry(raw: mne.io.BaseRaw, participant_id: str, session_id: s
                 alpha=0.25,
                 s=6,
             )
-        for pair_id, midpoint, is_short in channel_points:
+        for pair_id, midpoint, is_short, is_analysis in channel_points:
             source_id, detector_id = pair_id.split("_")
             source = source_points[source_id]
             detector = detector_points[detector_id]
-            line_color = "#F39C12" if is_short else "#7F8C8D"
-            line_style = "--" if is_short else "-"
+            if is_short:
+                line_color = "#E67E22"
+                line_style = "--"
+                line_width = 1.5
+            elif is_analysis:
+                line_color = "#225588"
+                line_style = "-"
+                line_width = 1.8
+            else:
+                line_color = "#BDC3C7"
+                line_style = "-"
+                line_width = 0.8
             ax.plot(
                 [source[0], detector[0]],
                 [source[1], detector[1]],
                 [source[2], detector[2]],
                 color=line_color,
                 linestyle=line_style,
-                linewidth=1.5,
+                linewidth=line_width,
                 alpha=0.9,
             )
-            ax.scatter(midpoint[0], midpoint[1], midpoint[2], color="#E67E22", s=28)
+            ax.scatter(
+                midpoint[0],
+                midpoint[1],
+                midpoint[2],
+                color="#E67E22" if is_analysis else "#BFC9CA",
+                s=30 if is_analysis else 18,
+            )
         for source in source_points.values():
             ax.scatter(source[0], source[1], source[2], color="#C0392B", s=35)
         for detector in detector_points.values():
@@ -234,8 +327,8 @@ def plot_sensor_geometry(raw: mne.io.BaseRaw, participant_id: str, session_id: s
         set_axes_equal(ax)
 
     fig.suptitle(
-        f"Representative Step 6 sensor geometry: {participant_id} / {session_id}\n"
-        "Gray point cloud = head digitization, red = sources, black = detectors, orange = channels"
+        f"Representative revised Step 6 sensor geometry: {participant_id} / {session_id}\n"
+        "Blue pairs = four-ROI analysis channels, orange dashed = short pairs, red = sources, black = detectors"
     )
     fig.tight_layout()
     fig.savefig(FIGURES_DIR / "representative_sensor_geometry.png", dpi=180)
@@ -243,7 +336,7 @@ def plot_sensor_geometry(raw: mne.io.BaseRaw, participant_id: str, session_id: s
 
 
 def build_visualization_dataset(trial_df: pd.DataFrame, status_df: pd.DataFrame) -> dict[str, Any]:
-    included_df = trial_df[trial_df["eligible_primary_model"]].copy()
+    included_df = trial_df[trial_df["eligible_modeling"]].copy()
     included_df = included_df.sort_values(["participant_id", "session_id", "question_start_time"]).reset_index(drop=True)
     status_lookup = {
         (row["participant_id"], row["session_id"]): row["preprocessed_file"]
@@ -589,17 +682,24 @@ def save_evoked_topo_overlay(evoked_abstract: mne.Evoked, evoked_concrete: mne.E
     plt.close(fig)
 
 
-def write_report(representative_session: tuple[str, str], metadata: dict[str, Any], primary_p_value: float) -> Path:
+def write_report(
+    report_dir: Path,
+    figure_prefix: str,
+    representative_session: tuple[str, str],
+    metadata: dict[str, Any],
+    primary_row: pd.Series,
+) -> Path:
     overview_rows = [
         ("Representative geometry session", f"{representative_session[0]} / {representative_session[1]}"),
-        ("Included participant-sessions from Step 6", metadata["n_included_sessions"]),
+        ("Included participant-sessions from revised Step 6", metadata["n_included_sessions"]),
         ("Included questions in Step 6 trial table", metadata["n_included_questions"]),
         ("Abstract onset-locked epochs used", metadata["n_abstract_epochs"]),
         ("Concrete onset-locked epochs used", metadata["n_concrete_epochs"]),
         ("Epoch window", f"{EPOCH_TMIN:.1f} s to {EPOCH_TMAX:.1f} s around question onset"),
         ("Baseline", f"{BASELINE[0]:.1f} s to {BASELINE[1]:.1f} s"),
-        ("Long-channel montage used in descriptive plots", f"{metadata['n_long_pairs']} pairs ({metadata['n_long_channels_total']} chromophore channels)"),
-        ("Primary Step 6 adjusted p-value", f"{primary_p_value:.6f}"),
+        ("Four-ROI descriptive montage", f"{metadata['n_long_pairs']} pairs ({metadata['n_long_channels_total']} chromophore channels)"),
+        ("Best raw primary ROI p-value", f"{primary_row['roi_label']}: {float(primary_row['condition_p_value']):.6f}"),
+        ("Best Holm-corrected primary ROI p-value", f"{primary_row['roi_label']}: {float(primary_row['condition_p_value_holm']):.6f}"),
     ]
 
     lines = [
@@ -613,98 +713,99 @@ def write_report(representative_session: tuple[str, str], metadata: dict[str, An
         r"\subsection*{Overview}",
         make_latex_table(overview_rows),
         r"\paragraph{Adaptation note.} "
-        r"This report reuses the same supplementary visualization family created for Step~5, but anchors it explicitly to the Step~6 trial-model table. "
-        r"Because Step~6 freezes the Step~5 cohort and outcome definition, the onset-locked descriptive plots shown here are based on the same included trial set that feeds the covariate-adjusted mixed-effects models.",
+        r"This supplementary report was updated for the revised Step~6 rerun that uses the four ROI definitions "
+        r"(Anterior Dorsal, Anterior Ventral, Posterior Dorsal, Posterior Ventral) and the updated downstream exclusion policy that removes PID027. "
+        r"The descriptive topographies use the union of the revised Step~6 analysis ROIs rather than the earlier front/back layout.",
         r"\paragraph{Rendering note.} "
         r"As in the earlier supplementary visualization reports, the sensor-geometry figure uses the participant digitization point cloud plus source, detector, channel, and pair geometry rather than an fsaverage brain-surface rendering, because the local \texttt{pyvista}/\texttt{fsaverage} stack is not available in this environment.",
         r"\subsection*{Step 6 Main Figures Reused}",
         r"\begin{figure}[H]",
         r"\centering",
-        r"\includegraphics[width=0.48\linewidth]{../../figures/step6/wordcount_by_condition.png}",
-        r"\includegraphics[width=0.48\linewidth]{../../figures/step6/sentencecount_by_condition.png}",
+        rf"\includegraphics[width=0.48\linewidth]{{{figure_prefix}/wordcount_by_condition.png}}",
+        rf"\includegraphics[width=0.48\linewidth]{{{figure_prefix}/sentencecount_by_condition.png}}",
         r"\caption{Step~6 item-level balance plots for total word count and sentence count.}",
         r"\end{figure}",
         r"\begin{figure}[H]",
         r"\centering",
-        r"\includegraphics[width=0.48\linewidth]{../../figures/step6/sentencelength_by_condition.png}",
-        r"\includegraphics[width=0.48\linewidth]{../../figures/step6/enem_correctness_by_condition.png}",
+        rf"\includegraphics[width=0.48\linewidth]{{{figure_prefix}/sentencelength_by_condition.png}}",
+        rf"\includegraphics[width=0.48\linewidth]{{{figure_prefix}/enem_correctness_by_condition.png}}",
         r"\caption{Step~6 item-level balance plots for sentence length and ENEM item correctness.}",
         r"\end{figure}",
         r"\begin{figure}[H]",
         r"\centering",
-        r"\includegraphics[width=0.48\linewidth]{../../figures/step6/front_roi_vs_wordcount_scatter.png}",
-        r"\includegraphics[width=0.48\linewidth]{../../figures/step6/front_roi_partial_effect_condition.png}",
-        r"\caption{Step~6 scatter and partial-effect figures from the primary covariate-adjusted model.}",
+        rf"\includegraphics[width=0.92\linewidth]{{{figure_prefix}/primary_roi_condition_coefficients.png}}",
+        r"\caption{Primary adjusted Abstract-minus-Concrete coefficients for the four revised ROIs, with 95\% confidence intervals and Holm-corrected p-values.}",
         r"\end{figure}",
         r"\begin{figure}[H]",
         r"\centering",
-        r"\includegraphics[width=0.48\linewidth]{../../figures/step6/model_residuals_primary.png}",
-        r"\includegraphics[width=0.48\linewidth]{../../figures/step6/model_random_intercepts.png}",
-        r"\caption{Step~6 residual diagnostic and group-level intercept-proxy plots from the primary model.}",
+        rf"\includegraphics[width=0.48\linewidth]{{{figure_prefix}/roi_vs_wordcount_scatter_grid.png}}",
+        rf"\includegraphics[width=0.48\linewidth]{{{figure_prefix}/primary_model_residuals_grid.png}}",
+        r"\caption{Primary revised Step~6 ROI-versus-word-count plots and residual diagnostics across the four ROI-specific models.}",
         r"\end{figure}",
         r"\subsection*{Step 5-Style Supplementary Plots for Step 6}",
         r"\begin{figure}[H]",
         r"\centering",
-        r"\includegraphics[width=0.95\linewidth]{../../figures/step6_visualization/representative_sensor_geometry.png}",
-        r"\caption{Representative optode, channel, and source-detector-pair geometry for one Step~6 included participant-session. Short pairs are shown with dashed orange lines.}",
+        rf"\includegraphics[width=0.95\linewidth]{{{figure_prefix}/representative_sensor_geometry.png}}",
+        r"\caption{Representative optode, channel, and source-detector-pair geometry for one Step~6 included participant-session. Blue pairs mark the revised four-ROI analysis montage and short pairs are shown with dashed orange lines.}",
         r"\end{figure}",
         r"\begin{figure}[H]",
         r"\centering",
-        r"\includegraphics[width=0.48\linewidth]{../../figures/step6_visualization/abstract_trial_consistency.png}",
-        r"\includegraphics[width=0.48\linewidth]{../../figures/step6_visualization/concrete_trial_consistency.png}",
+        rf"\includegraphics[width=0.48\linewidth]{{{figure_prefix}/abstract_trial_consistency.png}}",
+        rf"\includegraphics[width=0.48\linewidth]{{{figure_prefix}/concrete_trial_consistency.png}}",
         r"\caption{Condition-adapted trial-consistency image plots for the Step~6 trial set.}",
         r"\end{figure}",
         r"\begin{figure}[H]",
         r"\centering",
-        r"\includegraphics[width=0.95\linewidth]{../../figures/step6_visualization/channel_consistency_grid.png}",
+        rf"\includegraphics[width=0.95\linewidth]{{{figure_prefix}/channel_consistency_grid.png}}",
         r"\caption{Grand-average long-channel response images across channels for the Abstract and Concrete conditions.}",
         r"\end{figure}",
         r"\begin{figure}[H]",
         r"\centering",
-        r"\includegraphics[width=0.92\linewidth]{../../figures/step6_visualization/standard_fnirs_compare.png}",
+        rf"\includegraphics[width=0.92\linewidth]{{{figure_prefix}/standard_fnirs_compare.png}}",
         r"\caption{Standard fNIRS waveform comparison across long channels for the Step~6 trial set.}",
         r"\end{figure}",
         r"\begin{figure}[H]",
         r"\centering",
-        r"\includegraphics[width=0.95\linewidth]{../../figures/step6_visualization/abstract_hbo_joint.png}",
-        r"\caption{Grand-average HbO topography over time for Abstract questions using the Step~6 included trial set.}",
+        rf"\includegraphics[width=0.95\linewidth]{{{figure_prefix}/abstract_hbo_joint.png}}",
+        r"\caption{Grand-average HbO topography over time for Abstract questions using the revised Step~6 included trial set and restricted to the four-ROI analysis channels.}",
         r"\end{figure}",
         r"\begin{figure}[H]",
         r"\centering",
-        r"\includegraphics[width=0.95\linewidth]{../../figures/step6_visualization/concrete_hbo_joint.png}",
-        r"\caption{Grand-average HbO topography over time for Concrete questions using the Step~6 included trial set.}",
+        rf"\includegraphics[width=0.95\linewidth]{{{figure_prefix}/concrete_hbo_joint.png}}",
+        r"\caption{Grand-average HbO topography over time for Concrete questions using the revised Step~6 included trial set and restricted to the four-ROI analysis channels.}",
         r"\end{figure}",
         r"\begin{figure}[H]",
         r"\centering",
-        r"\includegraphics[width=0.95\linewidth]{../../figures/step6_visualization/abstract_minus_concrete_hbo_joint.png}",
+        rf"\includegraphics[width=0.95\linewidth]{{{figure_prefix}/abstract_minus_concrete_hbo_joint.png}}",
         r"\caption{Grand-average Abstract-minus-Concrete HbO topography over time.}",
         r"\end{figure}",
         r"\begin{figure}[H]",
         r"\centering",
-        r"\includegraphics[width=0.48\linewidth]{../../figures/step6_visualization/abstract_hbo_topomap_series.png}",
-        r"\includegraphics[width=0.48\linewidth]{../../figures/step6_visualization/concrete_hbo_topomap_series.png}",
+        rf"\includegraphics[width=0.48\linewidth]{{{figure_prefix}/abstract_hbo_topomap_series.png}}",
+        rf"\includegraphics[width=0.48\linewidth]{{{figure_prefix}/concrete_hbo_topomap_series.png}}",
         r"\caption{HbO topographic time series from 4.0~s to 10.0~s for the Abstract and Concrete conditions.}",
         r"\end{figure}",
         r"\begin{figure}[H]",
         r"\centering",
-        r"\includegraphics[width=0.48\linewidth]{../../figures/step6_visualization/abstract_hbr_topomap_series.png}",
-        r"\includegraphics[width=0.48\linewidth]{../../figures/step6_visualization/concrete_hbr_topomap_series.png}",
+        rf"\includegraphics[width=0.48\linewidth]{{{figure_prefix}/abstract_hbr_topomap_series.png}}",
+        rf"\includegraphics[width=0.48\linewidth]{{{figure_prefix}/concrete_hbr_topomap_series.png}}",
         r"\caption{HbR topographic time series from 4.0~s to 10.0~s for the Abstract and Concrete conditions.}",
         r"\end{figure}",
         r"\begin{figure}[H]",
         r"\centering",
-        r"\includegraphics[width=0.95\linewidth]{../../figures/step6_visualization/abstract_concrete_single_time_comparison.png}",
+        rf"\includegraphics[width=0.95\linewidth]{{{figure_prefix}/abstract_concrete_single_time_comparison.png}}",
         r"\caption{Single-time comparison at 9.0~s for Abstract, Concrete, and Abstract-minus-Concrete topographies for both HbO and HbR.}",
         r"\end{figure}",
         r"\begin{figure}[H]",
         r"\centering",
-        r"\includegraphics[width=0.95\linewidth]{../../figures/step6_visualization/abstract_concrete_hbo_evoked_topo.png}",
+        rf"\includegraphics[width=0.95\linewidth]{{{figure_prefix}/abstract_concrete_hbo_evoked_topo.png}}",
         r"\caption{HbO waveforms by long channel, overlaid for Abstract and Concrete, to show what drives the descriptive topographic differences.}",
         r"\end{figure}",
         r"\end{document}",
     ]
 
-    report_path = REPORTS_DIR / "step6_visualization_report.tex"
+    report_dir.mkdir(parents=True, exist_ok=True)
+    report_path = report_dir / "step6_visualization_report.tex"
     report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return report_path
 
@@ -753,16 +854,33 @@ def main() -> None:
         grand_evokeds["Concrete"],
         FIGURES_DIR / "abstract_concrete_hbo_evoked_topo.png",
     )
+    copy_shared_step6_figures()
+    sync_bundle_visuals()
 
-    primary_p_value = float(primary_model_df.iloc[0]["condition_p_value"])
-    report_path = write_report((participant_id, session_id), metadata, primary_p_value)
+    primary_row = primary_model_df.sort_values("condition_p_value").iloc[0]
+    report_path = write_report(
+        REPORTS_DIR,
+        "../../figures/step6_visualization",
+        (participant_id, session_id),
+        metadata,
+        primary_row,
+    )
+    bundle_report_path = write_report(
+        BUNDLE_REPORTS_DIR,
+        "../visuals",
+        (participant_id, session_id),
+        metadata,
+        primary_row,
+    )
     compile_report(report_path)
+    compile_report(bundle_report_path)
 
-    print("Step 6 visualization report generated successfully.")
+    print("Revised Step 6 visualization report generated successfully.")
     print(f"Included participant-sessions: {metadata['n_included_sessions']}")
     print(f"Included questions: {metadata['n_included_questions']}")
     print(f"Abstract epochs: {metadata['n_abstract_epochs']}")
     print(f"Concrete epochs: {metadata['n_concrete_epochs']}")
+    print(f"Four-ROI descriptive long pairs: {metadata['n_long_pairs']}")
 
 
 if __name__ == "__main__":
